@@ -10,7 +10,7 @@
 <style>
 :root{--bg:#fff;--fg:#37352f;--fg2:#787774;--line:#e9e9e7;--hover:#f1f1ef;--panel:#fff;--stage:#f7f6f3;--accent:#2383e2;--shadow:rgba(15,15,15,.15);--shelf:#e3e2de;color-scheme:light;
 --t:4px;--r:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---sz:1;--m:54px;--shs:1;--sho:.4;--spo:.25;--spw:7%;--ph:calc(min(calc(100svh - 84px),calc((100vw - 2*var(--m))*210/296))*var(--sz));--pw:calc(var(--ph)*148/210)}
+--sz:1;--m:54px;--shs:1;--sho:.4;--spo:.25;--spw:7%;--ph:calc(min(calc(100svh - 96px),calc((100vw - 2*var(--m))*210/296))*var(--sz));--pw:calc(var(--ph)*148/210)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191919;--fg:#ebebeb;--fg2:#9b9b9b;--line:#2f2f2f;--hover:#2a2a2a;--panel:#252525;--stage:#202020;--accent:#529cca;--shadow:rgba(0,0,0,.55);--shelf:#2f2f2f;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#191919;--fg:#ebebeb;--fg2:#9b9b9b;--line:#2f2f2f;--hover:#2a2a2a;--panel:#252525;--stage:#202020;--accent:#529cca;--shadow:rgba(0,0,0,.55);--shelf:#2f2f2f;color-scheme:dark}
 
@@ -29,17 +29,18 @@ body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:ui-sa
 .nb .cv{margin:0 20px;transition:transform .15s}.nb:hover .cv{transform:translateY(-4px)}
 .cv{position:relative;width:150px;height:212px;border-radius:3px min(var(--r),25%) min(var(--r),25%) 3px;box-shadow:0 6px 14px var(--shadow);overflow:hidden}
 .cv::before{content:"";position:absolute;inset:0 auto 0 0;width:12px;background:linear-gradient(to right,rgba(0,0,0,.25),rgba(255,255,255,.12) 60%,transparent)}
-.ct{margin:20px 14px 0 24px;font:600 17px/1.2 Georgia,"Times New Roman",serif;text-align:left;overflow-wrap:anywhere}
 .cvf::before{content:"";position:absolute;inset:0 auto 0 0;width:3%;background:linear-gradient(to right,rgba(0,0,0,.25),rgba(255,255,255,.12) 60%,transparent);z-index:1}
-.cvf .ct{font-size:calc(var(--pw)*.085);margin:calc(var(--pw)*.12) calc(var(--pw)*.08) 0 calc(var(--pw)*.14)}
 .ledge{height:12px;background:var(--shelf);box-shadow:0 3px 6px var(--shadow)}
 .cap{font-size:12px;color:var(--fg2);padding:8px 0 20px}
-#shelf.cm:not([hidden]){display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.nt{font:600 14px/1.3 Georgia,"Times New Roman",serif;color:var(--fg);min-height:1.3em;padding:0 10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.np{margin-top:2px}
+#shelf.cm:not([hidden]){display:flex;flex-direction:column;overflow:hidden auto}
+#shelf.cm #car{margin:auto 0;flex:none}#shelf.cm #notice{flex:none}
 #shelf.cm #grid{display:none}
-#car{display:none;position:relative;--cf:1;height:calc(340px*var(--cf));perspective:calc(1100px*var(--cf));touch-action:pan-y;cursor:grab;user-select:none}
+#car{display:none;position:relative;--cf:1;height:calc(340px*var(--cf) + 22px);perspective:calc(1100px*var(--cf));touch-action:pan-y;cursor:grab;user-select:none}
 #shelf.cm #car{display:block}
 .ci{position:absolute;left:50%;top:0;width:calc(200px*var(--cf));text-align:center;will-change:transform}
-.ci .cv{width:calc(200px*var(--cf));height:calc(283px*var(--cf));margin:0}.ci .cv::before{width:calc(12px*var(--cf))}.ci .ct{font-size:calc(21px*var(--cf));margin:calc(20px*var(--cf)) calc(14px*var(--cf)) 0 calc(24px*var(--cf))}.ci .cap{padding:calc(14px*var(--cf)) 0 0}.ci.new .cv{font-size:calc(36px*var(--cf))}
+.ci .cv{width:calc(200px*var(--cf));height:calc(283px*var(--cf));margin:0}.ci .cv::before{width:calc(12px*var(--cf))}.ci .nt{-webkit-line-clamp:1}.ci .cap{padding:calc(14px*var(--cf)) 0 0}.ci.new .cv{font-size:calc(36px*var(--cf))}
 .new .cv{background:none;border:2px dashed var(--line);box-shadow:none;display:grid;place-items:center;font-size:36px;color:var(--fg2);border-radius:min(var(--r),25%)}
 .new .cv::before{display:none}
 #reader{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;background:var(--stage);overflow:hidden}
@@ -81,7 +82,7 @@ dialog h2{margin:0 0 14px;font-size:17px}
 dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:14px}
 #dt{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
 .drow{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
-#dcv .cv{width:100px;height:142px;box-shadow:0 4px 10px var(--shadow)}#dcv .ct{font-size:12px;margin:14px 8px 0 18px}
+#dcv .cv{width:100px;height:142px;box-shadow:0 4px 10px var(--shadow)}
 #odlg{width:min(680px,calc(100vw - 32px))}
 #ohint{font-size:12px;color:var(--fg2);margin-bottom:10px}
 #ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;max-height:60svh;overflow:auto;padding:4px;counter-reset:n;margin-bottom:12px}
@@ -95,7 +96,9 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 .swb{width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer}.swb.on{outline:2px solid var(--accent);outline-offset:2px}
 .end{display:flex;gap:8px;margin-top:6px}
 #impb{display:grid;place-items:center;padding:0}#impb svg{width:20px;height:20px}
-#notice{display:flex;gap:6px 14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--fg2);text-align:center}
+#notice{position:relative;box-sizing:border-box;width:100%;max-width:980px;margin:32px auto 0;display:flex;gap:6px 14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px 44px 10px 14px;border-top:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--fg2);text-align:center}
+#nx{position:absolute;top:6px;right:0;width:28px;height:28px;font-size:14px;color:var(--fg2)}
+#rtitle{position:absolute;top:4px;left:12px;right:12px;text-align:center;font:600 13px/16px Georgia,"Times New Roman",serif;color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
 #notice[hidden]{display:none}#notice a.tb{text-decoration:none;white-space:nowrap}
 #st{position:fixed;left:0;right:0;bottom:84px;text-align:center;font-size:13px;color:var(--fg2);pointer-events:none}
 #drop{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);color:#fff;font-size:20px;z-index:200}
@@ -112,14 +115,15 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <button class="ib" id="vm" aria-label="Alternar entre estante e carrossel"></button>
 <button class="ib" id="theme" aria-label="Alternar tema claro ou escuro"></button>
 </div>
-<main id="shelf"><div id="grid"></div><div id="car"></div></main>
-<div id="notice"><span>Para criar cadernos novos, use o <b>tjoucreator</b>: monte o caderno, baixe o arquivo <b>.tjou</b> e importe aqui pelo botão de importar no topo.</span><a class="tb pri" href="https://twistedryuu-beep.github.io/zmsxyz/tjoucreator.html" target="_blank" rel="noopener noreferrer">Abrir o tjoucreator ↗</a></div>
+<main id="shelf"><div id="grid"></div><div id="car"></div>
+<div id="notice"><span>Para criar cadernos novos, use o <b>tjoucreator</b>: monte o caderno, baixe o arquivo <b>.tjou</b> e importe aqui pelo botão de importar no topo.</span><a class="tb pri" href="https://twistedryuu-beep.github.io/zmsxyz/tjoucreator.html" target="_blank" rel="noopener noreferrer">Abrir o tjoucreator ↗</a><button class="ib" id="nx" aria-label="Remover aviso" title="Remover aviso">✕</button></div>
+</main>
 <section id="reader" hidden>
-<div id="stage"><div id="bw"><div id="book"></div></div>
-<div id="empty" hidden><div>Este caderno está vazio</div><button class="tb pri" id="imp">Importar PDF ou imagem A4</button></div></div>
+<div id="stage"><div id="rtitle"></div><div id="bw"><div id="book"></div></div>
+<div id="empty" hidden><div>Este caderno está vazio</div><button class="tb pri" id="imp">Importar PDF ou arquivo .tjou</button></div></div>
 <nav>
 <button id="prev" aria-label="Página anterior">‹</button>
-<button id="add" aria-label="Importar PDF ou imagem">+</button>
+<button id="add" aria-label="Importar PDF ou arquivo .tjou">+</button>
 <button id="next" aria-label="Próxima página">›</button>
 <button id="more" aria-label="Menu do caderno">⋯</button>
 </nav>
@@ -156,9 +160,9 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 </dialog>
 <input type="file" id="cimg" accept="image/*" hidden>
 <input type="file" id="tfile" hidden>
-<input type="file" id="file" accept="image/*,application/pdf" multiple hidden>
+<input type="file" id="file" multiple hidden>
 <div id="st"></div>
-<div id="drop">Solte o PDF ou a imagem A4 aqui</div>
+<div id="drop">Solte o PDF ou arquivo .tjou aqui</div>
 <script>
 const $=s=>document.querySelector(s),book=$('#book'),stage=$('#stage');
 const S={t:4,r:14,off:8,dz:60,vis:5,sz:100,shs:100,sho:40,spo:25,spw:7,cs:100},DEF={...S};
@@ -208,25 +212,28 @@ function split(src){
 }
 
 /* estante */
-const lum=h=>{const x=parseInt(h.slice(1),16);return(.299*(x>>16)+.587*(x>>8&255)+.114*(x&255))/255};
 const coverBg=n=>n.img?'center/cover url('+n.img+')':'linear-gradient(145deg,'+n.color+',color-mix(in srgb,'+n.color+' 65%,#000))';
-function titleEl(n){
-  if(!n.title)return null;const t=document.createElement('div');t.className='ct';t.textContent=n.title;
-  const lt=!n.img&&lum(n.color)>.62;t.style.color=lt?'#222':'#fff';t.style.textShadow=lt?'none':'0 1px 4px rgba(0,0,0,.45)';return t;
+const pgTxt=n=>n.pages.length+(n.pages.length===1?' página':' páginas');
+/* legenda fora da capa: título do caderno (acima) + contagem de páginas */
+function capEl(title,sub){
+  const c=document.createElement('div');c.className='cap';
+  const t=document.createElement('div');t.className='nt';t.textContent=title||'';if(title)t.title=title;
+  const s=document.createElement('div');s.className='np';s.textContent=sub;
+  c.append(t,s);return c;
 }
 function coverEl(n){
   const d=document.createElement('div');d.className='cv';
   d.style.background=coverBg(n);
-  const t=titleEl(n);if(t)d.appendChild(t);return d;
+  return d;
 }
 function renderShelf(){
   const gr=$('#grid');gr.innerHTML='';
-  const mk=(cv,cap,fn,cls)=>{const b=document.createElement('button');b.className='nb '+(cls||'');b.appendChild(cv);
-    const l=document.createElement('div');l.className='ledge';const c=document.createElement('div');c.className='cap';c.textContent=cap;
-    b.append(l,c);b.onclick=()=>fn(cv);gr.appendChild(b)};
-  nbs.forEach(n=>mk(coverEl(n),n.pages.length+(n.pages.length===1?' página':' páginas'),c=>openNb(n,c)));
+  const mk=(cv,title,sub,fn,cls)=>{const b=document.createElement('button');b.className='nb '+(cls||'');b.appendChild(cv);
+    const l=document.createElement('div');l.className='ledge';
+    b.append(l,capEl(title,sub));b.onclick=()=>fn(cv);gr.appendChild(b)};
+  nbs.forEach(n=>mk(coverEl(n),n.title,pgTxt(n),c=>openNb(n,c)));
   const p=document.createElement('div');p.className='cv';p.textContent='+';
-  mk(p,'Novo caderno',()=>openDlg(null),'new');
+  mk(p,'','Novo caderno',()=>openDlg(null),'new');
   renderCar();
 }
 /* mover o zoom: arrastar fora do livro, 2 dedos, Shift+arrastar, roda do mouse; 2 toques centralizam */
@@ -314,9 +321,9 @@ function layoutCar(pos,anim){
 }
 function renderCar(){
   car.innerHTML='';
-  const mk=(cv,cap,cls,act)=>{const d=document.createElement('div');d.className='ci '+cls;const c=document.createElement('div');c.className='cap';c.textContent=cap;d.append(cv,c);d._act=act;car.appendChild(d)};
-  nbs.forEach(n=>{const cv=coverEl(n);mk(cv,n.pages.length+(n.pages.length===1?' página':' páginas'),'',()=>openNb(n,cv))});
-  const p=document.createElement('div');p.className='cv';p.textContent='+';mk(p,'Novo caderno','new',()=>openDlg(null));
+  const mk=(cv,title,sub,cls,act)=>{const d=document.createElement('div');d.className='ci '+cls;d.append(cv,capEl(title,sub));d._act=act;car.appendChild(d)};
+  nbs.forEach(n=>{const cv=coverEl(n);mk(cv,n.title,pgTxt(n),'',()=>openNb(n,cv))});
+  const p=document.createElement('div');p.className='cv';p.textContent='+';mk(p,'','Novo caderno','new',()=>openDlg(null));
   ci=Math.min(ci,nbs.length);fitCar();
 }
 function moveCar(d){const n=car.children.length-1;ci=Math.max(0,Math.min(n,ci+d));layoutCar(ci,true)}
@@ -324,7 +331,7 @@ function setMode(c){cmode=c;$('#shelf').classList.toggle('cm',c);$('#vm').textCo
 $('#vm').onclick=()=>setMode(!cmode);
 /* tamanho das capas do carrossel: 100% = ajuste automático à altura disponível (útil em embeds baixos) */
 function fitCar(){
-  const free=$('#shelf').clientHeight-76,fit=free>0?Math.min(1,free/325):1;
+  const free=$('#shelf').clientHeight-76-22,fit=free>0?Math.min(1,free/325):1;
   cf=Math.max(.3,fit*S.cs/100);car.style.setProperty('--cf',cf);layoutCar(ci,false);
 }
 $('#csz').value=S.cs;$('#cso').textContent=S.cs+'%';
@@ -345,9 +352,9 @@ car.addEventListener('pointerup',e=>{
 car.addEventListener('pointercancel',()=>{cdn=null;layoutCar(ci,true)});
 function view(r){
   $('#shelf').hidden=r;$('#reader').hidden=!r;$('#panel').hidden=true;$('#cpanel').hidden=true;
-  $('#bar').hidden=r;$('#notice').hidden=r;$('#back').classList.toggle('inv',!r);$('#ttl').classList.toggle('static',!r);
+  $('#bar').hidden=r;$('#back').classList.toggle('inv',!r);$('#ttl').classList.toggle('static',!r);
 }
-function head(){$('#ttl').textContent=nb?(nb.title||'Sem título')+' ✎':'Meus cadernos'}
+function head(){$('#ttl').textContent=nb?(nb.title||'Sem título')+' ✎':'Meus cadernos';$('#rtitle').textContent=nb?nb.title||'':''}
 /* guarda o caderno e a folha abertos; na estante, limpa */
 function saveLast(){try{if(nb)localStorage.setItem(lsk('livroLast'),JSON.stringify({id:nb.id,cur}));else localStorage.removeItem(lsk('livroLast'))}catch(e){}}
 function showShelf(){nb=null;pages=[];leaves=[];book.innerHTML='';view(false);head();$('#count').textContent='';renderShelf();saveLast()}
@@ -421,7 +428,7 @@ function build(c=0){
   for(let i=0;i<=m;i++){
     const lf=document.createElement('div');lf.className='leaf';
     const f=i?face('f',pages[2*i-1]):face('f cvf');
-    if(!i){f.style.background=coverBg(nb);const t=titleEl(nb);if(t)f.appendChild(t)}
+    if(!i)f.style.background=coverBg(nb);
     lf.appendChild(f);lf.appendChild(face('b',i===m&&nb.back?nb.back:pages[2*i]));
     slices(lf);
     book.appendChild(lf);leaves.push(lf);
@@ -486,23 +493,36 @@ stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',e
 
 /* importar para o caderno aberto */
 async function load(files){
-  if(!nb)return;const out=[];status('Processando…');
+  if(!nb)return;
+  const tj=files.filter(f=>/\.tjou$/i.test(f.name)),pdfs=files.filter(f=>f.type==='application/pdf'||/\.pdf$/i.test(f.name));
+  for(const f of tj)await importTjou(f);
+  if(!pdfs.length){if(!tj.length)status('Use arquivos PDF ou .tjou.',3000);return}
+  /* se o caderno termina com uma página em branco de preenchimento, as novas páginas continuam a partir dela */
+  const base=nb.pages.slice();if(base.length&&base[base.length-1]===null)base.pop();
+  const out=[];status('Processando…');
   try{
-    for(const f of files){
-      if(f.type==='application/pdf'||/\.pdf$/i.test(f.name)){
-        const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
-        for(let n=1;n<=pdf.numPages;n++){
-          const p=await pdf.getPage(n),v0=p.getViewport({scale:1}),vp=p.getViewport({scale:1400/v0.height});
-          const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
-          await p.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
-          out.push(...split(c));status('Página '+n+' de '+pdf.numPages+'…');
+    for(const f of pdfs){
+      const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+      for(let n=1;n<=pdf.numPages;n++){
+        const p=await pdf.getPage(n),v0=p.getViewport({scale:1}),vp=p.getViewport({scale:1400/v0.height});
+        const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;
+        await p.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        if(v0.width>v0.height){
+          /* horizontal: ocupa duas páginas (uma abertura inteira); começa sempre na página da esquerda */
+          if((base.length+out.length)%2)out.push(null);
+          out.push(...split(c));
+        }else{
+          /* vertical: ocupa uma página */
+          out.push(c.toDataURL('image/jpeg',.9));
         }
-      }else if(f.type.startsWith('image/')){out.push(...split(await createImageBitmap(f)))}
+        status('Página '+n+' de '+pdf.numPages+'…');
+      }
     }
   }catch(e){status('Não foi possível ler o arquivo.',3000);return}
   if(!out.length){status('Nenhum arquivo compatível.',3000);return}
-  const first=pages.length/2+1;
-  nb.pages=nb.pages.concat(out);pages=nb.pages;dbPut(nb);build(first);status('');
+  const all=base.concat(out);if(all.length%2)all.push(null);
+  const first=Math.floor(base.length/2)+1;
+  nb.pages=all;pages=nb.pages;dbPut(nb);build(first);status('');
 }
 $('#prev').onclick=()=>go(-1);$('#next').onclick=()=>go(1);
 $('#add').onclick=$('#imp').onclick=()=>$('#file').click();
@@ -602,12 +622,15 @@ async function importTjou(file){
     for(let k=0;k<h.pages.length;k++){status('Importando página '+(k+1)+' de '+h.pages.length+'…');n.pages.push(await get(h.pages[k]))}
     if(n.pages.length%2)n.pages.push(null);
     await dbPutP(n);nbs.push(n);if(!nb)renderShelf();
-    status('Caderno “'+(n.title||'Sem título')+'” importado.',4000);
+    status('Caderno “'+(n.title||'Sem título')+'” importado'+(nb?'; ele está na estante.':'.'),4000);
   }catch(e){
     status(e&&e.message==='fmt'?'Arquivo inválido: use um arquivo criado no tjoucreator.':'Não foi possível importar (espaço insuficiente ou arquivo corrompido).',5000);
   }
 }
 $('#impb').onclick=()=>$('#tfile').click();
+/* aviso do tjoucreator: rola junto com a estante e pode ser removido (a escolha fica salva) */
+if(lsGet('livroAviso')==='1')$('#notice').hidden=true;
+$('#nx').onclick=()=>{$('#notice').hidden=true;lsSet('livroAviso','1');fitCar()};
 $('#tfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)importTjou(f)};
 
 (async()=>{
