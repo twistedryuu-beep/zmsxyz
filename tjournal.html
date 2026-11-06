@@ -49,6 +49,7 @@ html.emb #bar{background:transparent;border-color:transparent}
 #stage{position:relative;flex:1;min-height:0;width:100%;display:grid;place-items:center;place-content:center;touch-action:none;cursor:grab}
 #stage:active{cursor:grabbing}
 #empty{position:absolute;left:0;right:0;bottom:4px;display:flex;gap:10px;justify-content:center;align-items:center;font-size:13px;color:var(--fg2)}
+#bw{will-change:translate,scale}
 #book{position:relative;width:calc(var(--pw)*2);height:var(--ph);perspective:2200px}
 #book::before{content:"";position:absolute;left:calc(-4% * var(--shs));right:calc(-4% * var(--shs));bottom:calc(-30px * var(--shs));height:calc(26px * var(--shs));background:radial-gradient(ellipse at center,rgba(0,0,0,var(--sho)),transparent 70%)}
 #book.thud{animation:thud .18s ease-out}
@@ -57,9 +58,9 @@ html.emb #bar{background:transparent;border-color:transparent}
 .face{position:absolute;inset:0;background:#fff;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .face img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .face::after{content:"";position:absolute;inset:0;pointer-events:none}
-.f{border-radius:0 var(--r) var(--r) 0;transform:translateZ(calc(var(--t)/2))}
+.f{left:-1px;border-radius:0 var(--r) var(--r) 0;transform:translateZ(calc(var(--t)/2))}
 .f::after{background:linear-gradient(to right,rgba(0,0,0,var(--spo)),transparent var(--spw)),linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.05))}
-.b{border-radius:var(--r) 0 0 var(--r);transform:rotateY(180deg) translateZ(calc(var(--t)/2))}
+.b{left:-1px;border-radius:var(--r) 0 0 var(--r);transform:rotateY(180deg) translateZ(calc(var(--t)/2))}
 .b::after{background:linear-gradient(to left,rgba(0,0,0,var(--spo)),transparent var(--spw)),linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.05))}
 .sl{position:absolute;inset:0;border-radius:0 var(--r) var(--r) 0;pointer-events:none}
 nav{position:relative;z-index:5;display:flex;gap:6px;padding:2px 0 8px;opacity:.55;transition:opacity .2s}nav:hover,nav:focus-within{opacity:1}
@@ -214,9 +215,13 @@ function renderShelf(){
 /* mover o zoom: arrastar fora do livro, 2 dedos, Shift+arrastar, roda do mouse; 2 toques centralizam */
 const pan={x:0,y:0},rd=$('#reader'),ptrs=new Map();
 let pm=null,lastTap=0,tapTimer=null;
+/* zoom em duas fases: durante o gesto só escala o wrapper (GPU, sem relayout);
+   ~180ms depois do último gesto o layout real é refeito (limitado a CAP% para não estourar a memória da GPU) */
+const CAP=200;let Sc=100,zt=0;
+function applyZoom(){$('#bw').style.scale=S.sz/Sc;clampPan();applyPan();clearTimeout(zt);zt=setTimeout(applyCfg,180)}
 const applyPan=()=>{$('#bw').style.translate=pan.x+'px '+pan.y+'px'};
 function clampPan(){
-  const sw=stage.clientWidth,sh=stage.clientHeight,W=book.offsetWidth,H=book.offsetHeight;
+  const sw=stage.clientWidth,sh=stage.clientHeight,W=book.offsetWidth*S.sz/Sc,H=book.offsetHeight*S.sz/Sc;
   const mx=W>sw?(W-sw)/2+60:0,my=H>sh?(H-sh)/2+60:0;
   pan.x=Math.max(-mx,Math.min(mx,pan.x));pan.y=Math.max(-my,Math.min(my,pan.y));
 }
@@ -227,7 +232,7 @@ function recenter(){
 }
 function zoomAt(ns,cx,cy,px=cx,py=cy){
   const sr=stage.getBoundingClientRect(),Cx=sr.left+sr.width/2,Cy=sr.top+sr.height/2,r=ns/S.sz;
-  pan.x=(cx-Cx)-r*(px-Cx-pan.x);pan.y=(cy-Cy)-r*(py-Cy-pan.y);S.sz=ns;applyCfg();
+  pan.x=(cx-Cx)-r*(px-Cx-pan.x);pan.y=(cy-Cy)-r*(py-Cy-pan.y);S.sz=ns;applyZoom();
 }
 function tap(dir){
   const n=performance.now();
@@ -483,7 +488,7 @@ addEventListener('drop',e=>{e.preventDefault();$('#drop').style.display='none';i
 
 /* ajustes do livro */
 function applyCfg(){
-  const root=document.documentElement.style;root.setProperty('--t',S.t+'px');root.setProperty('--r',S.r+'px');root.setProperty('--sz',S.sz/100);root.setProperty('--shs',S.shs/100);root.setProperty('--sho',S.sho/100);root.setProperty('--spo',S.spo/100);root.setProperty('--spw',S.spw+'%');root.setProperty('--m',(S.off*S.vis+14)+'px');
+  const root=document.documentElement.style;root.setProperty('--t',S.t+'px');root.setProperty('--r',S.r+'px');Sc=Math.min(S.sz,CAP);root.setProperty('--sz',Sc/100);$('#bw').style.scale=S.sz===Sc?'':S.sz/Sc;root.setProperty('--shs',S.shs/100);root.setProperty('--sho',S.sho/100);root.setProperty('--spo',S.spo/100);root.setProperty('--spw',S.spw+'%');root.setProperty('--m',(S.off*S.vis+14)+'px');
   document.querySelectorAll('#panel input').forEach(i=>{i.value=S[i.dataset.k];i.parentNode.querySelector('output').textContent=S[i.dataset.k]});
   if(lastT!==S.t){lastT=S.t;leaves.forEach(l=>slices(l))}leaves.forEach(l=>l.style.transition='none');paint();clampPan();applyPan();
   try{localStorage.setItem('livroS',JSON.stringify(S))}catch(e){}
