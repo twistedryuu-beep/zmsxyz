@@ -51,7 +51,7 @@ html.emb #bar{background:transparent;border-color:transparent}
 #empty{position:absolute;left:0;right:0;bottom:4px;display:flex;gap:10px;justify-content:center;align-items:center;font-size:13px;color:var(--fg2)}
 #bw{will-change:translate,scale}
 #book{position:relative;width:calc(var(--pw)*2);height:var(--ph);perspective:2200px}
-#book::before{content:"";position:absolute;left:calc(-4% * var(--shs));right:calc(-4% * var(--shs));bottom:calc(-30px * var(--shs));height:calc(26px * var(--shs));background:radial-gradient(ellipse at center,rgba(0,0,0,var(--sho)),transparent 70%)}
+#book::before{content:"";position:absolute;left:calc(-4%  var(--shs));right:calc(-4%  var(--shs));bottom:calc(-30px  var(--shs));height:calc(26px  var(--shs));background:radial-gradient(ellipse at center,rgba(0,0,0,var(--sho)),transparent 70%)}
 #book.thud{animation:thud .18s ease-out}
 @keyframes thud{40%{transform:translateY(2px)}}
 .leaf{position:absolute;top:0;left:50%;width:var(--pw);height:var(--ph);transform-origin:left center;transform-style:preserve-3d;will-change:transform}
@@ -94,10 +94,9 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 #sw{display:grid;grid-template-columns:repeat(5,28px);gap:10px}
 .swb{width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer}.swb.on{outline:2px solid var(--accent);outline-offset:2px}
 .end{display:flex;gap:8px;margin-top:6px}
-#bkb{position:relative;display:grid;place-items:center;padding:0}#bkb svg{width:20px;height:20px}
-#bkb.warn::after{content:"";position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:#eb5757;border:2px solid var(--bg)}
-#bdlg .bi{display:grid;gap:4px;margin:0 0 14px;font-size:13px}#bdlg .bn{font-size:12px;color:var(--fg2);line-height:1.45}
-#bdlg .bst{min-height:18px;font-size:13px;margin:10px 0 0}#bdlg p{margin:0 0 12px;font-size:13px;line-height:1.5}
+#impb{display:grid;place-items:center;padding:0}#impb svg{width:20px;height:20px}
+#notice{display:flex;gap:6px 14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--fg2);text-align:center}
+#notice[hidden]{display:none}#notice a.tb{text-decoration:none;white-space:nowrap}
 #st{position:fixed;left:0;right:0;bottom:84px;text-align:center;font-size:13px;color:var(--fg2);pointer-events:none}
 #drop{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);color:#fff;font-size:20px;z-index:200}
 </style>
@@ -109,11 +108,12 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <span aria-hidden="true"></span>
 <div id="tt"><button id="ttl" class="static">Meus cadernos</button></div>
 
-<button class="ib" id="bkb" aria-label="Backup dos cadernos" title="Backup dos cadernos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></button>
+<button class="ib" id="impb" aria-label="Importar caderno do tjoucreator" title="Importar caderno (.tjou)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></button>
 <button class="ib" id="vm" aria-label="Alternar entre estante e carrossel"></button>
 <button class="ib" id="theme" aria-label="Alternar tema claro ou escuro"></button>
 </div>
 <main id="shelf"><div id="grid"></div><div id="car"></div></main>
+<div id="notice"><span>Para criar cadernos novos, use o <b>tjoucreator</b>: monte o caderno, baixe o arquivo <b>.tjou</b> e importe aqui pelo botão de importar no topo.</span><a class="tb pri" href="https://twistedryuu-beep.github.io/zmsxyz/tjoucreator.html" target="_blank" rel="noopener noreferrer">Abrir o tjoucreator ↗</a></div>
 <section id="reader" hidden>
 <div id="stage"><div id="bw"><div id="book"></div></div>
 <div id="empty" hidden><div>Este caderno está vazio</div><button class="tb pri" id="imp">Importar PDF ou imagem A4</button></div></div>
@@ -126,7 +126,7 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 </section>
 <div id="panel" hidden>
 <div id="count"></div>
-<div class="prow"><button class="tb" id="pback">‹ Estante</button><button class="tb" id="pedit">Editar caderno</button><button class="tb" id="pord">Reordenar páginas</button><button class="tb" id="pbk">Backup</button><button class="tb" id="theme2"></button></div>
+<div class="prow"><button class="tb" id="pback">‹ Estante</button><button class="tb" id="pedit">Editar caderno</button><button class="tb" id="pord">Reordenar páginas</button><button class="tb" id="theme2"></button></div>
 <label>Tamanho do caderno<output></output><input type="range" data-k="sz" min="50" max="500" step="10"></label>
 <label>Espessura da folha<output></output><input type="range" data-k="t" min="0" max="24"></label>
 <label>Cantos arredondados<output></output><input type="range" data-k="r" min="0" max="40"></label>
@@ -145,17 +145,8 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <h2 id="dh">Novo caderno</h2>
 <label>Título<input id="dt" maxlength="40" placeholder="Título (opcional)"></label>
 <div class="drow"><div id="dcv"></div><div><div id="sw"></div>
-<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="tb" id="dimg">Imagem de capa</button><button class="tb" id="drm">Remover</button></div></div></div>
+<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="tb" id="dimg">Imagem de capa</button><button class="tb" id="drm">Remover</button><button class="tb" id="dbk">Remover contracapa</button></div></div></div>
 <div class="end"><button class="tb danger" id="ddel">Excluir</button><span style="flex:1"></span><button class="tb" id="dcan">Cancelar</button><button class="tb pri" id="dok">Salvar</button></div>
-</dialog>
-<dialog id="bdlg">
-<h2>Backup dos cadernos</h2>
-<p>Seus cadernos ficam salvos somente neste navegador, neste aparelho. Para trocar de aparelho ou se proteger de uma limpeza de dados, exporte um backup e guarde o arquivo em um lugar seguro (Drive, iCloud, e-mail…).</p>
-<div class="bi"><div id="binfo"></div><div id="bpers"></div></div>
-<div class="end" style="flex-wrap:wrap;margin-top:0"><button class="tb pri" id="bexp">Exportar backup</button><button class="tb" id="bimp">Importar backup</button><span style="flex:1"></span><button class="tb" id="bclose">Fechar</button></div>
-<div class="bst" id="bst" role="status"></div>
-<div class="bn" id="bnote"></div>
-<input type="file" id="bfile" hidden>
 </dialog>
 <dialog id="odlg">
 <h2>Reordenar páginas</h2>
@@ -164,6 +155,7 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <div class="end"><span style="flex:1"></span><button class="tb" id="ocan">Cancelar</button><button class="tb pri" id="osave">Salvar</button></div>
 </dialog>
 <input type="file" id="cimg" accept="image/*" hidden>
+<input type="file" id="tfile" hidden>
 <input type="file" id="file" accept="image/*,application/pdf" multiple hidden>
 <div id="st"></div>
 <div id="drop">Solte o PDF ou a imagem A4 aqui</div>
@@ -353,7 +345,7 @@ car.addEventListener('pointerup',e=>{
 car.addEventListener('pointercancel',()=>{cdn=null;layoutCar(ci,true)});
 function view(r){
   $('#shelf').hidden=r;$('#reader').hidden=!r;$('#panel').hidden=true;$('#cpanel').hidden=true;
-  $('#bar').hidden=r;$('#back').classList.toggle('inv',!r);$('#ttl').classList.toggle('static',!r);
+  $('#bar').hidden=r;$('#notice').hidden=r;$('#back').classList.toggle('inv',!r);$('#ttl').classList.toggle('static',!r);
 }
 function head(){$('#ttl').textContent=nb?(nb.title||'Sem título')+' ✎':'Meus cadernos'}
 /* guarda o caderno e a folha abertos; na estante, limpa */
@@ -380,13 +372,14 @@ function sw(){
     b.setAttribute('aria-label','Cor '+c);b.onclick=()=>{edit.color=c;edit.img=null;sw();dcv()};s.appendChild(b)});
 }
 function openDlg(n){
-  edit={nb:n,color:n?n.color:COLORS[5],img:n?n.img:null};delArm=false;
+  edit={nb:n,color:n?n.color:COLORS[5],img:n?n.img:null,back:n?n.back||null:null};$('#dbk').style.display=edit.back?'':'none';delArm=false;
   $('#dh').textContent=n?'Editar caderno':'Novo caderno';$('#dt').value=n?n.title:'';
   $('#ddel').style.display=n?'':'none';$('#ddel').textContent='Excluir';sw();dcv();$('#dlg').showModal();
 }
 $('#dt').oninput=dcv;
 $('#dcan').onclick=()=>$('#dlg').close();
 $('#dimg').onclick=()=>$('#cimg').click();
+$('#dbk').onclick=()=>{edit.back=null;$('#dbk').style.display='none'};
 $('#drm').onclick=()=>{edit.img=null;sw();dcv()};
 $('#cimg').onchange=async e=>{
   const f=e.target.files[0];e.target.value='';if(!f)return;
@@ -396,7 +389,7 @@ $('#cimg').onchange=async e=>{
 };
 $('#dok').onclick=()=>{
   let n=edit.nb;if(!n){n={id:'n'+Date.now(),created:Date.now(),pages:[]};nbs.push(n)}
-  Object.assign(n,{title:$('#dt').value.trim(),color:edit.color,img:edit.img});
+  Object.assign(n,{title:$('#dt').value.trim(),color:edit.color,img:edit.img,back:edit.back});
   dbPut(n);$('#dlg').close();if(nb){head();build(cur)}else renderShelf();
 };
 $('#ddel').onclick=()=>{
@@ -411,6 +404,7 @@ function face(cls,src){
   return d;
 }
 let lastT=-1;
+const maxC=()=>leaves.length-(nb&&nb.back?0:1);
 /* espessura: pilha de camadas com o mesmo canto arredondado, entre a frente e o verso */
 function slices(lf){
   lf.querySelectorAll('.sl').forEach(x=>x.remove());
@@ -428,11 +422,11 @@ function build(c=0){
     const lf=document.createElement('div');lf.className='leaf';
     const f=i?face('f',pages[2*i-1]):face('f cvf');
     if(!i){f.style.background=coverBg(nb);const t=titleEl(nb);if(t)f.appendChild(t)}
-    lf.appendChild(f);lf.appendChild(face('b',pages[2*i]));
+    lf.appendChild(f);lf.appendChild(face('b',i===m&&nb.back?nb.back:pages[2*i]));
     slices(lf);
     book.appendChild(lf);leaves.push(lf);
   }
-  cur=Math.max(0,Math.min(c,leaves.length-1));paint();saveLast();
+  cur=Math.max(0,Math.min(c,maxC()));paint();saveLast();
 }
 const rest=(j,c)=>j<c?{a:-180,d:c-1-j}:{a:0,d:j-c};
 function paint(drag=-1,th=0,c2=cur,t=0){
@@ -444,9 +438,9 @@ function paint(drag=-1,th=0,c2=cur,t=0){
     lf.style.visibility=d>S.vis+.5?'hidden':'visible';
     if(!lf.dataset.mv)lf.style.zIndex=r1.a?j+1:m+1-j;
   });
-  const bx=c=>c===0?-25:0;book.style.translate=(bx(cur)+(bx(c2)-bx(cur))*t)+'% 0';
-  if(nb)$('#count').textContent=cur===0?'Capa':'Páginas '+(2*cur-1)+'–'+(2*cur)+' de '+pages.length;
-  $('#prev').disabled=cur<=0;$('#next').disabled=cur>=m;
+  const bx=c=>c===0?-25:(nb&&nb.back&&c===leaves.length?25:0);book.style.translate=(bx(cur)+(bx(c2)-bx(cur))*t)+'% 0';
+  if(nb)$('#count').textContent=cur===0?'Capa':(nb.back&&cur===leaves.length?'Contracapa':'Páginas '+(2*cur-1)+'–'+(2*cur)+' de '+pages.length);
+  $('#prev').disabled=cur<=0;$('#next').disabled=cur>=maxC();
 }
 function settle(idx,nc,ms){
   locked=true;const lf=leaves[idx];lf.dataset.mv=1;lf.style.zIndex=100;
@@ -455,14 +449,14 @@ function settle(idx,nc,ms){
   setTimeout(()=>{delete lf.dataset.mv;paint();locked=false;book.classList.remove('thud');void book.offsetWidth;book.classList.add('thud')},ms+30);
 }
 function go(d){
-  if(locked)return;const m=leaves.length-1;
+  if(locked)return;const m=maxC();
   if(d>0&&cur>=m||d<0&&cur<=0)return;
   settle(d>0?cur:cur-1,cur+d,750);
 }
 stage.addEventListener('pointerdown',e=>{
   if(locked||e.target.closest('#empty'))return;
   const r=book.getBoundingClientRect(),cx=r.left+r.width/2,right=e.clientX>=cx;
-  if(right?cur>=leaves.length-1:cur<=0){g=null;return}
+  if(right?cur>=maxC():cur<=0){g=null;return}
   g={x0:e.clientX,right,idx:right?cur:cur-1,cx,pw:r.width/2,on:false,pts:[],th:right?0:180};
   stage.setPointerCapture(e.pointerId);
 });
@@ -520,7 +514,7 @@ addEventListener('keydown',e=>{
 addEventListener('resize',()=>{leaves.forEach(l=>l.style.transition='none');paint();fitCar()});
 addEventListener('dragover',e=>{e.preventDefault();if(nb)$('#drop').style.display='grid'});
 addEventListener('dragleave',e=>{if(!e.relatedTarget)$('#drop').style.display='none'});
-addEventListener('drop',e=>{e.preventDefault();$('#drop').style.display='none';if(e.dataTransfer.files.length)load([...e.dataTransfer.files])});
+addEventListener('drop',e=>{e.preventDefault();$('#drop').style.display='none';const fs=[...e.dataTransfer.files];if(!fs.length)return;if(nb)load(fs);else{const f=fs.find(f=>/\.tjou$/i.test(f.name));if(f)importTjou(f)}});
 
 /* ajustes do livro */
 function applyCfg(){
@@ -541,7 +535,7 @@ function openOrd(){
   if(!nb)return;const gr=$('#ogrid');gr.innerHTML='';
   for(let i=0;i<pages.length/2;i++){
     const t=document.createElement('div');t.className='th';t.dataset.i=i;
-    const a=new Image(),b=new Image();a.src=pages[2*i];b.src=pages[2*i+1];a.draggable=b.draggable=false;a.alt=b.alt='';
+    const a=new Image(),b=new Image();a.src=pages[2*i]||'';b.src=pages[2*i+1]||'';a.draggable=b.draggable=false;a.alt=b.alt='';
     const h=document.createElement('span');h.className='hd';h.textContent='⠿';
     const x=document.createElement('button');x.className='rm';x.textContent='✕';x.setAttribute('aria-label','Remover folha');x.onclick=()=>t.remove();
     t.append(a,b,h,x);gr.appendChild(t);
@@ -578,121 +572,43 @@ ogr.addEventListener('pointermove',e=>{
 const oend=()=>{if(!od)return;const{el,ph}=od;od=null;el.removeAttribute('style');ph.replaceWith(el)};
 ogr.addEventListener('pointerup',oend);ogr.addEventListener('pointercancel',oend);
 
-/* ===== backup local + armazenamento persistente ===== */
-const MAGIC='TJBK1\n',BKDAYS=14;
-let persisted=false;
-async function askPersist(){
-  try{if(!navigator.storage||!navigator.storage.persist)return;
-    persisted=await navigator.storage.persisted();if(!persisted)persisted=await navigator.storage.persist()}catch(e){}
-  return persisted;
-}
-/* pede proteção contra limpeza automática na primeira interação (Firefox exige gesto; Chrome/Safari decidem sozinhos) */
+/* ===== armazenamento persistente + importação de cadernos do tjoucreator ===== */
+async function askPersist(){try{if(navigator.storage&&navigator.storage.persist&&!(await navigator.storage.persisted()))await navigator.storage.persist()}catch(e){}}
 addEventListener('pointerdown',()=>{askPersist()},{once:true});
-const bkGet=()=>{try{return+localStorage.getItem('livroBk')||0}catch(e){return 0}};
-function bkMark(){const w=nbs.some(n=>n.pages.length)&&Date.now()-bkGet()>BKDAYS*864e5;$('#bkb').classList.toggle('warn',w)}
+const MAGIC='TJOU1\n';
 const dbPutP=n=>new Promise((res,rej)=>{
   if(!db)return rej(new Error('db'));
   try{const t=db.transaction('nb','readwrite');t.objectStore('nb').put(n);t.oncomplete=()=>res();t.onerror=t.onabort=()=>rej(t.error||new Error('tx'))}catch(e){rej(e)}
 });
-const d2b=u=>{
-  if(typeof u!=='string'||u.slice(0,5)!=='data:')return new Blob([]);
-  const i=u.indexOf(','),m=/^data:([^;,]+)/.exec(u),bin=atob(u.slice(i+1)),a=new Uint8Array(bin.length);
-  for(let k=0;k<bin.length;k++)a[k]=bin.charCodeAt(k);
-  return new Blob([a],{type:m?m[1]:'image/jpeg'});
-};
 const b2d=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(b)});
 const b2a=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsArrayBuffer(b)});
-const tick=()=>new Promise(r=>setTimeout(r));
-const bs=t=>{$('#bst').textContent=t||''};
-const mb=n=>(n/1048576).toFixed(n<1e7?1:0)+' MB';
-
-/* formato: 'TJBK1\n' + uint32 LE (tamanho do cabeçalho) + cabeçalho JSON + imagens binárias em sequência */
-async function buildBackup(){
-  const parts=[],list=[];let off=0;
-  const add=u=>{const b=d2b(u),e=[off,b.size,b.type||'image/jpeg'];parts.push(b);off+=b.size;return e};
-  for(let i=0;i<nbs.length;i++){
-    const n=nbs[i],pg=[];bs('Preparando caderno '+(i+1)+' de '+nbs.length+'…');
-    for(let k=0;k<n.pages.length;k++){pg.push(add(n.pages[k]));if(k%15===14)await tick()}
-    list.push({id:n.id,created:n.created,title:n.title||'',color:n.color,cover:n.img?add(n.img):null,pages:pg});
-  }
-  const head=new TextEncoder().encode(JSON.stringify({v:1,app:'tjournal',saved:Date.now(),notebooks:list}));
-  const len=new Uint8Array(4);new DataView(len.buffer).setUint32(0,head.length,true);
-  return new Blob([MAGIC,len,head,...parts],{type:'application/octet-stream'});
-}
-async function deliver(blob,name){
+/* formato .tjou: 'TJOU1\n' + uint32 LE (tamanho do cabeçalho) + cabeçalho JSON + imagens binárias em sequência.
+   cabeçalho: {v,title,color,cover,back,pages}; cada imagem = [offset,tamanho,mime] ou null (página em branco) */
+async function importTjou(file){
+  if(!db){status('Armazenamento indisponível: não é possível importar.',4000);return}
   try{
-    const f=new File([blob],name,{type:'application/octet-stream'});
-    if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return 'share'}
-  }catch(e){if(e&&e.name==='AbortError')return 'abort'}
-  const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;
-  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),120000);
-  return 'dl';
-}
-let lastBk=null;
-async function exportBackup(){
-  if(!nbs.length){bs('Não há cadernos para exportar.');return}
-  $('#bexp').disabled=$('#bimp').disabled=true;
-  try{
-    const blob=await buildBackup(),d=new Date(),p=x=>String(x).padStart(2,'0');
-    const name='tjournal-backup-'+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'.tjbackup';
-    lastBk={blob,name};
-    const r=await deliver(blob,name);
-    if(r==='abort'){bs('Exportação cancelada.')}
-    else{try{localStorage.setItem('livroBk',String(Date.now()))}catch(e){}bkMark();
-      bs(r==='share'?'Backup pronto ('+mb(blob.size)+').':'Backup gerado ('+mb(blob.size)+'). Confira se o arquivo foi baixado.');
-      if(document.documentElement.classList.contains('emb'))$('#bnote').innerHTML='Se o download não começou, o Notion pode estar bloqueando downloads neste bloco. <a href="#" id="bnew">Tentar abrir em nova aba</a>.'}
-  }catch(e){bs('Não foi possível gerar o backup (memória insuficiente?).')}
-  $('#bexp').disabled=$('#bimp').disabled=false;bInfo();
-}
-async function importBackup(file){
-  if(!db){bs('Armazenamento indisponível: não é possível importar.');return}
-  $('#bexp').disabled=$('#bimp').disabled=true;
-  try{
+    status('Lendo arquivo…');
     const m=MAGIC.length,top=new Uint8Array(await b2a(file.slice(0,m+4)));
     if(top.length<m+4||String.fromCharCode(...top.slice(0,m))!==MAGIC)throw new Error('fmt');
     const hl=new DataView(top.buffer).getUint32(m,true);
     if(hl>5e7||m+4+hl>file.size)throw new Error('fmt');
     const h=JSON.parse(new TextDecoder().decode(await b2a(file.slice(m+4,m+4+hl))));
-    if(!Array.isArray(h.notebooks))throw new Error('fmt');
-    if(h.v>1){bs('Este backup foi criado por uma versão mais nova do tjournal.');return}
+    if(!Array.isArray(h.pages))throw new Error('fmt');
+    if(h.v>1){status('Este arquivo foi criado por uma versão mais nova do tjoucreator.',5000);return}
     const base=m+4+hl;
-    const get=async e=>{if(!e)return null;const[o,l,t]=e;if(!(o>=0&&l>=0)||base+o+l>file.size)throw new Error('fmt');return b2d(file.slice(base+o,base+o+l,t||'image/jpeg'))};
-    let added=0,copies=0,skipped=0;
-    for(let i=0;i<h.notebooks.length;i++){
-      const x=h.notebooks[i];if(!x||!Array.isArray(x.pages))continue;
-      const ex=nbs.find(n=>n.id===x.id);
-      if(ex&&ex.pages.length===x.pages.length){skipped++;continue}
-      const n={id:String(x.id||'n'+Date.now()),created:+x.created||Date.now(),title:String(x.title||''),color:x.color||COLORS[5],img:await get(x.cover),pages:[]};
-      if(ex){n.id='n'+Date.now()+Math.floor(Math.random()*1e4);n.title=(x.title||'Sem título').slice(0,31)+' (backup)';copies++}
-      for(let k=0;k<x.pages.length;k++){
-        bs('Importando caderno '+(i+1)+' de '+h.notebooks.length+' · página '+(k+1)+' de '+x.pages.length+'…');
-        n.pages.push(await get(x.pages[k]));
-      }
-      await dbPutP(n);nbs.push(n);added++;
-    }
-    nbs.sort((a,b)=>a.created-b.created);if(!nb)renderShelf();bkMark();
-    bs(added+(added===1?' caderno importado':' cadernos importados')+(copies?' ('+copies+' como cópia, pois já existia uma versão diferente)':'')+(skipped?'; '+skipped+' já existia'+(skipped>1?'m':'')+' igual.':'.'));
+    const get=async e=>{if(!e)return null;const[o,l,t]=e;if(!(o>=0&&l>0)||base+o+l>file.size)throw new Error('fmt');return b2d(file.slice(base+o,base+o+l,t||'image/jpeg'))};
+    const n={id:'n'+Date.now()+Math.floor(Math.random()*1e4),created:Date.now(),title:String(h.title||'').slice(0,40),
+      color:/^#[0-9a-f]{6}$/i.test(h.color)?h.color:COLORS[5],img:await get(h.cover),back:await get(h.back),pages:[]};
+    for(let k=0;k<h.pages.length;k++){status('Importando página '+(k+1)+' de '+h.pages.length+'…');n.pages.push(await get(h.pages[k]))}
+    if(n.pages.length%2)n.pages.push(null);
+    await dbPutP(n);nbs.push(n);if(!nb)renderShelf();
+    status('Caderno “'+(n.title||'Sem título')+'” importado.',4000);
   }catch(e){
-    bs(e&&e.message==='fmt'?'Arquivo inválido: não parece um backup do tjournal.':'Não foi possível importar (espaço insuficiente ou arquivo corrompido).');
-  }finally{$('#bexp').disabled=$('#bimp').disabled=false;bInfo()}
+    status(e&&e.message==='fmt'?'Arquivo inválido: use um arquivo criado no tjoucreator.':'Não foi possível importar (espaço insuficiente ou arquivo corrompido).',5000);
+  }
 }
-async function bInfo(){
-  let u='';try{const e=await navigator.storage.estimate();u='Em uso: '+mb(e.usage||0)+' · '}catch(e){}
-  const t=bkGet();
-  $('#binfo').textContent=u+nbs.length+(nbs.length===1?' caderno':' cadernos')+' · Último backup: '+(t?new Date(t).toLocaleDateString('pt-BR'):'nunca');
-  await askPersist();
-  $('#bpers').textContent='Proteção contra limpeza automática: '+(persisted?'ativa':'não garantida pelo navegador')+'.';
-}
-function openBackup(){
-  $('#panel').hidden=true;bs('');$('#bnote').textContent='';bInfo();
-  if(!$('#bdlg').open)$('#bdlg').showModal();
-}
-$('#bkb').onclick=$('#pbk').onclick=openBackup;
-$('#bclose').onclick=()=>$('#bdlg').close();
-$('#bexp').onclick=exportBackup;
-$('#bimp').onclick=()=>$('#bfile').click();
-$('#bfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)importBackup(f)};
-$('#bnote').onclick=e=>{if(e.target.id!=='bnew')return;e.preventDefault();if(lastBk){const u=URL.createObjectURL(lastBk.blob);window.open(u,'_blank');setTimeout(()=>URL.revokeObjectURL(u),120000)}};
+$('#impb').onclick=()=>$('#tfile').click();
+$('#tfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)importTjou(f)};
 
 (async()=>{
   icon();setMode(cmode);applyCfg();await openDB();nbs=await dbAll();nbs.sort((a,b)=>a.created-b.created);
@@ -703,11 +619,10 @@ $('#bnote').onclick=e=>{if(e.target.id!=='bnew')return;e.preventDefault();if(las
     try{localStorage.setItem('livroSeed','1')}catch(e){}
   }
   if(!db)status('Armazenamento indisponível: os cadernos não serão salvos.',5000);
-  bkMark();
   let last=null;try{last=JSON.parse(localStorage.getItem(lsk('livroLast')))}catch(e){}
   showShelf();
   const ln=last&&nbs.find(n=>n.id===last.id);
-  if(ln)openNb(ln,null,Math.max(0,Math.min(+last.cur||0,ln.pages.length/2)));
+  if(ln)openNb(ln,null,Math.max(0,Math.min(+last.cur||0,ln.pages.length/2+1)));
 })();
 </script>
 </body>
