@@ -96,10 +96,9 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 .swb{width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer}.swb.on{outline:2px solid var(--accent);outline-offset:2px}
 .end{display:flex;gap:8px;margin-top:6px}
 #impb{display:grid;place-items:center;padding:0}#impb svg{width:20px;height:20px}
-#notice{position:relative;box-sizing:border-box;width:100%;max-width:980px;margin:32px auto 0;display:flex;gap:6px 14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:10px 44px 10px 14px;border-top:1px solid var(--line);font-size:13px;line-height:1.45;color:var(--fg2);text-align:center}
-#nx{position:absolute;top:6px;right:0;width:28px;height:28px;font-size:14px;color:var(--fg2)}
+#notice{box-sizing:border-box;width:100%;max-width:980px;margin:32px auto 0;display:flex;gap:2px 10px;align-items:center;justify-content:center;flex-wrap:wrap;padding:6px 14px;font-size:12px;line-height:1.4;color:var(--fg2);text-align:center;opacity:.75}
+#notice a{color:inherit;text-decoration:underline;white-space:nowrap}#notice a:hover{color:var(--fg)}
 #rtitle{position:absolute;top:4px;left:12px;right:12px;text-align:center;font:600 13px/16px Georgia,"Times New Roman",serif;color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
-#notice[hidden]{display:none}#notice a.tb{text-decoration:none;white-space:nowrap}
 #st{position:fixed;left:0;right:0;bottom:84px;text-align:center;font-size:13px;color:var(--fg2);pointer-events:none}
 #drop{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.55);color:#fff;font-size:20px;z-index:200}
 </style>
@@ -116,7 +115,7 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <button class="ib" id="theme" aria-label="Alternar tema claro ou escuro"></button>
 </div>
 <main id="shelf"><div id="grid"></div><div id="car"></div>
-<div id="notice"><span>Para criar cadernos novos, use o <b>tjoucreator</b>: monte o caderno, baixe o arquivo <b>.tjou</b> e importe aqui pelo botão de importar no topo.</span><a class="tb pri" href="https://twistedryuu-beep.github.io/zmsxyz/tjoucreator.html" target="_blank" rel="noopener noreferrer">Abrir o tjoucreator ↗</a><button class="ib" id="nx" aria-label="Remover aviso" title="Remover aviso">✕</button></div>
+<div id="notice"><span>Para criar cadernos novos, use o <b>tjoucreator</b>: monte o caderno, baixe o arquivo <b>.tjou</b> e importe aqui pelo botão de importar no topo.</span><a href="https://twistedryuu-beep.github.io/zmsxyz/tjoucreator.html" target="_blank" rel="noopener noreferrer">Abrir o tjoucreator ↗</a></div>
 </main>
 <section id="reader" hidden>
 <div id="stage"><div id="rtitle"></div><div id="bw"><div id="book"></div></div>
@@ -628,9 +627,6 @@ async function importTjou(file){
   }
 }
 $('#impb').onclick=()=>$('#tfile').click();
-/* aviso do tjoucreator: rola junto com a estante e pode ser removido (a escolha fica salva) */
-if(lsGet('livroAviso')==='1')$('#notice').hidden=true;
-$('#nx').onclick=()=>{$('#notice').hidden=true;lsSet('livroAviso','1');fitCar()};
 $('#tfile').onchange=e=>{const f=e.target.files[0];e.target.value='';if(f)importTjou(f)};
 
 (async()=>{
