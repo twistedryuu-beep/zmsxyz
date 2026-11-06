@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moodboard</title>
+<style>
+:root{--bg:#fff;--tx:#37352f;--tx2:rgba(55,53,47,.65);--hv:rgba(55,53,47,.08);--bd:rgba(55,53,47,.16);--ac:#2383e2;--rd:#eb5757;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191919;--tx:rgba(255,255,255,.81);--tx2:rgba(255,255,255,.46);--hv:rgba(255,255,255,.055);--bd:rgba(255,255,255,.13);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#191919;--tx:rgba(255,255,255,.81);--tx2:rgba(255,255,255,.46);--hv:rgba(255,255,255,.055);--bd:rgba(255,255,255,.13);color-scheme:dark}
+[hidden]{display:none!important}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--tx);font:14px/1.5 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+#shelf{height:100%;overflow:auto;box-sizing:border-box;padding:20px}
+h1{margin:0 0 14px;font-size:22px}
+#cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.card{border-radius:10px;padding:10px;cursor:pointer;transition:background .15s}
+.card:hover{background:var(--hv)}
+.cover{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.card:hover .cover{transform:translateY(-3px)}
+.cover img{position:absolute;left:10%;top:12%;width:80%;height:80%;object-fit:cover;border-radius:10px;background:var(--hv);box-shadow:0 1px 5px rgba(0,0,0,.3)}
+.ph{width:80%;height:80%;border:1.5px dashed var(--bd);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--tx2);font-size:22px}
+.nm{margin-top:8px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct{color:var(--tx2);font-size:12px}
+#rows{height:100%;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.track{display:flex;will-change:transform}
+.it{flex:none;margin-right:12px;border-radius:var(--r,12px);overflow:hidden}
+.it img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.empty{text-align:center;color:var(--tx2);padding:0 24px}
+button,.btn{font:inherit;color:var(--tx);background:transparent;border:1px solid var(--bd);border-radius:6px;padding:5px 10px;cursor:pointer;display:inline-block}
+button:hover,.btn:hover{background:var(--hv)}
+.pri{background:var(--ac);border-color:var(--ac);color:#fff}.pri:hover{background:#0b6dcc}
+.fab{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);width:32px;height:32px;padding:0;border-radius:50%;background:var(--bg);opacity:0;transition:opacity .2s;z-index:6}
+#gear{right:8px}#back{left:8px}
+body:hover .fab,.fab.on{opacity:.75}
+@media(hover:none){.fab{opacity:.4}}
+#panel{position:fixed;top:calc(env(safe-area-inset-top,0px) + 48px);right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);width:min(330px,calc(100% - 16px));z-index:5;box-sizing:border-box;background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:14px;overflow:auto;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+#panel h2{margin:0 0 4px;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+.lb{display:block;color:var(--tx2);font-size:12px;margin:12px 0 4px}
+input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--tx);background:transparent;border:1px solid var(--bd);border-radius:6px;padding:5px 8px}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,56px);gap:6px;margin:12px 0 10px}
+#grid div{position:relative;width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--hv)}
+#grid img{width:100%;height:100%;object-fit:cover}
+#grid button{position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;line-height:1;border-radius:50%;background:var(--bg);color:var(--rd);font-size:11px}
+.sl{display:grid;grid-template-columns:70px 1fr 52px;gap:8px;align-items:center;margin-top:8px}
+.sl span:last-child{color:var(--tx2);text-align:right;font-size:12px}
+.line{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:16px}
+#del{color:var(--rd)}
+.msg{color:var(--tx2);font-size:12px;margin:10px 0 0;min-height:18px}
+</style>
+</head>
+<body>
+<div id="shelf" hidden>
+ <h1>Coleções</h1>
+ <div id="cards"></div>
+ <div class="line"><button id="ex">Exportar backup</button><label class="btn">Importar backup<input id="im" type="file" accept=".json,application/json" hidden></label></div>
+ <p class="msg"></p>
+</div>
+<div id="rows" hidden></div>
+<button id="back" class="fab" hidden title="Estante" aria-label="Voltar à estante">‹</button>
+<button id="gear" class="fab" hidden title="Configurar coleção" aria-label="Configurar coleção">✎</button>
+<div id="panel" hidden>
+ <h2>Configurações <button id="x" aria-label="Fechar">✕</button></h2>
+ <label class="lb" for="nm">Nome</label><input id="nm" type="text" maxlength="60">
+ <div id="grid"></div>
+ <label class="btn pri">Adicionar imagens<input id="f" type="file" accept="image/*" multiple hidden></label>
+ <div id="sl"></div>
+ <label class="lb" for="lk">Link para o Notion (toque para copiar)</label><input id="lk" type="text" readonly>
+ <div class="line"><button id="del">Excluir coleção</button></div>
+ <p class="msg"></p>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),$=s=>document.querySelector(s),BASE=location.origin+location.pathname;
+const th=Q.get('theme');if(th==='dark'||th==='light')document.documentElement.dataset.theme=th;
+const DEF={speed:30,rows:2,h:0,r:12};
+const SL=[['speed','Velocidade',0,150,1,v=>v+' px/s'],['rows','Fileiras',1,4,1,v=>v],['h','Tamanho',0,400,10,v=>v?v+' px':'auto'],['r','Cantos',0,40,1,v=>v+' px']];
+let db,cols=[],items=[],cur=null,S={...DEF},urls=[],tracks=[],raf,last=0,paused=false,fromShelf=false;
+const msg=t=>document.querySelectorAll('.msg').forEach(e=>e.textContent=t||'');
+const openDB=()=>new Promise((ok,no)=>{const r=indexedDB.open('moodboard',2);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('imgs'))d.createObjectStore('imgs',{keyPath:'id',autoIncrement:true}).createIndex('c','c');if(!d.objectStoreNames.contains('cols'))d.createObjectStore('cols',{keyPath:'id'})};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
+const tx=(st,m,f)=>new Promise((ok,no)=>{const t=db.transaction(st,m),r=f(t.objectStore(st));t.oncomplete=()=>ok(r&&r.result);t.onerror=()=>no(t.error)});
+const distinct=()=>new Promise(ok=>{const o=[],r=db.transaction('imgs').objectStore('imgs').index('c').openKeyCursor(null,'nextunique');r.onsuccess=()=>{const c=r.result;if(c){o.push(c.key);c.continue()}else ok(o)};r.onerror=()=>ok(o)});
+const dims=b=>new Promise(ok=>{const u=URL.createObjectURL(b),i=new Image(),d=a=>{URL.revokeObjectURL(u);ok(a)};i.onload=()=>d([i.naturalWidth||1,i.naturalHeight||1]);i.onerror=()=>d([1,1]);i.src=u});
+const b2d=b=>new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(b)});
+const d2b=d=>{const[h,s]=d.split(','),a=atob(s),u=new Uint8Array(a.length);for(let i=0;i<a.length;i++)u[i]=a.charCodeAt(i);return new Blob([u],{type:h.slice(5,h.indexOf(';'))})};
+const slug=n=>n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'colecao';
+const U=b=>{const u=URL.createObjectURL(b);urls.push(u);return u};
+const save=()=>tx('cols','readwrite',s=>s.put(cur));
+function cleanup(){cancelAnimationFrame(raf);urls.forEach(u=>URL.revokeObjectURL(u));urls=[];tracks=[]}
+function view(v){$('#shelf').hidden=v!=='shelf';$('#rows').hidden=v!=='coll';$('#gear').hidden=v!=='coll';$('#back').hidden=!(v==='coll'&&fromShelf);$('#panel').hidden=true;msg()}
+
+async function loadCols(){
+ cols=(await tx('cols','readonly',s=>s.getAll()))||[];
+ for(const id of await distinct())if(!cols.some(c=>c.id===id)){const c={id,name:id,...DEF,t:Date.now()};await tx('cols','readwrite',s=>s.put(c));cols.push(c)}
+ cols.sort((a,b)=>a.t-b.t);
+}
+async function shelf(){
+ cleanup();cur=null;view('shelf');
+ const g=$('#cards'),T=[[0,0,0],[-9,-5,-7],[9,-3,6],[-3,-9,-12]];g.innerHTML='';
+ for(const c of cols){
+  const[n,ims]=await Promise.all([tx('imgs','readonly',s=>s.index('c').count(c.id)),tx('imgs','readonly',s=>s.index('c').getAll(c.id,4))]);
+  const d=document.createElement('div'),cv=document.createElement('div'),nm=document.createElement('div'),ct=document.createElement('div');
+  d.className='card';cv.className='cover';nm.className='nm';ct.className='ct';nm.textContent=c.name;ct.textContent=n+(n===1?' imagem':' imagens');
+  if(!ims.length)cv.innerHTML='<div class="ph">vazia</div>';
+  ims.forEach((it,i)=>{const im=new Image(),[x,y,a]=T[i];im.src=U(it.blob);im.alt='';im.style.cssText='z-index:'+(9-i)+';transform:translate('+x+'%,'+y+'%) rotate('+a+'deg)';cv.append(im)});
+  d.append(cv,nm,ct);d.onclick=()=>openCol(c.id,true);g.append(d);
+ }
+ const nw=document.createElement('div');nw.className='card';nw.innerHTML='<div class="cover"><div class="ph">+</div></div><div class="nm">Nova coleção</div>';
+ nw.onclick=()=>{if(nw.querySelector('input'))return;const i=document.createElement('input');i.type='text';i.maxLength=60;i.placeholder='Nome da coleção';nw.querySelector('.nm').replaceWith(i);i.focus();i.onkeydown=e=>{if(e.key==='Enter')create(i.value)};i.onblur=()=>{if(!i.value.trim())shelf()}};
+ g.append(nw);
+}
+async function create(name){
+ name=name.trim();if(!name)return;
+ const b=slug(name);let id=b,n=2;while(cols.some(c=>c.id===id))id=b+'-'+n++;
+ const c={id,name,...DEF,t:Date.now()};await tx('cols','readwrite',s=>s.put(c));cols.push(c);openCol(id,true,true);
+}
+async function openCol(id,fs,edit){
+ cur=cols.find(c=>c.id===id);
+ if(!cur){cur={id,name:id,...DEF,t:Date.now()};await tx('cols','readwrite',s=>s.put(cur));cols.push(cur)}
+ fromShelf=!!fs;cleanup();view('coll');apply();
+ $('#nm').value=cur.name;$('#lk').value=BASE+'?e='+cur.id;buildSl();
+ await reload();if(edit)$('#panel').hidden=false;
+}
+async function reload(){items=await tx('imgs','readonly',s=>s.index('c').getAll(cur.id));render();grid()}
+function apply(){for(const k in DEF)S[k]=Q.get(k)!==null&&Q.get(k)!==''&&!isNaN(+Q.get(k))?+Q.get(k):cur[k]}
+function buildSl(){
+ const b=$('#sl');b.innerHTML='';
+ SL.forEach(([k,l,a,z,st,f])=>{
+  const r=document.createElement('div'),t=document.createElement('span'),i=document.createElement('input'),o=document.createElement('span');
+  r.className='sl';t.textContent=l;i.type='range';i.min=a;i.max=z;i.step=st;i.value=cur[k];o.textContent=f(cur[k]);
+  i.oninput=()=>{cur[k]=+i.value;o.textContent=f(cur[k]);apply();if(k==='r')$('#rows').style.setProperty('--r',S.r+'px');else if(k!=='speed')render()};
+  i.onchange=save;r.append(t,i,o);b.append(r);
+ });
+}
+function render(){
+ cancelAnimationFrame(raf);urls.forEach(u=>URL.revokeObjectURL(u));urls=[];tracks=[];
+ const R=$('#rows');R.innerHTML='';R.style.setProperty('--r',S.r+'px');$('#gear').classList.toggle('on',!items.length);
+ if(!items.length){R.innerHTML='<p class="empty">Coleção vazia. Toque em ✎ para adicionar imagens.</p>';return}
+ const G=12,nr=Math.max(1,Math.min(S.rows,items.length)),W=innerWidth,
+  H=S.h||Math.max(60,Math.min(400,(innerHeight-24-(nr-1)*G)/nr)),rows=Array.from({length:nr},()=>[]);
+ items.forEach((it,i)=>rows[i%nr].push(it));
+ rows.forEach((list,ri)=>{
+  const us=list.map(it=>U(it.blob)),ws=list.map(it=>H*it.w/it.h),set=ws.reduce((a,b)=>a+b+G,0),reps=Math.max(2,Math.ceil(W/set)+1),
+   row=document.createElement('div'),tr=document.createElement('div');
+  row.className='row';tr.className='track';
+  for(let k=0;k<reps;k++)list.forEach((it,i)=>{const d=document.createElement('div'),im=new Image();d.className='it';d.style.cssText='width:'+ws[i]+'px;height:'+H+'px';im.src=us[i];im.alt='';im.draggable=false;d.append(im);tr.append(d)});
+  row.append(tr);R.append(row);tracks.push({tr,set,x:(ri*set*.37)%set});
+ });
+ last=0;raf=requestAnimationFrame(tick);
+}
+function tick(t){
+ const dt=Math.min(.1,(t-(last||t))/1000);last=t;
+ if(!paused)tracks.forEach(o=>{o.x=(o.x+S.speed*dt)%o.set;o.tr.style.transform='translate3d('+(-o.x)+'px,0,0)'});
+ raf=requestAnimationFrame(tick);
+}
+$('#rows').addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')paused=true});
+$('#rows').addEventListener('pointerleave',()=>paused=false);
+function grid(){
+ const g=$('#grid');g.innerHTML='';
+ items.forEach(it=>{const d=document.createElement('div'),im=new Image(),b=document.createElement('button');im.src=U(it.blob);im.alt='';b.textContent='✕';b.title='Remover';
+  b.onclick=async()=>{await tx('imgs','readwrite',s=>s.delete(it.id));await reload()};d.append(im,b);g.append(d)});
+}
+async function add(files){
+ const fs=[...files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return msg('Nenhuma imagem válida.');
+ msg('Adicionando…');
+ try{for(const f of fs){const[w,h]=await dims(f);await tx('imgs','readwrite',s=>s.add({c:cur.id,w,h,blob:f}))}await reload();msg(fs.length+' imagem(ns) adicionada(s).')}
+ catch(e){msg('Não foi possível salvar neste navegador.')}
+}
+$('#f').onchange=e=>{add(e.target.files);e.target.value=''};
+addEventListener('dragover',e=>e.preventDefault());
+addEventListener('drop',e=>{e.preventDefault();if(cur&&e.dataTransfer.files.length)add(e.dataTransfer.files)});
+$('#gear').onclick=()=>{$('#panel').hidden=!$('#panel').hidden};
+$('#x').onclick=()=>$('#panel').hidden=true;
+$('#back').onclick=()=>shelf();
+$('#nm').onchange=()=>{const v=$('#nm').value.trim();if(v){cur.name=v;save()}};
+$('#lk').onclick=async e=>{e.target.select();try{await navigator.clipboard.writeText(e.target.value);msg('Link copiado.')}catch(x){}};
+$('#del').onclick=async e=>{
+ const b=e.target;
+ if(!b.dataset.s){b.dataset.s=1;b.textContent='Confirmar exclusão';setTimeout(()=>{delete b.dataset.s;b.textContent='Excluir coleção'},4000);return}
+ const id=cur.id;
+ await new Promise(ok=>{const t=db.transaction(['imgs','cols'],'readwrite'),r=t.objectStore('imgs').index('c').openCursor(IDBKeyRange.only(id));r.onsuccess=()=>{const c=r.result;if(c){c.delete();c.continue()}};t.objectStore('cols').delete(id);t.oncomplete=ok;t.onerror=ok});
+ cols=cols.filter(c=>c.id!==id);delete b.dataset.s;b.textContent='Excluir coleção';fromShelf=true;shelf();
+};
+$('#ex').onclick=async()=>{
+ try{
+  const dl=window.claude&&await claude.use('downloads');if(!dl)return msg('Exportação indisponível neste ambiente.');
+  msg('Gerando backup…');
+  const all=await tx('imgs','readonly',s=>s.getAll()),out=[];
+  for(const it of all)out.push({c:it.c,w:it.w,h:it.h,d:await b2d(it.blob)});
+  await dl.save({filename:'moodboard-backup.json',data:new Blob([JSON.stringify({v:2,cols,items:out})],{type:'application/json'})});
+  msg('Backup salvo: '+cols.length+' coleções, '+out.length+' imagens.');
+ }catch(e){msg(e&&e.code==='declined'?'Exportação cancelada.':'Falha ao exportar.')}
+};
+$('#im').onchange=async e=>{
+ const f=e.target.files[0];e.target.value='';if(!f)return;
+ try{
+  const j=JSON.parse(await f.text());msg('Importando…');
+  for(const c of j.cols||[])if(!cols.some(x=>x.id===c.id)){await tx('cols','readwrite',s=>s.put(c));cols.push(c)}
+  for(const it of j.items)await tx('imgs','readwrite',s=>s.add({c:it.c,w:it.w,h:it.h,blob:d2b(it.d)}));
+  await loadCols();await shelf();msg(j.items.length+' imagens importadas.');
+ }catch(err){msg('Arquivo de backup inválido.')}
+};
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(cur)render()},200)});
+(async()=>{
+ try{db=await openDB();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}await loadCols();const e=Q.get('e');if(e)await openCol(e);else await shelf()}
+ catch(e){document.body.innerHTML='<p class="empty" style="padding:24px">Este navegador bloqueou o armazenamento local para esta página.</p>'}
+})();
+</script>
+</body>
+</html>
