@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>tjoucreator</title>
+<style>
+:root{--bg:#fff;--fg:#37352f;--fg2:#787774;--line:#e9e9e7;--hover:#f1f1ef;--panel:#fff;--stage:#f7f6f3;--accent:#2383e2;--shadow:rgba(15,15,15,.15);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--ph:min(56vh,440px,calc((100vw - 40px)*210/296));--pw:calc(var(--ph)*148/210);--r:12px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#191919;--fg:#ebebeb;--fg2:#9b9b9b;--line:#2f2f2f;--hover:#2a2a2a;--panel:#252525;--stage:#202020;--accent:#529cca;--shadow:rgba(0,0,0,.55);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#191919;--fg:#ebebeb;--fg2:#9b9b9b;--line:#2f2f2f;--hover:#2a2a2a;--panel:#252525;--stage:#202020;--accent:#529cca;--shadow:rgba(0,0,0,.55);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;line-height:1.45}
+header{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line)}
+header div{flex:1;min-width:0}h1{margin:0;font-size:18px}header p{margin:0;font-size:13px;color:var(--fg2)}
+button,input{font:inherit;color:inherit}
+.ib{border:0;background:none;cursor:pointer;font-size:20px;width:40px;height:40px;border-radius:8px}.ib:hover{background:var(--hover)}.ib:disabled{opacity:.35;cursor:default}
+.tb{padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;font-size:13px}
+.tb:hover{background:var(--hover)}.tb.pri{background:var(--accent);border-color:var(--accent);color:#fff}.tb:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{display:grid;gap:16px;padding:16px;max-width:1180px;margin:0 auto}
+@media(min-width:900px){main{grid-template-columns:minmax(0,1fr) 420px;align-items:start}#pv{position:sticky;top:16px}:root{--ph:min(60vh,440px,calc((100vw - 560px)*210/296))}}
+#pv{background:var(--stage);border-radius:12px;padding:20px 8px 12px;display:grid;justify-items:center;gap:6px;overflow:hidden}
+#stage{height:calc(var(--ph) + 36px);width:100%;display:grid;place-items:center}
+#book{position:relative;width:calc(var(--pw)*2);height:var(--ph);perspective:2200px;transition:translate .9s cubic-bezier(.3,.6,.25,1)}
+#book::before{content:"";position:absolute;left:-4%;right:-4%;bottom:-26px;height:24px;background:radial-gradient(ellipse at center,rgba(0,0,0,.4),transparent 70%)}
+.leaf{position:absolute;top:0;left:50%;width:var(--pw);height:var(--ph);transform-origin:left center;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.6,.25,1)}
+#book.fast,#book.fast .leaf{transition-duration:.55s}
+.face{position:absolute;inset:0;background:#fff;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.face::after{content:"";position:absolute;inset:0;pointer-events:none}
+.f{left:-1px;border-radius:0 var(--r) var(--r) 0;transform:translateZ(1px)}
+.f::after{background:linear-gradient(to right,rgba(0,0,0,.25),transparent 7%),linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.05))}
+.b{left:-1px;border-radius:var(--r) 0 0 var(--r);transform:rotateY(180deg) translateZ(1px)}
+.b::after{background:linear-gradient(to left,rgba(0,0,0,.25),transparent 7%),linear-gradient(rgba(0,0,0,.05),rgba(0,0,0,.05))}
+.cvf::before{content:"";position:absolute;inset:0 auto 0 0;width:3%;background:linear-gradient(to right,rgba(0,0,0,.25),rgba(255,255,255,.12) 60%,transparent);z-index:1}
+.ct{font:600 calc(var(--pw)*.085)/1.2 Georgia,"Times New Roman",serif;margin:calc(var(--pw)*.12) calc(var(--pw)*.08) 0 calc(var(--pw)*.14);overflow-wrap:anywhere}
+#pc{display:flex;gap:6px;align-items:center}#info{font-size:13px;color:var(--fg2);text-align:center;padding:0 12px}
+#ctl{display:grid;gap:22px}
+.blk{display:grid;gap:10px;align-content:start}
+h2{margin:0;font-size:15px}.hint{margin:0;font-size:12px;color:var(--fg2)}
+label{display:grid;gap:6px;font-size:13px;color:var(--fg2)}
+#ti{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);font-size:15px}
+.chk{display:flex;gap:8px;align-items:center;color:var(--fg);cursor:pointer}.chk input{accent-color:var(--accent);width:16px;height:16px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+#sw{display:grid;grid-template-columns:repeat(5,28px);gap:10px}
+.swb{width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer}.swb.on{outline:2px solid var(--accent);outline-offset:2px}
+#fix{font-size:13px;padding:10px;border:1px solid #f2994a;border-radius:8px;display:grid;gap:8px;justify-items:start}#fix[hidden]{display:none}
+#list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.it{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:8px}.it.bad{border-color:#f2994a}
+.th{display:flex;height:64px;border-radius:4px;overflow:hidden;background:#fff;box-shadow:0 1px 5px var(--shadow)}.th img{height:100%;width:auto;display:block}
+.th.port{width:45px}.th.blank{width:45px;display:grid;place-items:center;color:#999;font-size:10px}
+.lb{display:grid;font-size:13px;min-width:0}.lb span{font-size:12px;color:var(--fg2)}.it.bad .lb span{color:#d9730d}
+.ac{display:flex}.ac button{border:0;background:none;cursor:pointer;width:32px;height:32px;border-radius:6px}.ac button:hover{background:var(--hover)}.ac button:disabled{opacity:.3;cursor:default}
+#go{padding:11px 14px;font-size:15px}#msg{min-height:20px;font-size:13px;color:var(--fg2)}
+@media(prefers-reduced-motion:reduce){#book,.leaf{transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<header><div><h1>tjoucreator</h1><p>Monte um caderno e baixe o arquivo .tjou para importar no tjournal.</p></div><button class="ib" id="theme" aria-label="Alternar tema claro ou escuro"></button></header>
+<main>
+<section id="pv" aria-label="Pré-visualização">
+<div id="stage"><div id="book"></div></div>
+<div id="pc"><button class="ib" id="pp" aria-label="Folha anterior">‹</button><button class="ib" id="pl" aria-label="Pausar animação">⏸</button><button class="ib" id="pn" aria-label="Próxima folha">›</button></div>
+<div id="info"></div>
+</section>
+<section id="ctl">
+<div class="blk"><h2>Capa</h2>
+<label>Título<input id="ti" maxlength="40" placeholder="Título (opcional)"></label>
+<div id="sw"></div>
+<div class="row"><button class="tb" id="cb">Imagem de capa</button><button class="tb" id="cr">Remover imagem</button></div></div>
+<div class="blk"><h2>Páginas</h2>
+<p class="hint">Uma imagem A4 horizontal ocupa duas páginas (uma folha aberta). Uma imagem vertical ocupa uma página. Você pode adicionar quantas quiser, ou soltar imagens nesta janela.</p>
+<div class="row"><button class="tb pri" data-add="land">Adicionar imagem horizontal (2 páginas)</button><button class="tb pri" data-add="port">Adicionar imagem vertical (1 página)</button><button class="tb" id="ab">Adicionar página em branco</button></div>
+<div id="fix">Algumas imagens horizontais cairiam entre duas folhas e ficariam divididas.<button class="tb" id="al">Alinhar com páginas em branco</button></div>
+<ol id="list"></ol></div>
+<div class="blk"><h2>Contracapa</h2>
+<label class="chk"><input type="checkbox" id="hb">Incluir contracapa (será a última página do caderno)</label>
+<div class="row"><button class="tb" id="bb">Imagem da contracapa</button><button class="tb" id="br">Remover imagem</button></div>
+<p class="hint">Sem imagem, a contracapa usa a cor da capa.</p></div>
+<div class="blk"><button class="tb pri" id="go">Baixar caderno (.tjou)</button><div id="msg" role="status"></div>
+<p class="hint">Depois de baixar, abra o tjournal e use o botão de importar no topo da estante.</p></div>
+</section>
+</main>
+<input type="file" id="fl" accept="image/*" multiple hidden>
+<input type="file" id="fc" accept="image/*" hidden>
+<input type="file" id="fb" accept="image/*" hidden>
+<script>
+const $=s=>document.querySelector(s),book=$('#book');
+const COLORS=['#2f3437','#e16259','#f2994a','#e8b931','#4dab9a','#2d9cdb','#6940a5','#e255a1','#9a6dd7','#64473a'];
+const st={title:'',color:COLORS[5],cover:null,hasBack:false,back:null,items:[]};
+let leaves=[],cur=0,addKind='auto',playing=!matchMedia('(prefers-reduced-motion:reduce)').matches,tm=null,rb=0;
+const msg=t=>{$('#msg').textContent=t||''};
+const url=b=>URL.createObjectURL(b);
+const lum=h=>{const x=parseInt(h.slice(1),16);return(.299*(x>>16)+.587*(x>>8&255)+.114*(x&255))/255};
+const bgOf=(c,img)=>img?'center/cover url('+img.url+')':'linear-gradient(145deg,'+c+',color-mix(in srgb,'+c+' 65%,#000))';
+
+/* tema */
+const eff=()=>document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+const icon=()=>{$('#theme').textContent=eff()==='dark'?'☀':'☾'};
+try{const t=localStorage.getItem('tjouTema');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('#theme').onclick=()=>{const t=eff()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('tjouTema',t)}catch(e){}icon()};
+
+/* imagens: JPEG com no máximo 1400 px de altura (mesmo padrão do tjournal) */
+const blobOf=c=>new Promise(r=>c.toBlob(r,'image/jpeg',.9));
+function canvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.imageSmoothingQuality='high';return[c,x]}
+async function piece(b,sx,sw){const s=Math.min(1,1400/b.height),[c,x]=canvas(Math.round(sw*s),Math.round(b.height*s));x.drawImage(b,sx,0,sw,b.height,0,0,c.width,c.height);return blobOf(c)}
+async function coverFit(f){const b=await createImageBitmap(f),W=740,H=1050,[c,x]=canvas(W,H),s=Math.max(W/b.width,H/b.height),w=b.width*s,h=b.height*s;x.drawImage(b,(W-w)/2,(H-h)/2,w,h);return blobOf(c)}
+async function gradBlob(col){const W=740,H=1050,[c,x]=canvas(W,H),g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,col);g.addColorStop(1,'#000');x.fillStyle=col;x.fillRect(0,0,W,H);x.globalAlpha=.35;x.fillStyle=g;x.fillRect(0,0,W,H);return blobOf(c)}
+async function setImg(k,f){
+  if(!f)return;try{const bl=await coverFit(f);if(st[k])URL.revokeObjectURL(st[k].url);st[k]={blob:bl,url:url(bl)};refresh()}catch(e){msg('Não foi possível ler essa imagem.')}
+}
+async function addImages(files,kind){
+  files=[...files].filter(f=>f.type.startsWith('image/')).sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+  if(!files.length){msg('Escolha imagens PNG ou JPEG.');return}
+  let diff=0;const bad=[];
+  for(let i=0;i<files.length;i++){
+    msg('Processando imagem '+(i+1)+' de '+files.length+'…');
+    try{
+      const b=await createImageBitmap(files[i]),real=b.width>b.height?'land':'port',hw=Math.floor(b.width/2);
+      if(kind!=='auto'&&kind!==real)diff++;
+      const bl=real==='land'?[await piece(b,0,hw),await piece(b,hw,hw)]:[await piece(b,0,b.width)];
+      st.items.push({k:real,bl,u:bl.map(url)});
+    }catch(e){bad.push(files[i].name)}
+  }
+  refresh();
+  msg((files.length-bad.length)+' adicionada(s).'+(diff?' '+diff+' estava(m) em outra orientação e foi(ram) usada(s) pela orientação real.':'')+(bad.length?' Não foi possível ler: '+bad.join(', ')+'.':''));
+}
+const blank=()=>({k:'blank',bl:[null],u:[null]});
+function layout(){let p=0;return st.items.map(it=>{const n=it.k==='land'?2:1,o={p,bad:it.k==='land'&&p%2===1};p+=n;return o})}
+function align(){let p=0,n=0;const out=[];st.items.forEach(it=>{if(it.k==='land'&&p%2===1){out.push(blank());p++;n++}out.push(it);p+=it.k==='land'?2:1});st.items=out;return n}
+
+/* lista de páginas */
+function renderList(){
+  const L=layout();
+  $('#list').innerHTML=st.items.map((it,i)=>{
+    const o=L[i],th=it.k==='blank'?'em branco':it.u.map(u=>'<img alt="" src="'+u+'">').join('');
+    const lb=it.k==='land'?'Páginas '+(o.p+1)+' e '+(o.p+2):'Página '+(o.p+1);
+    const kd=it.k==='land'?'Imagem horizontal':it.k==='port'?'Imagem vertical':'Página em branco';
+    return '<li class="it'+(o.bad?' bad':'')+'"><div class="th '+it.k+'">'+th+'</div><div class="lb"><b>'+lb+'</b><span>'+kd+(o.bad?' · ficaria dividida entre duas folhas':'')+'</span></div><div class="ac"><button data-a="up" data-i="'+i+'" aria-label="Mover para cima"'+(i?'':' disabled')+'>↑</button><button data-a="dn" data-i="'+i+'" aria-label="Mover para baixo"'+(i<st.items.length-1?'':' disabled')+'>↓</button><button data-a="rm" data-i="'+i+'" aria-label="Remover">✕</button></div></li>';
+  }).join('');
+  $('#fix').style.display=L.some(o=>o.bad)?'':'none';
+}
+$('#list').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i,a=b.dataset.a,x=st.items;
+  if(a==='rm'){x[i].u.forEach(u=>u&&URL.revokeObjectURL(u));x.splice(i,1)}
+  else{const j=a==='up'?i-1:i+1;if(j<0||j>=x.length)return;[x[i],x[j]]=[x[j],x[i]]}
+  refresh();
+};
+document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{addKind=b.dataset.add;$('#fl').click()});
+$('#fl').onchange=e=>{const f=e.target.files;if(f.length)addImages(f,addKind);e.target.value=''};
+$('#ab').onclick=()=>{st.items.push(blank());refresh()};
+$('#al').onclick=()=>{const n=align();refresh();msg(n+' página(s) em branco inserida(s).')};
+addEventListener('dragover',e=>e.preventDefault());
+addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files.length)addImages(e.dataTransfer.files,'auto')});
+
+/* capa e contracapa */
+function swatches(){
+  const s=$('#sw');s.innerHTML='';
+  COLORS.forEach(c=>{const b=document.createElement('button');b.className='swb'+(c===st.color&&!st.cover?' on':'');b.style.background=c;b.setAttribute('aria-label','Cor '+c);
+    b.onclick=()=>{st.color=c;if(st.cover){URL.revokeObjectURL(st.cover.url);st.cover=null}refresh()};s.appendChild(b)});
+}
+$('#ti').oninput=e=>{st.title=e.target.value;refresh()};
+$('#cb').onclick=()=>$('#fc').click();$('#fc').onchange=e=>{setImg('cover',e.target.files[0]);e.target.value=''};
+$('#cr').onclick=()=>{if(st.cover){URL.revokeObjectURL(st.cover.url);st.cover=null;refresh()}};
+$('#hb').onchange=e=>{st.hasBack=e.target.checked;refresh()};
+$('#bb').onclick=()=>{st.hasBack=true;$('#fb').click()};$('#fb').onchange=e=>{setImg('back',e.target.files[0]);e.target.value=''};
+$('#br').onclick=()=>{if(st.back){URL.revokeObjectURL(st.back.url);st.back=null;refresh()}};
+
+/* pré-visualização: caderno abrindo e folheando em loop */
+const flat=()=>st.items.flatMap(i=>i.u);
+const mx=()=>leaves.length-(st.hasBack?0:1);
+function face(cls,src,bg){const d=document.createElement('div');d.className='face '+cls;if(bg)d.style.background=bg;if(src){const i=new Image();i.src=src;i.alt='';i.draggable=false;d.appendChild(i)}return d}
+function buildBook(){
+  const u=flat();if(u.length%2)u.push(null);const m=u.length/2;
+  book.innerHTML='';leaves=[];
+  for(let i=0;i<=m;i++){
+    const lf=document.createElement('div');lf.className='leaf';
+    const f=face(i?'f':'f cvf',i?u[2*i-1]:null,i?null:bgOf(st.color,st.cover));
+    if(!i&&st.title){const t=document.createElement('div'),lt=!st.cover&&lum(st.color)>.62;t.className='ct';t.textContent=st.title;t.style.color=lt?'#222':'#fff';t.style.textShadow=lt?'none':'0 1px 4px rgba(0,0,0,.45)';f.appendChild(t)}
+    const last=i===m&&st.hasBack;
+    lf.append(f,face('b',last?(st.back&&st.back.url):u[2*i],last&&!st.back?bgOf(st.color,null):null));
+    book.appendChild(lf);leaves.push(lf);
+  }
+  cur=Math.min(cur,mx());paint();if(!tm)loop();
+}
+function paint(){
+  const n=leaves.length;
+  leaves.forEach((lf,j)=>{const t=j<cur;lf.style.transform='rotateY('+(t?-180:0)+'deg)';if(!lf.dataset.mv)lf.style.zIndex=t?j+1:n-j});
+  book.style.translate=(cur===0?-25:(st.hasBack&&cur===n?25:0))+'% 0';
+  $('#pp').disabled=cur<=0;$('#pn').disabled=cur>=mx();
+}
+function goTo(c){
+  c=Math.max(0,Math.min(mx(),c));if(c===cur)return;
+  if(Math.abs(c-cur)===1){const lf=leaves[Math.min(cur,c)];lf.dataset.mv=1;lf.style.zIndex=99;setTimeout(()=>{delete lf.dataset.mv;paint()},950)}
+  cur=c;paint();
+}
+function loop(){clearTimeout(tm);tm=null;if(!playing)return;tm=setTimeout(step,cur===0?1500:1200)}
+function step(){
+  tm=null;const M=mx();if(!M)return;
+  if(cur>=M){book.classList.add('fast');goTo(0);tm=setTimeout(()=>{book.classList.remove('fast');loop()},1400);return}
+  goTo(cur+Math.max(1,Math.ceil(M/8)));loop();
+}
+$('#pl').onclick=()=>{playing=!playing;$('#pl').textContent=playing?'⏸':'▶';$('#pl').setAttribute('aria-label',playing?'Pausar animação':'Retomar animação');loop()};
+$('#pl').textContent=playing?'⏸':'▶';
+$('#pp').onclick=()=>{goTo(cur-1);loop()};$('#pn').onclick=()=>{goTo(cur+1);loop()};
+
+function refresh(){
+  swatches();renderList();
+  $('#hb').checked=st.hasBack;$('#bb').textContent=st.back?'Trocar imagem da contracapa':'Imagem da contracapa';$('#br').style.display=st.back?'':'none';
+  $('#cr').style.display=st.cover?'':'none';
+  const n=flat().length;
+  $('#info').textContent=(n?n+(n===1?' página':' páginas')+(n%2?' (mais 1 em branco no fim para fechar a folha)':''):'Nenhuma página ainda')+(st.hasBack?' · com contracapa':'');
+  clearTimeout(rb);rb=setTimeout(buildBook,120);
+}
+
+/* exportar: 'TJOU1\n' + uint32 LE (tamanho do cabeçalho) + cabeçalho JSON + imagens em sequência */
+async function exportFile(){
+  const btn=$('#go');btn.disabled=true;
+  try{
+    const n0=align();if(n0){refresh();msg(n0+' página(s) em branco inserida(s) para alinhar as imagens horizontais.')}
+    const parts=[];let off=0;const add=b=>{if(!b)return null;const e=[off,b.size,'image/jpeg'];parts.push(b);off+=b.size;return e};
+    const cover=add(st.cover&&st.cover.blob);
+    const back=st.hasBack?add(st.back?st.back.blob:await gradBlob(st.color)):null;
+    const pages=st.items.flatMap(i=>i.bl).map(add);if(pages.length%2)pages.push(null);
+    const head=new TextEncoder().encode(JSON.stringify({v:1,app:'tjoucreator',title:st.title.trim(),color:st.color,cover,back,pages}));
+    const len=new Uint8Array(4);new DataView(len.buffer).setUint32(0,head.length,true);
+    const blob=new Blob(['TJOU1\n',len,head,...parts],{type:'application/octet-stream'});
+    const name=(st.title.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'caderno')+'.tjou';
+    const u=url(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),120000);
+    msg('Baixado: '+name+' ('+(blob.size/1048576).toFixed(1)+' MB). Agora importe no tjournal.');
+  }catch(e){msg('Não foi possível gerar o arquivo (memória insuficiente?).')}
+  btn.disabled=false;
+}
+$('#go').onclick=exportFile;
+icon();refresh();
+</script>
+</body>
+</html>
