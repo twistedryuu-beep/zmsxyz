@@ -60,6 +60,7 @@ input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--tx);b
 .sl span:last-child{color:var(--tx2);text-align:right;font-size:12px}
 .line{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:16px}
 #del{color:var(--rd)}
+.note{color:var(--tx2);font-size:12px;margin:12px 0 0;max-width:460px}.note a{color:var(--ac)}
 .msg{color:var(--tx2);font-size:12px;margin:10px 0 0;min-height:18px}
 </style>
 </head>
@@ -67,7 +68,8 @@ input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--tx);b
 <div id="shelf" hidden>
  <h1>Coleções</h1>
  <div id="cards"></div>
- <div class="line"><button id="ex">Exportar backup</button><label class="btn">Importar backup<input id="im" type="file" accept=".json,application/json" hidden></label></div>
+ <div class="line"><label class="btn pri">Importar coleções<input id="im" type="file" accept=".json,application/json" multiple hidden></label></div>
+ <p class="note">Para criar arquivos de coleção (imagens, nome e ajustes), use o <a id="cl" target="_blank" rel="noopener">criador de coleções</a> e depois importe o arquivo aqui. Importar um arquivo com o mesmo identificador atualiza a coleção existente.</p>
  <p class="msg"></p>
 </div>
 <div id="rows" hidden></div>
@@ -85,6 +87,7 @@ input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--tx);b
  <p class="msg"></p>
 </div>
 <script>
+const CREATOR_URL='COLE_AQUI_O_LINK_DO_CRIADOR'; // <- troque pelo link do criador de coleções
 const Q=new URLSearchParams(location.search),$=s=>document.querySelector(s),BASE=location.origin+location.pathname;
 const th=Q.get('theme');if(th==='dark'||th==='light')document.documentElement.dataset.theme=th;
 const DEF={speed:30,rows:2,h:0,r:12,shuf:0};
@@ -226,43 +229,28 @@ $('#del').onclick=async e=>{
  await new Promise(ok=>{const t=db.transaction(['imgs','cols'],'readwrite'),r=t.objectStore('imgs').index('c').openCursor(IDBKeyRange.only(id));r.onsuccess=()=>{const c=r.result;if(c){c.delete();c.continue()}};t.objectStore('cols').delete(id);t.oncomplete=ok;t.onerror=ok});
  cols=cols.filter(c=>c.id!==id);delete b.dataset.s;b.textContent='Excluir coleção';fromShelf=true;shelf();
 };
-$('#ex').onclick=async()=>{
- try{
-  let dl=null;try{dl=window.claude&&await claude.use('downloads')}catch(x){}
-  msg('Gerando backup…');
-  const all=await tx('imgs','readonly',s=>s.getAll()),out=[];
-  for(const it of all)out.push({c:it.c,w:it.w,h:it.h,d:await b2d(it.blob)});
-  const bl=new Blob([JSON.stringify({v:2,cols,items:out})],{type:'application/json'});const fl=new File([bl],'moodboard-backup.json',{type:'application/json'});
-  if(dl)await dl.save({filename:'moodboard-backup.json',data:bl});
-  else if(navigator.canShare&&navigator.canShare({files:[fl]})){try{await navigator.share({files:[fl]})}catch(x){if(x&&x.name==='AbortError')return msg('Exportação cancelada.');throw x}}
-  else{const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='moodboard-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
-  msg('Backup salvo: '+cols.length+' coleções, '+out.length+' imagens.');
- }catch(e){msg(e&&e.code==='declined'?'Exportação cancelada.':window.top!==window?'O Notion bloqueou o download. Abra a página em uma guia normal do navegador para exportar (os dados lá são separados dos do Notion).':'Falha ao exportar.')}
-};
+const wipe=id=>new Promise(ok=>{const t=db.transaction('imgs','readwrite'),r=t.objectStore('imgs').index('c').openCursor(IDBKeyRange.only(id));r.onsuccess=()=>{const c=r.result;if(c){c.delete();c.continue()}};t.oncomplete=ok;t.onerror=ok});
+if(CREATOR_URL.startsWith('COLE'))$('#cl').textContent='criador de coleções (link ainda não configurado)';else $('#cl').href=CREATOR_URL;
 $('#im').onchange=async e=>{
- const f=e.target.files[0];e.target.value='';if(!f)return;
- try{
-  const j=JSON.parse(await f.text());msg('Importando…');
-  for(const c of j.cols||[])if(!cols.some(x=>x.id===c.id)){await tx('cols','readwrite',s=>s.put(c));cols.push(c)}
-  for(const it of j.items)await tx('imgs','readwrite',s=>s.add({c:it.c,w:it.w,h:it.h,blob:d2b(it.d)}));
-  await loadCols();await shelf();msg(j.items.length+' imagens importadas.');
- }catch(err){msg('Arquivo de backup inválido.')}
+ const fs=[...e.target.files];e.target.value='';if(!fs.length)return;
+ let nc=0,ni=0,bad=0;msg('Importando…');
+ for(const f of fs){try{
+  const j=JSON.parse(await f.text());
+  if(j.type==='collection'&&Array.isArray(j.images)){
+   const name=String(j.name||'Coleção').slice(0,60),id=slug(String(j.id||name)),old=cols.find(c=>c.id===id),n=(k,d)=>j[k]!==null&&j[k]!==''&&isFinite(+j[k])?+j[k]:d;
+   if(old)await wipe(id);
+   const c={id,name,speed:n('speed',DEF.speed),rows:n('rows',DEF.rows),h:n('h',DEF.h),r:n('r',DEF.r),shuf:n('shuf',0),t:old?old.t:Date.now()};
+   await tx('cols','readwrite',s=>s.put(c));if(old)Object.assign(old,c);else cols.push(c);
+   for(const im of j.images){await tx('imgs','readwrite',s=>s.add({c:id,w:im.w||1,h:im.h||1,blob:d2b(im.d)}));ni++}
+   nc++;
+  }else if(Array.isArray(j.items)){
+   for(const c of j.cols||[])if(!cols.some(x=>x.id===c.id)){await tx('cols','readwrite',s=>s.put(c));cols.push(c);nc++}
+   for(const it of j.items){await tx('imgs','readwrite',s=>s.add({c:it.c,w:it.w,h:it.h,blob:d2b(it.d)}));ni++}
+  }else bad++;
+ }catch(err){bad++}}
+ await loadCols();await shelf();
+ msg((nc?nc+' coleção(ões) importada(s) · '+ni+' imagens.':'Nada foi importado.')+(bad?' '+bad+' arquivo(s) inválido(s).':''));
 };
-function wake(){document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>{if($('#panel').hidden&&(items.length||!cur||!$('#lb').hidden))document.body.classList.add('idle')},2000)}
-['pointermove','pointerdown','touchstart','keydown','wheel'].forEach(t=>addEventListener(t,wake,{passive:true}));
-function showLb(i){
- const n=items.length;if(!n)return;lbI=(i+n)%n;const it=items[lbI],im=$('#lbi');im.classList.remove('ok');
- if(lbU)URL.revokeObjectURL(lbU);lbU=URL.createObjectURL(it.blob);im.onload=()=>im.classList.add('ok');im.src=lbU;
- $('#lbc').textContent=(lbI+1)+' / '+n;$('#lbp').hidden=$('#lbn').hidden=n<2;
-}
-function openLb(i){$('#lb').hidden=false;$('#panel').hidden=true;showLb(i);wake()}
-function closeLb(){$('#lb').hidden=true;lbI=-1;$('#lbi').removeAttribute('src');if(lbU)URL.revokeObjectURL(lbU);lbU=null}
-$('#rows').addEventListener('click',e=>{const d=e.target.closest('.it');if(d&&!moved)openLb(+d.dataset.i)});
-$('#lbp').onclick=()=>showLb(lbI-1);$('#lbn').onclick=()=>showLb(lbI+1);$('#lbx').onclick=closeLb;
-$('#lb').addEventListener('click',e=>{if(e.target.id==='lb'||e.target.id==='lbi'&&0)closeLb()});
-addEventListener('keydown',e=>{if($('#lb').hidden)return;if(e.key==='ArrowLeft')showLb(lbI-1);else if(e.key==='ArrowRight')showLb(lbI+1);else if(e.key==='Escape')closeLb()});
-let sx=null;$('#lb').addEventListener('pointerdown',e=>{sx=e.clientX});
-$('#lb').addEventListener('pointerup',e=>{if(sx===null)return;const d=e.clientX-sx;sx=null;if(Math.abs(d)>50)showLb(lbI+(d<0?1:-1))});
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(cur)render()},200)});
 (async()=>{
  try{db=await openDB();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}await loadCols();const e=Q.get('e');if(e)await openCol(e);else await shelf()}
