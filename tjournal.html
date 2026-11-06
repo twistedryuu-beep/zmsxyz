@@ -158,7 +158,13 @@ const S={t:4,r:14,off:8,dz:60,vis:5,sz:100,shs:100,sho:40,spo:25,spw:7,cs:100},D
 try{if(top!==self)document.documentElement.classList.add('emb')}catch(e){document.documentElement.classList.add('emb')}
 const COLORS=['#2f3437','#e16259','#f2994a','#e8b931','#4dab9a','#2d9cdb','#6940a5','#e255a1','#9a6dd7','#64473a'];
 let nbs=[],nb=null,pages=[],cur=1,locked=false,leaves=[],g=null,db=null,edit=null,delArm=false;
-try{Object.assign(S,JSON.parse(localStorage.getItem('livroS')||'{}'))}catch(e){}
+/* identidade do embed: ?e=nome na URL separa o estado (caderno/folha abertos, ajustes, tema, modo) entre embeds.
+   A biblioteca de cadernos (IndexedDB) continua compartilhada. Sem ?e= tudo funciona como antes. */
+const EID=(()=>{try{return(new URLSearchParams(location.search).get('e')||'').trim().slice(0,40)}catch(e){return''}})();
+const lsk=k=>EID?k+':'+EID:k;
+const lsGet=k=>{try{let v=localStorage.getItem(lsk(k));if(v===null&&EID)v=localStorage.getItem(k);return v}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(lsk(k),v)}catch(e){}};
+try{Object.assign(S,JSON.parse(lsGet('livroS')||'{}'))}catch(e){}
 try{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'}catch(e){}
 const status=(t,ms)=>{$('#st').textContent=t;if(ms)setTimeout(()=>{$('#st').textContent=''},ms)};
 
@@ -171,8 +177,8 @@ const dbDel=id=>{if(db)try{db.transaction('nb','readwrite').objectStore('nb').de
 /* tema */
 const eff=()=>document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
 function icon(){const d=eff()==='dark';$('#theme').textContent=d?'☀':'☾';$('#theme2').textContent=d?'☀ Tema claro':'☾ Tema escuro'}
-try{const t=localStorage.getItem('livroTema');if(t)document.documentElement.dataset.theme=t}catch(e){}
-$('#theme').onclick=$('#theme2').onclick=()=>{const t=eff()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('livroTema',t)}catch(e){}icon()};
+try{const t=lsGet('livroTema');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('#theme').onclick=$('#theme2').onclick=()=>{const t=eff()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;lsSet('livroTema',t);icon()};
 
 /* exemplo e corte */
 function makeSample(i){
@@ -288,7 +294,7 @@ stage.addEventListener('wheel',e=>{
 
 /* carrossel de cadernos */
 let ci=0,cpos=0,cdn=null,cmode=false,cf=1;
-try{cmode=localStorage.getItem('livroModo')==='car'}catch(e){}
+cmode=lsGet('livroModo')==='car';
 const car=$('#car');
 function layoutCar(pos,anim){
   cpos=pos;
@@ -307,7 +313,7 @@ function renderCar(){
   ci=Math.min(ci,nbs.length);fitCar();
 }
 function moveCar(d){const n=car.children.length-1;ci=Math.max(0,Math.min(n,ci+d));layoutCar(ci,true)}
-function setMode(c){cmode=c;$('#shelf').classList.toggle('cm',c);$('#vm').textContent=c?'▦':'⇄';$('#csb').classList.toggle('inv',!c);if(!c)$('#cpanel').hidden=true;try{localStorage.setItem('livroModo',c?'car':'grid')}catch(e){}}
+function setMode(c){cmode=c;$('#shelf').classList.toggle('cm',c);$('#vm').textContent=c?'▦':'⇄';$('#csb').classList.toggle('inv',!c);if(!c)$('#cpanel').hidden=true;lsSet('livroModo',c?'car':'grid');}
 $('#vm').onclick=()=>setMode(!cmode);
 /* tamanho das capas do carrossel: 100% = ajuste automático à altura disponível (útil em embeds baixos) */
 function fitCar(){
@@ -316,7 +322,7 @@ function fitCar(){
 }
 $('#csz').value=S.cs;$('#cso').textContent=S.cs+'%';
 $('#csb').onclick=()=>{const p=$('#cpanel');p.hidden=!p.hidden};
-$('#csz').oninput=e=>{S.cs=+e.target.value;$('#cso').textContent=S.cs+'%';fitCar();try{localStorage.setItem('livroS',JSON.stringify(S))}catch(x){}};
+$('#csz').oninput=e=>{S.cs=+e.target.value;$('#cso').textContent=S.cs+'%';fitCar();lsSet('livroS',JSON.stringify(S));};
 document.addEventListener('pointerdown',e=>{const p=$('#cpanel');if(!p.hidden&&!e.target.closest('#cpanel,#csb'))p.hidden=true});
 car.addEventListener('pointerdown',e=>{cdn={x:e.clientX,it:e.target.closest('.ci'),mv:false};car.setPointerCapture(e.pointerId)});
 car.addEventListener('pointermove',e=>{
@@ -336,7 +342,7 @@ function view(r){
 }
 function head(){$('#ttl').textContent=nb?(nb.title||'Sem título')+' ✎':'Meus cadernos'}
 /* guarda o caderno e a folha abertos; na estante, limpa */
-function saveLast(){try{if(nb)localStorage.setItem('livroLast',JSON.stringify({id:nb.id,cur}));else localStorage.removeItem('livroLast')}catch(e){}}
+function saveLast(){try{if(nb)localStorage.setItem(lsk('livroLast'),JSON.stringify({id:nb.id,cur}));else localStorage.removeItem(lsk('livroLast'))}catch(e){}}
 function showShelf(){nb=null;pages=[];leaves=[];book.innerHTML='';view(false);head();$('#count').textContent='';renderShelf();saveLast()}
 function openNb(n,src,c0){
   const C=src&&src.getBoundingClientRect();
@@ -506,7 +512,7 @@ function applyCfg(){
   const root=document.documentElement.style;root.setProperty('--t',S.t+'px');root.setProperty('--r',S.r+'px');Sc=Math.min(S.sz,CAP);root.setProperty('--sz',Sc/100);$('#bw').style.scale=S.sz===Sc?'':S.sz/Sc;root.setProperty('--shs',S.shs/100);root.setProperty('--sho',S.sho/100);root.setProperty('--spo',S.spo/100);root.setProperty('--spw',S.spw+'%');root.setProperty('--m',(S.off*S.vis+14)+'px');
   document.querySelectorAll('#panel input').forEach(i=>{i.value=S[i.dataset.k];i.parentNode.querySelector('output').textContent=S[i.dataset.k]});
   if(lastT!==S.t){lastT=S.t;leaves.forEach(l=>slices(l))}leaves.forEach(l=>l.style.transition='none');paint();clampPan();applyPan();
-  try{localStorage.setItem('livroS',JSON.stringify(S))}catch(e){}
+  lsSet('livroS',JSON.stringify(S));
 }
 document.querySelectorAll('#panel input').forEach(i=>i.oninput=()=>{S[i.dataset.k]=+i.value;applyCfg()});
 $('#reset').onclick=()=>{const c=S.cs;Object.assign(S,DEF);S.cs=c;applyCfg()};
@@ -566,7 +572,7 @@ ogr.addEventListener('pointerup',oend);ogr.addEventListener('pointercancel',oend
     try{localStorage.setItem('livroSeed','1')}catch(e){}
   }
   if(!db)status('Armazenamento indisponível: os cadernos não serão salvos.',5000);
-  let last=null;try{last=JSON.parse(localStorage.getItem('livroLast'))}catch(e){}
+  let last=null;try{last=JSON.parse(localStorage.getItem(lsk('livroLast')))}catch(e){}
   showShelf();
   const ln=last&&nbs.find(n=>n.id===last.id);
   if(ln)openNb(ln,null,Math.max(0,Math.min(+last.cur||0,ln.pages.length/2)));
