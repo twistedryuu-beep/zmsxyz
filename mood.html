@@ -251,10 +251,25 @@ $('#im').onchange=async e=>{
  await loadCols();await shelf();
  msg((nc?nc+' coleção(ões) importada(s) · '+ni+' imagens.':'Nada foi importado.')+(bad?' '+bad+' arquivo(s) inválido(s).':''));
 };
+function wake(){document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>{if($('#panel').hidden&&(items.length||!cur||!$('#lb').hidden))document.body.classList.add('idle')},2000)}
+['pointermove','pointerdown','touchstart','keydown','wheel'].forEach(t=>addEventListener(t,wake,{passive:true}));
+function showLb(i){
+ const n=items.length;if(!n)return;lbI=(i+n)%n;const it=items[lbI],im=$('#lbi');im.classList.remove('ok');
+ if(lbU)URL.revokeObjectURL(lbU);lbU=URL.createObjectURL(it.blob);im.onload=()=>im.classList.add('ok');im.src=lbU;
+ $('#lbc').textContent=(lbI+1)+' / '+n;$('#lbp').hidden=$('#lbn').hidden=n<2;
+}
+function openLb(i){$('#lb').hidden=false;$('#panel').hidden=true;showLb(i);wake()}
+function closeLb(){$('#lb').hidden=true;lbI=-1;$('#lbi').removeAttribute('src');if(lbU)URL.revokeObjectURL(lbU);lbU=null}
+$('#rows').addEventListener('click',e=>{const d=e.target.closest('.it');if(d&&!moved)openLb(+d.dataset.i)});
+$('#lbp').onclick=()=>showLb(lbI-1);$('#lbn').onclick=()=>showLb(lbI+1);$('#lbx').onclick=closeLb;
+$('#lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLb()});
+addEventListener('keydown',e=>{if($('#lb').hidden)return;if(e.key==='ArrowLeft')showLb(lbI-1);else if(e.key==='ArrowRight')showLb(lbI+1);else if(e.key==='Escape')closeLb()});
+let sx=null;$('#lb').addEventListener('pointerdown',e=>{sx=e.clientX});
+$('#lb').addEventListener('pointerup',e=>{if(sx===null)return;const d=e.clientX-sx;sx=null;if(Math.abs(d)>50)showLb(lbI+(d<0?1:-1))});
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(cur)render()},200)});
 (async()=>{
  try{db=await openDB();try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}await loadCols();const e=Q.get('e');if(e)await openCol(e);else await shelf()}
- catch(e){document.body.innerHTML='<p class="empty" style="padding:24px">Este navegador bloqueou o armazenamento local para esta página.</p>'}
+ catch(e){console.error(e);document.body.innerHTML='<p class="empty" style="padding:24px">Não foi possível iniciar o moodboard.<br><small>'+String(e&&e.message||e).replace(/</g,'&lt;')+'</small></p>'}
 })();
 </script>
 </body>
