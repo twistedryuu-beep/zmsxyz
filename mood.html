@@ -23,7 +23,8 @@ h1{margin:0 0 14px;font-size:22px}
 .nm{margin-top:8px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ct{color:var(--tx2);font-size:12px}
 #rows{height:100%;display:flex;flex-direction:column;justify-content:center;gap:12px}
-.row{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.ic{vertical-align:-2px;margin-right:6px}
+.row{touch-action:pan-y;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
 .track{display:flex;will-change:transform;backface-visibility:hidden}
 .it{flex:none;margin-right:12px;border-radius:var(--r,12px);overflow:hidden}
 .it img{display:block;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
@@ -70,7 +71,7 @@ input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--tx);b
  <p class="msg"></p>
 </div>
 <div id="rows" hidden></div>
-<div id="bar" class="glass fade" hidden><button id="back" hidden aria-label="Voltar à estante">‹ Estante</button><button id="sh" aria-label="Embaralhar imagens">🔀 Embaralhar</button><button id="gear" aria-label="Configurar coleção">✎ Editar</button></div>
+<div id="bar" class="glass fade" hidden><button id="back" hidden aria-label="Voltar à estante">‹ Estante</button><button id="sh" aria-label="Embaralhar imagens"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Embaralhar</button><button id="gear" aria-label="Configurar coleção">✎ Editar</button></div>
 <div id="lb" hidden><img id="lbi" alt=""><button id="lbx" class="fade" aria-label="Fechar">✕ Fechar</button><button id="lbp" class="nav fade" aria-label="Anterior">‹</button><button id="lbn" class="nav fade" aria-label="Próxima">›</button><div id="lbc" class="fade"></div></div>
 <div id="panel" hidden>
  <h2>Configurações <button id="x" aria-label="Fechar">✕</button></h2>
@@ -79,7 +80,7 @@ input[type=text]{width:100%;box-sizing:border-box;font:inherit;color:var(--tx);b
  <label class="btn pri">Adicionar imagens<input id="f" type="file" accept="image/*" multiple hidden></label>
  <div id="sl"></div>
  <label class="lb" style="display:flex;gap:8px;align-items:center;cursor:pointer"><input id="shk" type="checkbox"> Embaralhar sempre que abrir</label>
- <div class="line" style="margin-top:8px"><button id="shn">🔀 Embaralhar agora</button></div>
+ <div class="line" style="margin-top:8px"><button id="shn"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>Embaralhar agora</button></div>
  <div class="line"><button id="del">Excluir coleção</button></div>
  <p class="msg"></p>
 </div>
@@ -91,9 +92,9 @@ const SL=[['speed','Velocidade',0,150,1,v=>v+' px/s'],['rows','Fileiras',1,4,1,v
 let db,cols=[],items=[],cur=null,S={...DEF},urls=[],tracks=[],raf,last=0,paused=false,fromShelf=false,lbI=-1,lbU=null,idleT;
 const msg=t=>document.querySelectorAll('.msg').forEach(e=>e.textContent=t||'');
 const openDB=()=>new Promise((ok,no)=>{const r=indexedDB.open('moodboard',2);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('imgs'))d.createObjectStore('imgs',{keyPath:'id',autoIncrement:true}).createIndex('c','c');if(!d.objectStoreNames.contains('cols'))d.createObjectStore('cols',{keyPath:'id'})};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
-const tx=(st,m,f)=>new Promise((ok,no)=>{const t=db.transaction(st,m),r=f(t.objectStore(st));t.oncomplete=()=>ok(r&&r.result);t.onerror=()=>no(t.error)});
+const tx=(st,m,f)=>new Promise((ok,no)=>{const t=db.transaction(st,m),r=f(t.objectStore(st));t.oncomplete=()=>ok(r&&r.result);t.onerror=()=>no(t.error);t.onabort=()=>no(t.error||new Error('abort'))});
 const distinct=()=>new Promise(ok=>{const o=[],r=db.transaction('imgs').objectStore('imgs').index('c').openKeyCursor(null,'nextunique');r.onsuccess=()=>{const c=r.result;if(c){o.push(c.key);c.continue()}else ok(o)};r.onerror=()=>ok(o)});
-const dims=b=>new Promise(ok=>{const u=URL.createObjectURL(b),i=new Image(),d=a=>{URL.revokeObjectURL(u);ok(a)};i.onload=()=>d([i.naturalWidth||1,i.naturalHeight||1]);i.onerror=()=>d([1,1]);i.src=u});
+const dims=b=>new Promise(ok=>{const u=URL.createObjectURL(b),i=new Image(),d=a=>{URL.revokeObjectURL(u);ok(a)};i.onload=()=>d([i.naturalWidth||1,i.naturalHeight||1]);i.onerror=()=>d([1,1]);i.src=u;setTimeout(()=>d([1,1]),6000)});
 const b2d=b=>new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(b)});
 const d2b=d=>{const[h,s]=d.split(','),a=atob(s),u=new Uint8Array(a.length);for(let i=0;i<a.length;i++)u[i]=a.charCodeAt(i);return new Blob([u],{type:h.slice(5,h.indexOf(';'))})};
 const slug=n=>n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'colecao';
@@ -153,22 +154,43 @@ function render(){
  const R=$('#rows');R.innerHTML='';R.style.setProperty('--r',S.r+'px');wake();
  if(!items.length){R.innerHTML='<p class="empty">Coleção vazia. Toque em ✎ para adicionar imagens.</p>';return}
  const G=12,nr=Math.max(1,Math.min(S.rows,items.length)),W=innerWidth,
-  H=S.h||Math.max(60,Math.min(400,(innerHeight-24-(nr-1)*G)/nr)),rows=Array.from({length:nr},()=>[]);
+  fit=Math.max(60,(innerHeight-24-(nr-1)*G)/nr),H=Math.max(30,Math.min(S.h||400,fit)),rows=Array.from({length:nr},()=>[]);
  const ix=new Map(items.map((x,i)=>[x,i]));items.forEach((it,i)=>rows[i%nr].push(it));
  rows.forEach((list,ri)=>{
   const ws=list.map(it=>H*it.w/it.h),set=ws.reduce((a,b)=>a+b+G,0),reps=Math.max(2,Math.ceil(W/set)+1),
    row=document.createElement('div'),tr=document.createElement('div');
   row.className='row';tr.className='track';
   for(let k=0;k<reps;k++)list.forEach((it,i)=>{const d=document.createElement('div'),im=new Image();d.className='it';d.dataset.i=ix.get(it);d.style.cssText='width:'+ws[i]+'px;height:'+H+'px';pic(im,it);im.alt='';im.decoding='async';im.draggable=false;d.append(im);tr.append(d)});
-  row.append(tr);R.append(row);tracks.push({tr,set,x:(ri*set*.37)%set});
+  row.append(tr);R.append(row);row._o={tr,set,x:(ri*set*.37)%set,v:S.speed,hold:false};tracks.push(row._o);
  });
+ const si=document.querySelector('#sl input[max="400"]');if(si)si.max=Math.floor(fit);
  last=0;raf=requestAnimationFrame(tick);
 }
 function tick(t){
  const dt=Math.min(.1,(t-(last||t))/1000);last=t;
- if(!paused&&!document.hidden&&lbI<0)tracks.forEach(o=>{o.x=(o.x+S.speed*dt)%o.set;o.tr.style.transform='translate3d('+(-o.x)+'px,0,0)'});
+ if(!document.hidden&&lbI<0)tracks.forEach(o=>{
+  if(o.hold||(paused&&!o.glide))return;
+  o.v+=(S.speed-o.v)*Math.min(1,dt*2.5);
+  o.x=((o.x+o.v*dt)%o.set+o.set)%o.set;o.tr.style.transform='translate3d('+(-o.x)+'px,0,0)'});
  raf=requestAnimationFrame(tick);
 }
+let drag=null,moved=false;
+$('#rows').addEventListener('pointerdown',e=>{const r=e.target.closest('.row');if(!r||!r._o||(e.pointerType==='mouse'&&e.button!==0))return;moved=false;r._o.hold=true;drag={o:r._o,id:e.pointerId,x0:e.clientX,lx:e.clientX,lt:e.timeStamp,v:0}});
+addEventListener('pointermove',e=>{
+ if(!drag||e.pointerId!==drag.id)return;
+ if(!moved&&Math.abs(e.clientX-drag.x0)<6)return;
+ const dx=e.clientX-drag.lx,dt=Math.max(.001,(e.timeStamp-drag.lt)/1000),o=drag.o;
+ if(!moved){moved=true;drag.lx=e.clientX;return}
+ drag.lx=e.clientX;drag.lt=e.timeStamp;drag.v=drag.v*.6+(-dx/dt)*.4;
+ o.x=((o.x-dx)%o.set+o.set)%o.set;o.tr.style.transform='translate3d('+(-o.x)+'px,0,0)';
+});
+const endDrag=e=>{
+ if(!drag||e.pointerId!==drag.id)return;
+ const o=drag.o;o.hold=false;o.glide=true;
+ o.v=moved&&e.timeStamp-drag.lt<120?Math.max(-2500,Math.min(2500,drag.v)):0;
+ drag=null;setTimeout(()=>{o.glide=false},3000);
+};
+addEventListener('pointerup',endDrag);addEventListener('pointercancel',endDrag);
 $('#rows').addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')paused=true});
 $('#rows').addEventListener('pointerleave',()=>paused=false);
 function grid(){
@@ -179,8 +201,14 @@ function grid(){
 async function add(files){
  const fs=[...files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return msg('Nenhuma imagem válida.');
  msg('Adicionando…');
- try{for(const f of fs){const[w,h]=await dims(f);await tx('imgs','readwrite',s=>s.add({c:cur.id,w,h,blob:f}))}await reload();msg(fs.length+' imagem(ns) adicionada(s).')}
- catch(e){msg('Não foi possível salvar neste navegador.')}
+ let ok=0;
+ for(const f of fs){
+  msg('Adicionando '+(ok+1)+' de '+fs.length+'…');
+  try{const[w,h]=await dims(f);await tx('imgs','readwrite',s=>s.add({c:cur.id,w,h,blob:f}));ok++}
+  catch(e){msg('Falha ao salvar '+(f.name||'imagem')+': '+((e&&e.message)||'erro')+'.');}
+ }
+ try{await reload()}catch(e){}
+ if(ok)msg(ok+' imagem(ns) adicionada(s).')
 }
 $('#f').onchange=e=>{add(e.target.files);e.target.value=''};
 addEventListener('dragover',e=>e.preventDefault());
@@ -204,9 +232,12 @@ $('#ex').onclick=async()=>{
   msg('Gerando backup…');
   const all=await tx('imgs','readonly',s=>s.getAll()),out=[];
   for(const it of all)out.push({c:it.c,w:it.w,h:it.h,d:await b2d(it.blob)});
-  const bl=new Blob([JSON.stringify({v:2,cols,items:out})],{type:'application/json'});if(dl)await dl.save({filename:'moodboard-backup.json',data:bl});else{const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='moodboard-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+  const bl=new Blob([JSON.stringify({v:2,cols,items:out})],{type:'application/json'});const fl=new File([bl],'moodboard-backup.json',{type:'application/json'});
+  if(dl)await dl.save({filename:'moodboard-backup.json',data:bl});
+  else if(navigator.canShare&&navigator.canShare({files:[fl]})){try{await navigator.share({files:[fl]})}catch(x){if(x&&x.name==='AbortError')return msg('Exportação cancelada.');throw x}}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download='moodboard-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
   msg('Backup salvo: '+cols.length+' coleções, '+out.length+' imagens.');
- }catch(e){msg(e&&e.code==='declined'?'Exportação cancelada.':'Falha ao exportar.')}
+ }catch(e){msg(e&&e.code==='declined'?'Exportação cancelada.':window.top!==window?'O Notion bloqueou o download. Abra a página em uma guia normal do navegador para exportar (os dados lá são separados dos do Notion).':'Falha ao exportar.')}
 };
 $('#im').onchange=async e=>{
  const f=e.target.files[0];e.target.value='';if(!f)return;
@@ -217,7 +248,7 @@ $('#im').onchange=async e=>{
   await loadCols();await shelf();msg(j.items.length+' imagens importadas.');
  }catch(err){msg('Arquivo de backup inválido.')}
 };
-function wake(){document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>{if($('#panel').hidden&&(items.length||!cur||!$('#lb').hidden))document.body.classList.add('idle')},4000)}
+function wake(){document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>{if($('#panel').hidden&&(items.length||!cur||!$('#lb').hidden))document.body.classList.add('idle')},2000)}
 ['pointermove','pointerdown','touchstart','keydown','wheel'].forEach(t=>addEventListener(t,wake,{passive:true}));
 function showLb(i){
  const n=items.length;if(!n)return;lbI=(i+n)%n;const it=items[lbI],im=$('#lbi');im.classList.remove('ok');
@@ -226,7 +257,7 @@ function showLb(i){
 }
 function openLb(i){$('#lb').hidden=false;$('#panel').hidden=true;showLb(i);wake()}
 function closeLb(){$('#lb').hidden=true;lbI=-1;$('#lbi').removeAttribute('src');if(lbU)URL.revokeObjectURL(lbU);lbU=null}
-$('#rows').addEventListener('click',e=>{const d=e.target.closest('.it');if(d)openLb(+d.dataset.i)});
+$('#rows').addEventListener('click',e=>{const d=e.target.closest('.it');if(d&&!moved)openLb(+d.dataset.i)});
 $('#lbp').onclick=()=>showLb(lbI-1);$('#lbn').onclick=()=>showLb(lbI+1);$('#lbx').onclick=closeLb;
 $('#lb').addEventListener('click',e=>{if(e.target.id==='lb'||e.target.id==='lbi'&&0)closeLb()});
 addEventListener('keydown',e=>{if($('#lb').hidden)return;if(e.key==='ArrowLeft')showLb(lbI-1);else if(e.key==='ArrowRight')showLb(lbI+1);else if(e.key==='Escape')closeLb()});
