@@ -97,13 +97,12 @@ const dims=b=>new Promise(ok=>{const u=URL.createObjectURL(b),i=new Image(),d=a=
 const b2d=b=>new Promise(ok=>{const r=new FileReader();r.onload=()=>ok(r.result);r.readAsDataURL(b)});
 const d2b=d=>{const[h,s]=d.split(','),a=atob(s),u=new Uint8Array(a.length);for(let i=0;i<a.length;i++)u[i]=a.charCodeAt(i);return new Blob([u],{type:h.slice(5,h.indexOf(';'))})};
 const slug=n=>n.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'colecao';
-const mkThumb=async b=>{try{const m=await createImageBitmap(b),k=Math.min(1,800/Math.max(m.width,m.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(m.width*k));c.height=Math.max(1,Math.round(m.height*k));c.getContext('2d').drawImage(m,0,0,c.width,c.height);m.close&&m.close();return await new Promise(ok=>c.toBlob(ok,'image/webp',.82))}catch(e){return null}};
-const pic=(im,it)=>{im.src=U(it.t||it.blob);if(it.t)im.onerror=()=>{im.onerror=null;it.t=null;im.src=U(it.blob)}};
+const pic=(im,it)=>{im.src=U(it.blob)};
 const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}};
 const U=b=>{const u=URL.createObjectURL(b);urls.push(u);return u};
 const save=()=>tx('cols','readwrite',s=>s.put(cur));
 function cleanup(){cancelAnimationFrame(raf);urls.forEach(u=>URL.revokeObjectURL(u));urls=[];tracks=[]}
-function view(v){$('#shelf').hidden=v!=='shelf';$('#rows').hidden=v!=='coll';$('#bar').hidden=v!=='coll';$('#back').hidden=!(v==='coll'&&fromShelf);$('#panel').hidden=true;msg();wake()}
+function view(v){$('#shelf').hidden=v!=='shelf';$('#rows').hidden=v!=='coll';$('#bar').hidden=v!=='coll';$('#back').hidden=v!=='coll';$('#panel').hidden=true;msg();wake()}
 
 async function loadCols(){
  cols=(await tx('cols','readonly',s=>s.getAll()))||[];
@@ -138,7 +137,7 @@ async function openCol(id,fs,edit){
  await reload();if(edit)$('#panel').hidden=false;
 }
 async function reload(){const id=cur.id;items=await tx('imgs','readonly',s=>s.index('c').getAll(id));if(S.shuf)shuf(items);render();grid();migrate(id)}
-async function migrate(id){let n=0;for(const it of items.filter(x=>!x.t)){if(!cur||cur.id!==id)return;const t=await mkThumb(it.blob);if(!t)continue;it.t=t;await tx('imgs','readwrite',s=>s.put(it));n++}if(n&&cur&&cur.id===id&&lbI<0){render();grid()}}
+async function migrate(id){for(const it of items.filter(x=>x.t)){delete it.t;await tx('imgs','readwrite',st=>st.put(it))}}
 function apply(){for(const k in DEF)S[k]=Q.get(k)!==null&&Q.get(k)!==''&&!isNaN(+Q.get(k))?+Q.get(k):cur[k]}
 function buildSl(){
  const b=$('#sl');b.innerHTML='';
@@ -180,7 +179,7 @@ function grid(){
 async function add(files){
  const fs=[...files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return msg('Nenhuma imagem válida.');
  msg('Adicionando…');
- try{for(const f of fs){const[w,h]=await dims(f),t=await mkThumb(f);await tx('imgs','readwrite',s=>s.add({c:cur.id,w,h,blob:f,t}))}await reload();msg(fs.length+' imagem(ns) adicionada(s).')}
+ try{for(const f of fs){const[w,h]=await dims(f);await tx('imgs','readwrite',s=>s.add({c:cur.id,w,h,blob:f}))}await reload();msg(fs.length+' imagem(ns) adicionada(s).')}
  catch(e){msg('Não foi possível salvar neste navegador.')}
 }
 $('#f').onchange=e=>{add(e.target.files);e.target.value=''};
