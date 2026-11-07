@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="dark">
 <title>tjoucreator</title>
 <style>
 :root{--bg:#fff;--fg:#37352f;--fg2:#787774;--line:#e9e9e7;--hover:#f1f1ef;--panel:#fff;--stage:#f7f6f3;--accent:#2383e2;--shadow:rgba(15,15,15,.15);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
@@ -30,6 +30,7 @@ main{display:grid;gap:16px;padding:16px;max-width:1180px;margin:0 auto}
 .leaf{position:absolute;top:0;left:50%;width:var(--pw);height:var(--ph);transform-origin:left center;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,.6,.25,1)}
 #book.fast,#book.fast .leaf{transition-duration:.55s}
 #book.tp,#book.tp .leaf{transition:none!important}
+#book.jp,#book.jp .leaf{transition-duration:var(--jd)!important}
 .face{position:absolute;inset:0;background:#fff;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .face img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .face::after{content:"";position:absolute;inset:0;pointer-events:none}
@@ -60,7 +61,20 @@ label{display:grid;gap:6px;font-size:13px;color:var(--fg2)}
 .th{position:relative;height:72px;padding:0;border:0;border-radius:4px;overflow:hidden;background:#fff;box-shadow:0 1px 5px var(--shadow);display:grid;place-items:center;color:#999;font-size:10px}.th img{width:100%;height:100%;object-fit:cover;display:block}
 [hidden]{display:none!important}
 button.th{cursor:pointer}.th.e::after{content:"✎";position:absolute;right:3px;bottom:3px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:0 5px;border-radius:8px}
-.pr{gap:12px}.pr label{grid-template-columns:1fr auto}.pr input[type=range]{grid-column:1/-1}.pr output{color:var(--fg)}
+.pr{gap:14px}.pr label{grid-template-columns:1fr auto;align-items:center}.pr input[type=range]{grid-column:1/-1}
+input[type=range]{-webkit-appearance:none;appearance:none;box-sizing:border-box;width:100%;height:22px;margin:0;padding:0;border:0;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(to right,var(--accent) var(--p,0%),var(--line) var(--p,0%))}
+input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:var(--line)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:4px;background:var(--accent)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;box-sizing:border-box;width:18px;height:18px;margin-top:-7px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.25);transition:transform .12s,box-shadow .12s}
+input[type=range]::-moz-range-thumb{box-sizing:border-box;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.18)}
+input[type=range]:focus-visible{outline:none}input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 30%,transparent)}
+.nv{width:72px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--fg);font:inherit;font-size:13px;text-align:right;font-variant-numeric:tabular-nums;-moz-appearance:textfield;appearance:textfield}
+.nv::-webkit-inner-spin-button,.nv::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.nv:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+label output{display:none}
+
 #home{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;align-content:center;gap:18px;padding:20px;text-align:center}
 #home h1{font-size:28px}#home p{margin:0;color:var(--fg2)}.hcs{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));width:min(520px,100%)}
 .hc{display:grid;gap:6px;padding:26px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);cursor:pointer;font-size:18px;font-weight:600}.hc:hover{background:var(--hover);border-color:var(--accent)}.hc span{font-size:13px;font-weight:400;color:var(--fg2)}
@@ -80,7 +94,7 @@ button.th{cursor:pointer}.th.e::after{content:"✎";position:absolute;right:3px;
 </style>
 </head>
 <body>
-<header><button class="tb" id="hm">‹ Início</button><div><h1>tjoucreator</h1><p>Monte um caderno e baixe o arquivo .tjou para importar no tjournal.</p></div><button class="ib" id="theme" aria-label="Alternar tema claro ou escuro"></button></header>
+<header><button class="tb" id="hm">‹ Início</button><div><h1>tjoucreator</h1><p>Monte um caderno e baixe o arquivo .tjou para importar no tjournal.</p></div></header>
 <div id="home"><h1>tjoucreator</h1><p>O que você quer fazer?</p><div class="hcs"><button class="hc" id="hnew">Criar caderno<span>Começar um caderno novo</span></button><button class="hc" id="hedit">Editar caderno<span>Abrir um arquivo .tjou existente</span></button></div><p id="hmsg" role="status"></p></div>
 <div id="ed" hidden><div id="edb" role="dialog" aria-label="Ajustar imagem"><b>Ajustar imagem</b><p class="hint" id="edh"></p><div id="vp"></div><label>Zoom<input type="range" id="edz" step=".01"></label><div class="row"><button class="tb" id="edf">Preencher a página</button><button class="tb" id="edc">Encaixar inteira</button></div><div class="row"><button class="tb pri" id="edok">Aplicar</button><button class="tb" id="edx">Cancelar</button></div></div></div>
 <main>
@@ -133,10 +147,6 @@ const lum=h=>{const x=parseInt(h.slice(1),16);return(.299*(x>>16)+.587*(x>>8&255
 const bgOf=(c,img)=>img?'center/cover url('+img.url+')':c;
 
 /* tema */
-const eff=()=>document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-const icon=()=>{$('#theme').textContent=eff()==='dark'?'☀':'☾'};
-try{const t=localStorage.getItem('tjouTema');if(t)document.documentElement.dataset.theme=t}catch(e){}
-$('#theme').onclick=()=>{const t=eff()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('tjouTema',t)}catch(e){}icon()};
 
 /* tamanho do caderno: as imagens se ajustam a ele (preenchem a página), nunca o contrário */
 const DEF={t:4,r:14,off:8,dz:60,vis:5,wt:12,wh:34,wn:0,wa:18,spo:25,spw:7},P={...DEF};
@@ -145,8 +155,17 @@ WR=[['wt','Espessura do fio',4,30,1],['wh','Tamanho do furo e da argola',20,60,1
 const mkR=a=>'<label>'+a[1]+'<output></output><input type="range" data-k="'+a[0]+'" min="'+a[2]+'" max="'+a[3]+'" step="'+a[4]+'"></label>';
 $('#prm').innerHTML=PR.slice(0,5).map(mkR).join('')+'<div id="wp" class="blk pr" hidden><div class="hint">Espiral</div>'+WR.map(mkR).join('')+'</div>'+PR.slice(5).map(mkR).join('')+'<button class="tb" id="rs">Restaurar padrão</button>';
 function applyP(){const s=document.documentElement.style;s.setProperty('--t',P.t+'px');s.setProperty('--spo',P.spo/100);s.setProperty('--spw',P.spw+'%');s.setProperty('--whs',P.wh/1000);s.setProperty('--wts',P.wt/1000);s.setProperty('--wa',(180+P.wa)+'deg');
-  document.querySelectorAll('#prm input').forEach(i=>{i.value=P[i.dataset.k];i.parentNode.querySelector('output').textContent=P[i.dataset.k]});$('#wp').hidden=!st.wire}
-document.querySelectorAll('#prm input').forEach(i=>i.oninput=()=>{P[i.dataset.k]=+i.value;applyP();refresh()});
+  document.querySelectorAll('#prm input[data-k]').forEach(i=>{i.value=P[i.dataset.k];i.parentNode.querySelector('output').textContent=P[i.dataset.k];nvSync(i)});$('#wp').hidden=!st.wire}
+document.querySelectorAll('#prm input[data-k]').forEach(i=>i.oninput=()=>{P[i.dataset.k]=+i.value;applyP();refresh()});
+/* sliders: trilho preenchido + campo numérico para digitar o valor exato */
+function nvSync(r){const n=r._nv;if(n&&document.activeElement!==n)n.value=r.value;r.style.setProperty('--p',(100*(r.value-r.min)/(r.max-r.min))+'%')}
+function nvInit(root){root.querySelectorAll('input[type=range]').forEach(r=>{
+  if(r._nv)return;const n=document.createElement('input'),l=r.closest('label');n.type='number';n.className='nv';n.min=r.min;n.max=r.max;n.step=r.step;n.inputMode='decimal';
+  n.setAttribute('aria-label',l?l.firstChild.textContent.trim():'Valor');r.parentNode.insertBefore(n,r);r._nv=n;
+  n.onchange=()=>{const v=parseFloat(n.value);if(isNaN(v)){n.value=r.value;return}r.value=Math.max(+r.min,Math.min(+r.max,v));n.value=r.value;r.dispatchEvent(new Event('input'))};
+  n.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();n.blur()}};
+  r.addEventListener('input',()=>nvSync(r));nvSync(r)})}
+nvInit($('#prm'));
 $('#rs').onclick=()=>{Object.assign(P,DEF);applyP();refresh()};
 const SZ={v:[987,1400],h:[1400,987]},clampPx=v=>Math.max(200,Math.min(6000,Math.round(+v)||200));
 const dims=()=>{const[w,h]=st.size==='custom'?[clampPx(st.cw),clampPx(st.ch)]:SZ[st.size];return{w,h,ar:w/h}};
@@ -249,7 +268,7 @@ async function openEd(i){
   $('#edh').textContent=it.part?'Esta imagem foi partida ao meio: o ajuste vale para as duas páginas. Arraste para reposicionar.':'Arraste a imagem para reposicionar; use o zoom (ou a roda do mouse) para ampliar.';
   $('#ed').hidden=false;drawEd();
 }
-function drawEd(){const{img,bw,bh,k0,c,VW,VH,v}=ed,dw=bw*k0*v.z*c,dh=bh*k0*v.z*c;img.style.width=dw+'px';img.style.height=dh+'px';img.style.left=(VW/2+v.x*VW-dw/2)+'px';img.style.top=(VH/2+v.y*VH-dh/2)+'px';edz.value=v.z}
+function drawEd(){const{img,bw,bh,k0,c,VW,VH,v}=ed,dw=bw*k0*v.z*c,dh=bh*k0*v.z*c;img.style.width=dw+'px';img.style.height=dh+'px';img.style.left=(VW/2+v.x*VW-dw/2)+'px';img.style.top=(VH/2+v.y*VH-dh/2)+'px';edz.value=v.z;nvSync(edz)}
 const setZ=z=>{if(!ed)return;ed.v.z=Math.max(ed.zc,Math.min(4,z));drawEd()};
 function closeEd(){if(ed)URL.revokeObjectURL(ed.u);ed=null;dr=null;$('#ed').hidden=true}
 vp.onpointerdown=e=>{if(ed){dr={x:e.clientX,y:e.clientY,vx:ed.v.x,vy:ed.v.y};vp.setPointerCapture(e.pointerId)}};
@@ -397,14 +416,13 @@ async function jump(c){
   const d=c>cur?1:-1,lo=Math.min(cur,c),n=Math.abs(c-cur),k=Math.min(4,n-1),set=new Set();
   while(set.size<k)set.add(lo+1+Math.floor(Math.random()*(n-1)));
   const stops=[...set].sort((x,y)=>d*(x-y));stops.push(c);
-  jumping=true;clearTimeout(tm);tm=null;if(n>1)book.classList.add('fast');
+  const ms=n===1?950:Math.min(450,1500/(k+1)-30);jumping=true;clearTimeout(tm);tm=null;if(n>1){book.style.setProperty('--jd',ms+'ms');book.classList.add('jp')}
   try{
     for(const s of stops){
       if(s!==cur+d){book.classList.add('tp');cur=d>0?s-1:s+1;paint();void book.offsetWidth;book.classList.remove('tp')}
-      goTo(s);await sleep(n>1?700:950);
+      goTo(s);await sleep(n>1?ms+30:950);
     }
-    await sleep(500);
-  }finally{jumping=false;book.classList.remove('fast','tp');loop()}
+  }finally{jumping=false;book.classList.remove('jp','tp');loop()}
 }
 const pgi=$('#pgi'),pgEnd=()=>{$('#pge').hidden=true;$('#pgb').hidden=false};
 $('#pgb').onclick=()=>{$('#pgb').hidden=true;$('#pge').hidden=false;pgi.max=total();pgi.value='';pgi.placeholder='1–'+total();pgi.focus();pokeCnt()};
@@ -412,7 +430,7 @@ function pgGo(){const v=parseInt(pgi.value,10);pgEnd();if(!isNaN(v))jump(sheetOf
 pgi.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')pgGo();else if(e.key==='Escape')pgEnd()};
 pgi.onblur=()=>setTimeout(pgEnd,0);
 $('#pgg').onpointerdown=e=>e.preventDefault();$('#pgg').onclick=pgGo;
-icon();applyP();syncType();refresh();pokeCnt();
+applyP();syncType();refresh();pokeCnt();
 </script>
 </body>
 </html>
