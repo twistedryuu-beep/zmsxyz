@@ -16,7 +16,7 @@
 
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;display:flex;flex-direction:column;overflow:hidden}
-#bar{display:grid;grid-template-columns:40px 40px 40px 1fr 40px 40px 40px;gap:4px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--bg)}
+#bar{display:grid;grid-template-columns:40px 40px 40px 1fr auto 40px 40px;gap:4px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--bg)}
 .ib,nav button{border:0;background:none;color:var(--fg);cursor:pointer;font-size:20px;width:40px;height:40px;border-radius:8px}
 .ib:hover{background:var(--hover)}.inv{visibility:hidden}
 #tt{text-align:center;min-width:0}
@@ -82,6 +82,9 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 #dt{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
 .drow{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
 #dcv .cv{--bw:100px;--bh:142px;box-shadow:0 4px 10px var(--shadow)}
+#adv:not([hidden]){display:grid;gap:12px}
+#adlg{width:min(520px,calc(100vw - 32px))}#avp{position:relative;overflow:hidden;touch-action:none;cursor:grab;margin:0 auto 10px;border:1px solid var(--line)}#avp img{position:absolute;max-width:none;pointer-events:none;user-select:none;-webkit-user-select:none}
+.arow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:13px}.achk{display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:10px}.achk input{width:16px;height:16px}
 #odlg{width:min(680px,calc(100vw - 32px))}
 #ohint{font-size:12px;color:var(--fg2);margin-bottom:10px}
 #ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;max-height:60svh;overflow:auto;padding:4px;counter-reset:n;margin-bottom:12px}
@@ -94,7 +97,7 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 #sw{display:grid;grid-template-columns:repeat(5,28px);gap:10px}
 .swb{width:28px;height:28px;border-radius:50%;border:0;padding:0;cursor:pointer}.swb.on{outline:2px solid var(--accent);outline-offset:2px}
 .end{display:flex;gap:8px;margin-top:6px}
-#impb{display:grid;place-items:center;padding:0}#impb svg{width:20px;height:20px}
+#impb{display:flex;align-items:center;gap:6px;padding:0 12px;width:auto;font-size:14px}#impb svg{width:18px;height:18px;flex:none}
 #notice{box-sizing:border-box;width:100%;max-width:980px;margin:32px auto 0;display:flex;gap:2px 10px;align-items:center;justify-content:center;flex-wrap:wrap;padding:6px 14px;font-size:12px;line-height:1.4;color:var(--fg2);text-align:center;opacity:.75}
 #notice a{color:inherit;text-decoration:underline;white-space:nowrap}#notice a:hover{color:var(--fg)}
 #rtitle{position:absolute;top:4px;left:60px;right:60px;text-align:center;font:600 13px/16px Georgia,"Times New Roman",serif;color:var(--fg2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
@@ -112,6 +115,10 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 .cv.wr>.hl{left:calc(var(--hs)*-.6);background-position:0 0,0 0,100% 0}
 #rback{position:absolute;top:8px;left:12px;z-index:6;width:40px;height:40px;padding:0 0 3px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-size:24px;line-height:1;cursor:pointer;box-shadow:0 2px 8px var(--shadow);transition:opacity .3s}
 #rback.gone{opacity:0;pointer-events:none}
+#pgc{position:relative;z-index:5;height:32px;flex:none;display:grid;place-items:center;transition:opacity .4s}#pgc[hidden]{display:none}#pgc.gone{opacity:0;pointer-events:none}
+#pgb,#pgi,#pgg{font:inherit;font-size:12px;color:var(--fg2);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:4px 12px;cursor:pointer}
+#pgb{min-width:84px}#pgb:hover{background:var(--hover)}#pge:not([hidden]){display:flex;gap:6px;align-items:center}#pgi{width:96px;color:var(--fg);cursor:text;text-align:center;font-size:14px}
+#aprow:not([hidden]){display:grid;gap:8px}#pauto.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 #wp{display:grid;gap:12px}#wp[hidden]{display:none}.tb.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 </style>
 </head>
@@ -122,7 +129,7 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <span aria-hidden="true"></span>
 <div id="tt"><button id="ttl" class="static">Meus cadernos</button></div>
 
-<button class="ib" id="impb" aria-label="Importar caderno do tjoucreator" title="Importar caderno (.tjou)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></button>
+<button class="ib" id="impb" aria-label="Importar caderno do tjoucreator" title="Importar caderno (.tjou)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg><span>Importar</span></button>
 <button class="ib" id="vm" aria-label="Alternar entre estante e carrossel"></button>
 <button class="ib" id="theme" aria-label="Alternar tema claro ou escuro"></button>
 </div>
@@ -132,17 +139,21 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <section id="reader" hidden>
 <button id="rback" class="gone" aria-label="Voltar para a estante">‹</button>
 <div id="stage"><div id="rtitle"></div><div id="bw"><div id="book"></div></div>
-<div id="empty" hidden><div>Este caderno está vazio</div><button class="tb pri" id="imp">Importar PDF ou arquivo .tjou</button></div></div>
+<div id="empty" hidden><div>Este caderno está vazio</div><button class="tb pri" id="imp">Importar PDF, imagens ou .tjou</button></div></div>
+<div id="pgc" hidden><button id="pgb" aria-label="Ir para uma página específica"></button><span id="pge" hidden><input id="pgi" type="number" inputmode="numeric" min="0" enterkeyhint="go" aria-label="Número da página"><button id="pgg">Ir</button></span></div>
 <nav>
 <button id="prev" aria-label="Página anterior">‹</button>
-<button id="add" aria-label="Importar PDF ou arquivo .tjou">+</button>
+<button id="add" aria-label="Importar PDF, imagens ou arquivo .tjou">+</button>
 <button id="next" aria-label="Próxima página">›</button>
 <button id="more" aria-label="Menu do caderno">⋯</button>
 </nav>
 </section>
 <div id="panel" hidden>
 <div id="count"></div>
-<div class="prow"><button class="tb" id="pedit">Editar caderno</button><button class="tb" id="pord">Reordenar páginas</button><button class="tb" id="theme2"></button></div>
+<div class="prow"><button class="tb" id="pedit">Editar caderno</button><button class="tb" id="pord">Reordenar páginas</button><button class="tb" id="pauto" aria-pressed="false" title="Paginação automática">▶ Auto</button><button class="tb" id="theme2"></button></div>
+<div id="aprow" hidden><label>Tempo por página (segundos)<output></output><input type="range" data-k="as" min="1" max="10" step=".5"></label><div style="font-size:12px;color:var(--fg2)">Ao chegar ao fim, o caderno volta ao início e continua.</div></div>
+<button class="tb" id="advb" aria-expanded="false" aria-controls="adv">Avançado ▾</button>
+<div id="adv" hidden>
 <label>Tamanho do caderno<output></output><input type="range" data-k="sz" min="50" max="500" step="10"></label>
 <label>Espessura da folha<output></output><input type="range" data-k="t" min="0" max="24"></label>
 <label>Cantos arredondados<output></output><input type="range" data-k="r" min="0" max="40"></label>
@@ -160,6 +171,7 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <div style="font-size:12px;color:var(--fg2)">Com zoom: arraste fora do livro, use dois dedos (ou Shift + arrastar) para mover, e pinça para ajustar o zoom. Toque duas vezes para centralizar.</div>
 <button class="tb" id="reset">Restaurar padrão</button>
 </div>
+</div>
 <div id="cpanel" hidden><label>Tamanho das capas<span id="cso"></span><input type="range" id="csz" min="40" max="100" step="5"></label><div style="font-size:12px;color:var(--fg2)">100% = ajustado automaticamente à altura disponível.</div></div>
 <dialog id="dlg">
 <h2 id="dh">Novo caderno</h2>
@@ -175,14 +187,24 @@ dialog label{display:grid;gap:6px;font-size:13px;color:var(--fg2);margin-bottom:
 <div id="ogrid"></div>
 <div class="end"><button class="tb" id="oadd">+ Página em branco</button><span style="flex:1"></span><button class="tb" id="ocan">Cancelar</button><button class="tb pri" id="osave">Salvar</button></div>
 </dialog>
+<dialog id="adlg">
+<h2>Ajustar imagem <span id="acnt" style="font-weight:400;font-size:13px;color:var(--fg2)"></span></h2>
+<div id="avp"></div>
+<div class="arow"><button class="tb" data-am="fill">Preencher</button><button class="tb" data-am="fit">Encaixar</button><button class="tb" data-am="stretch">Esticar</button><button class="tb" id="acen">Centralizar</button></div>
+<label style="margin-bottom:10px">Zoom<input type="range" id="az" min=".2" max="4" step=".01"></label>
+<div class="arow"><span style="color:var(--fg2)">Fundo</span><button class="tb" data-bg="#ffffff">Branco</button><button class="tb" data-bg="#000000">Preto</button><button class="tb" id="aall">Aplicar a todas</button></div>
+<label class="achk"><input type="checkbox" id="asp">Dividir ao meio (vira duas páginas)</label>
+<div style="font-size:12px;color:var(--fg2);margin-bottom:10px">Arraste a imagem para posicioná-la. Preencher corta o excesso, Encaixar mostra a imagem inteira e Esticar deforma para ocupar a página.</div>
+<div class="end"><button class="tb" id="aprev" aria-label="Imagem anterior">‹</button><button class="tb" id="anext" aria-label="Próxima imagem">›</button><span style="flex:1"></span><button class="tb" id="acan">Cancelar</button><button class="tb pri" id="aok">Adicionar</button></div>
+</dialog>
 <input type="file" id="cimg" accept="image/*" hidden>
 <input type="file" id="tfile" hidden>
 <input type="file" id="file" multiple hidden>
 <div id="st"></div>
-<div id="drop">Solte o PDF ou arquivo .tjou aqui</div>
+<div id="drop">Solte PDF, imagens ou arquivo .tjou aqui</div>
 <script>
 const $=s=>document.querySelector(s),book=$('#book'),stage=$('#stage');
-const S={t:4,r:14,off:8,dz:60,vis:5,sz:100,wt:12,wh:34,wn:0,wa:18,spo:25,spw:7,cs:100},DEF={...S};
+const S={t:4,r:14,off:8,dz:60,vis:5,sz:100,wt:12,wh:34,wn:0,wa:18,spo:25,spw:7,as:3,cs:100},DEF={...S};
 try{if(top!==self)document.documentElement.classList.add('emb')}catch(e){document.documentElement.classList.add('emb')}
 const COLORS=['#2f3437','#e16259','#f2994a','#e8b931','#4dab9a','#2d9cdb','#6940a5','#e255a1','#9a6dd7','#64473a'];
 let nbs=[],nb=null,pages=[],cur=1,locked=false,leaves=[],g=null,db=null,edit=null,delArm=false;
@@ -294,7 +316,7 @@ function tap(dir){
   if(pan.x||pan.y)tapTimer=setTimeout(()=>{tapTimer=null;go(dir)},330);else go(dir);
 }
 rd.addEventListener('pointerdown',e=>{
-  if(!nb||!leaves.length||e.target.closest('nav,#rback'))return;
+  if(!nb||!leaves.length||e.target.closest('nav,#rback,#pgc'))return;
   ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(ptrs.size===2){
     if(g&&g.on){const q=g;g=null;settle(q.idx,cur,250)}else g=null;
@@ -382,15 +404,51 @@ car.addEventListener('pointercancel',()=>{cdn=null;layoutCar(ci,true)});
 let bt=0;
 function pokeBack(){const b=$('#rback');b.classList.remove('gone');clearTimeout(bt);bt=setTimeout(()=>b.classList.add('gone'),3000)}
 ['pointerdown','pointermove','wheel','keydown'].forEach(t=>document.addEventListener(t,()=>{if(nb)pokeBack()},{capture:true,passive:true}));
+
+/* contador de páginas (some após 2 s sem toque; toque nele para digitar a página) */
+let ct=0,jumping=false,auto=false,at=0;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function pokeCnt(){const e=$('#pgc');e.classList.remove('gone');clearTimeout(ct);ct=setTimeout(()=>{if(!$('#pge').hidden)return pokeCnt();e.classList.add('gone')},2000)}
+['pointerdown','pointermove','wheel','keydown'].forEach(t=>document.addEventListener(t,()=>{if(nb)pokeCnt()},{capture:true,passive:true}));
+function pgUpdate(){
+  if(!nb)return;const e=!leaves.length;$('#pgc').hidden=e;if(e)return;
+  $('#pgb').textContent=cur===0?'Capa · '+pages.length+' págs.':nb.back&&cur===leaves.length?'Contracapa':(2*cur-1)+'–'+(2*cur)+' / '+pages.length;
+}
+const sheetOf=n=>n<=0?0:n>pages.length?(nb.back?leaves.length:maxC()):Math.ceil(n/2);
+/* pula para a folha c folheando as páginas do meio em sequência */
+async function jump(c){
+  c=Math.max(0,Math.min(maxC(),c|0));if(locked||jumping||c===cur||!leaves.length)return;
+  const n=Math.abs(c-cur),d=c>cur?1:-1,ms=n>40?110:n>12?180:n>5?260:n>1?380:750;
+  jumping=true;
+  try{while(cur!==c){settle(d>0?cur:cur-1,cur+d,ms);await sleep(n===1?ms:ms*.5)}await sleep(ms*.6+40)}finally{jumping=false}
+}
+const pgi=$('#pgi'),pgEnd=()=>{$('#pge').hidden=true;$('#pgb').hidden=false};
+$('#pgb').onclick=()=>{$('#pgb').hidden=true;$('#pge').hidden=false;pgi.max=pages.length;pgi.value='';pgi.placeholder='1–'+pages.length;pgi.focus();pokeCnt()};
+function pgGo(){const v=parseInt(pgi.value,10);pgEnd();if(!isNaN(v))jump(sheetOf(v))}
+pgi.onkeydown=e=>{e.stopPropagation();if(e.key==='Enter')pgGo();else if(e.key==='Escape')pgEnd()};
+pgi.onblur=()=>setTimeout(pgEnd,0);
+$('#pgg').onpointerdown=e=>e.preventDefault();$('#pgg').onclick=pgGo;
+
+/* paginação automática */
+function autoTick(){
+  clearTimeout(at);if(!auto)return;
+  at=setTimeout(async()=>{
+    if(!nb||!leaves.length||$('#reader').hidden||locked||jumping||g||pm||document.querySelector('dialog[open]')){autoTick();return}
+    if(cur>=maxC())await jump(0);else go(1);
+    autoTick();
+  },S.as*1000);
+}
+function setAuto(v){auto=v;const b=$('#pauto');b.textContent=v?'⏸ Auto':'▶ Auto';b.setAttribute('aria-pressed',v);b.classList.toggle('on',v);$('#aprow').hidden=!v;autoTick()}
+$('#pauto').onclick=()=>{if(nb&&leaves.length)setAuto(!auto)};
 $('#rback').onclick=()=>showShelf();
 function view(r){
   $('#shelf').hidden=r;$('#reader').hidden=!r;$('#panel').hidden=true;$('#cpanel').hidden=true;
-  $('#bar').hidden=r;if(r)pokeBack();else{clearTimeout(bt);$('#rback').classList.add('gone')}$('#back').classList.toggle('inv',!r);$('#ttl').classList.toggle('static',!r);
+  $('#bar').hidden=r;if(r){pokeBack();pokeCnt()}else{clearTimeout(bt);$('#rback').classList.add('gone')}$('#back').classList.toggle('inv',!r);$('#ttl').classList.toggle('static',!r);
 }
 function head(){$('#ttl').textContent=nb?(nb.title||'Sem título')+' ✎':'Meus cadernos';$('#rtitle').textContent=nb?nb.title||'':''}
 /* guarda o caderno e a folha abertos; na estante, limpa */
 function saveLast(){try{if(nb)localStorage.setItem(lsk('livroLast'),JSON.stringify({id:nb.id,cur}));else localStorage.removeItem(lsk('livroLast'))}catch(e){}}
-function showShelf(){nb=null;pages=[];leaves=[];book.innerHTML='';view(false);head();$('#count').textContent='';renderShelf();saveLast()}
+function showShelf(){setAuto(false);nb=null;pages=[];leaves=[];book.innerHTML='';view(false);head();$('#count').textContent='';renderShelf();saveLast()}
 function openNb(n,src,c0){
   const C=src&&src.getBoundingClientRect();
   nb=n;pages=n.pages;pan.x=pan.y=0;applyPan();view(true);head();build(c0||0);
@@ -482,21 +540,21 @@ function paint(drag=-1,th=0,c2=cur,t=0){
   });
   const bx=c=>c===0?-25:(nb&&nb.back&&c===leaves.length?25:0);book.style.translate=(bx(cur)+(bx(c2)-bx(cur))*t)+'% 0';
   if(nb)$('#count').textContent=cur===0?'Capa':(nb.back&&cur===leaves.length?'Contracapa':'Páginas '+(2*cur-1)+'–'+(2*cur)+' de '+pages.length);
-  $('#prev').disabled=cur<=0;$('#next').disabled=cur>=maxC();
+  $('#prev').disabled=cur<=0;$('#next').disabled=cur>=maxC();pgUpdate();
 }
 function settle(idx,nc,ms){
   locked=true;const lf=leaves[idx];lf.dataset.mv=1;lf.style.zIndex=100;
   leaves.forEach(l=>l.style.transition='transform '+ms+'ms cubic-bezier(.3,.6,.25,1)');book.style.transition='translate '+ms+'ms cubic-bezier(.3,.6,.25,1)';
-  cur=nc;paint();saveLast();
+  cur=nc;paint();saveLast();autoTick();
   setTimeout(()=>{delete lf.dataset.mv;paint();locked=false;book.classList.remove('thud');void book.offsetWidth;book.classList.add('thud')},ms+30);
 }
 function go(d){
-  if(locked)return;const m=maxC();
+  if(locked||jumping)return;const m=maxC();
   if(d>0&&cur>=m||d<0&&cur<=0)return;
   settle(d>0?cur:cur-1,cur+d,750);
 }
 stage.addEventListener('pointerdown',e=>{
-  if(locked||e.target.closest('#empty'))return;
+  if(locked||jumping||e.target.closest('#empty'))return;
   const r=book.getBoundingClientRect(),cx=r.left+r.width/2,right=e.clientX>=cx;
   if(right?cur>=maxC():cur<=0){g=null;return}
   g={x0:e.clientX,right,idx:right?cur:cur-1,cx,pw:r.width/2,on:false,pts:[],th:right?0:180};
@@ -526,12 +584,66 @@ function end(){
 }
 stage.addEventListener('pointerup',end);stage.addEventListener('pointercancel',end);
 
+/* importar imagens: ajuste de posição antes de entrarem no caderno (preencher, encaixar, esticar, centralizar, arrastar, zoom) */
+const isImg=f=>f.type.startsWith('image/')||/\.(png|jpe?g|webp|gif|bmp|avif)$/i.test(f.name);
+let aq=[],ai=0,ac=1,ad=null;const avp=$('#avp'),az=$('#az');
+const rectOf=(it,vw,h)=>{let dw,dh;if(it.mode==='stretch'){dw=vw*it.z;dh=h*it.z}else{const k=(it.mode==='fit'?Math.min(vw/it.bw,h/it.bh):Math.max(vw/it.bw,h/it.bh))*it.z;dw=it.bw*k;dh=it.bh*k}return[vw/2+it.x*vw-dw/2,h/2+it.y*h-dh/2,dw,dh]};
+const adVW=it=>{const[PW,PH]=pdim(nb);return[it.sp?2*PW:PW,PH]};
+async function adjOpen(files){
+  files=[...files].sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));status('Lendo imagens…');aq=[];
+  for(const f of files){try{const b=await createImageBitmap(f),w=b.width,h=b.height;if(b.close)b.close();
+    aq.push({f,bw:w,bh:h,u:URL.createObjectURL(f),mode:'fill',z:1,x:0,y:0,bg:'#ffffff',sp:isSpread(w/h,arOf(nb))})}catch(e){}}
+  if(!aq.length){status('Não foi possível ler as imagens.',3000);return}
+  status('');ai=0;$('#adlg').showModal();adjShow();
+}
+function adjShow(){
+  const it=aq[ai],[vw,h]=adVW(it);ac=Math.min(Math.min(460,innerWidth-80)/vw,innerHeight*.42/h);
+  avp.style.width=vw*ac+'px';avp.style.height=h*ac+'px';avp.style.background=it.bg;
+  let im=avp.firstChild;if(!im){im=new Image();im.alt='';im.draggable=false;avp.appendChild(im)}im.src=it.u;
+  $('#acnt').textContent=(ai+1)+' de '+aq.length;$('#asp').checked=it.sp;$('#aprev').disabled=ai<=0;$('#anext').disabled=ai>=aq.length-1;
+  document.querySelectorAll('[data-bg]').forEach(b=>b.classList.toggle('on',b.dataset.bg===it.bg));adjDraw();
+}
+function adjDraw(){
+  const it=aq[ai],[vw,h]=adVW(it),r=rectOf(it,vw,h);
+  Object.assign(avp.firstChild.style,{left:r[0]*ac+'px',top:r[1]*ac+'px',width:r[2]*ac+'px',height:r[3]*ac+'px'});az.value=it.z;
+  document.querySelectorAll('[data-am]').forEach(b=>b.classList.toggle('on',b.dataset.am===it.mode));
+}
+document.querySelectorAll('[data-am]').forEach(b=>b.onclick=()=>{const it=aq[ai];it.mode=b.dataset.am;it.z=1;it.x=it.y=0;adjDraw()});
+document.querySelectorAll('[data-bg]').forEach(b=>b.onclick=()=>{aq[ai].bg=b.dataset.bg;adjShow()});
+$('#acen').onclick=()=>{const it=aq[ai];it.x=it.y=0;adjDraw()};
+$('#asp').onchange=e=>{aq[ai].sp=e.target.checked;adjShow()};
+$('#aprev').onclick=()=>{if(ai>0){ai--;adjShow()}};$('#anext').onclick=()=>{if(ai<aq.length-1){ai++;adjShow()}};
+$('#aall').onclick=e=>{const s=aq[ai];aq.forEach(o=>{o.mode=s.mode;o.z=s.z;o.x=s.x;o.y=s.y;o.bg=s.bg});e.target.textContent='Aplicado ✓';setTimeout(()=>{e.target.textContent='Aplicar a todas'},1500)};
+avp.onpointerdown=e=>{const it=aq[ai];if(!it)return;ad={x:e.clientX,y:e.clientY,vx:it.x,vy:it.y};avp.setPointerCapture(e.pointerId)};
+avp.onpointermove=e=>{if(!ad)return;const it=aq[ai],[vw,h]=adVW(it);it.x=ad.vx+(e.clientX-ad.x)/(vw*ac);it.y=ad.vy+(e.clientY-ad.y)/(h*ac);adjDraw()};
+avp.onpointerup=avp.onpointercancel=()=>{ad=null};
+avp.onwheel=e=>{e.preventDefault();const it=aq[ai];if(it){it.z=Math.max(.2,Math.min(4,it.z*(e.deltaY<0?1.06:1/1.06)));adjDraw()}};
+az.oninput=()=>{aq[ai].z=+az.value;adjDraw()};
+$('#acan').onclick=()=>$('#adlg').close();
+$('#adlg').onclose=()=>{aq.forEach(o=>URL.revokeObjectURL(o.u));aq=[]};
+$('#aok').onclick=async()=>{
+  const q=aq;aq=[];$('#adlg').close();status('Processando…');
+  const[PW,PH]=pdim(nb),base=nb.pages.slice();if(base.length&&base[base.length-1]===null)base.pop();const out=[];
+  try{
+    for(let i=0;i<q.length;i++){
+      const it=q[i],vw=it.sp?2*PW:PW,b=await createImageBitmap(it.f),c=document.createElement('canvas');c.width=vw;c.height=PH;
+      const x=c.getContext('2d'),r=rectOf(it,vw,PH);x.fillStyle=it.bg;x.fillRect(0,0,vw,PH);x.imageSmoothingQuality='high';x.drawImage(b,r[0],r[1],r[2],r[3]);if(b.close)b.close();
+      if(it.sp){if((base.length+out.length)%2)out.push(null);for(const k of[0,1]){const p=document.createElement('canvas');p.width=PW;p.height=PH;p.getContext('2d').drawImage(c,-k*PW,0);out.push(p.toDataURL('image/jpeg',.9))}}
+      else out.push(c.toDataURL('image/jpeg',.9));
+      status('Imagem '+(i+1)+' de '+q.length+'…');
+    }
+  }catch(e){status('Não foi possível processar as imagens.',3000);q.forEach(o=>URL.revokeObjectURL(o.u));return}
+  q.forEach(o=>URL.revokeObjectURL(o.u));
+  const all=base.concat(out);if(all.length%2)all.push(null);const first=Math.floor(base.length/2)+1;
+  nb.pages=all;pages=nb.pages;dbPut(nb);build(first);status('');
+};
+
 /* importar para o caderno aberto */
 async function load(files){
   if(!nb)return;
-  const tj=files.filter(f=>/\.tjou$/i.test(f.name)),pdfs=files.filter(f=>f.type==='application/pdf'||/\.pdf$/i.test(f.name));
+  const tj=files.filter(f=>/\.tjou$/i.test(f.name)),imgs=files.filter(isImg),pdfs=files.filter(f=>f.type==='application/pdf'||/\.pdf$/i.test(f.name));
   for(const f of tj)await importTjou(f);
-  if(!pdfs.length){if(!tj.length)status('Use arquivos PDF ou .tjou.',3000);return}
+  if(!pdfs.length){if(imgs.length)adjOpen(imgs);else if(!tj.length)status('Use arquivos PDF, imagens ou .tjou.',3000);return}
   /* se o caderno termina com uma página em branco de preenchimento, as novas páginas continuam a partir dela */
   const base=nb.pages.slice();if(base.length&&base[base.length-1]===null)base.pop();
   const out=[],[PW,PH]=pdim(nb);status('Processando…');
@@ -558,6 +670,7 @@ async function load(files){
   const all=base.concat(out);if(all.length%2)all.push(null);
   const first=Math.floor(base.length/2)+1;
   nb.pages=all;pages=nb.pages;dbPut(nb);build(first);status('');
+  if(imgs.length)adjOpen(imgs);
 }
 $('#prev').onclick=()=>go(-1);$('#next').onclick=()=>go(1);
 $('#add').onclick=$('#imp').onclick=()=>$('#file').click();
@@ -569,7 +682,7 @@ addEventListener('keydown',e=>{
 addEventListener('resize',()=>{leaves.forEach(l=>l.style.transition='none');paint();fitCar()});
 addEventListener('dragover',e=>{e.preventDefault();if(nb)$('#drop').style.display='grid'});
 addEventListener('dragleave',e=>{if(!e.relatedTarget)$('#drop').style.display='none'});
-addEventListener('drop',e=>{e.preventDefault();$('#drop').style.display='none';const fs=[...e.dataTransfer.files];if(!fs.length)return;if(nb)load(fs);else{const f=fs.find(f=>/\.tjou$/i.test(f.name));if(f)importTjou(f)}});
+addEventListener('drop',e=>{e.preventDefault();$('#drop').style.display='none';const fs=[...e.dataTransfer.files];if(!fs.length)return;if(nb)load(fs);else{const f=fs.find(f=>/\.tjou$/i.test(f.name));if(f)importTjou(f);else status('Abra um caderno para importar PDF ou imagens.',3000)}});
 
 /* ajustes do livro */
 function applyCfg(){
@@ -580,6 +693,7 @@ function applyCfg(){
 }
 document.querySelectorAll('#panel input').forEach(i=>i.oninput=()=>{if(i.dataset.k==='r'&&nb){nb.r=+i.value;clearTimeout(window._rt);window._rt=setTimeout(()=>dbPut(nb),300)}else S[i.dataset.k]=+i.value;applyCfg()});
 $('#reset').onclick=()=>{const c=S.cs;Object.assign(S,DEF);S.cs=c;if(nb){delete nb.r;dbPut(nb)}applyCfg()};
+$('#advb').onclick=()=>{const h=$('#adv').hidden=!$('#adv').hidden;$('#advb').setAttribute('aria-expanded',!h);$('#advb').textContent=h?'Avançado ▾':'Avançado ▴'};
 $('#more').onclick=()=>{const p=$('#panel');p.hidden=!p.hidden};
 $('#pedit').onclick=()=>{$('#panel').hidden=true;if(nb)openDlg(nb)};
 
@@ -633,7 +747,7 @@ async function askPersist(){try{if(navigator.storage&&navigator.storage.persist&
 addEventListener('pointerdown',()=>{askPersist()},{once:true});
 const MAGIC='TJOU1\n';
 /* v2: size,w,h (px de cada página) e wire; v1 = A5 sem arame */
-const hdim=h=>{const w=+h.w,l=+h.h;return w>=100&&w<=8000&&l>=100&&l<=8000?{w,h:l,ar:w/l,size:String(h.size||'custom').slice(0,10),wire:!!h.wire}:{wire:!!h.wire}};
+const hdim=h=>{const w=+h.w,l=+h.h,R=h.r!=null&&+h.r>=0&&+h.r<=40?{r:Math.round(+h.r)}:{};return w>=100&&w<=8000&&l>=100&&l<=8000?{w,h:l,ar:w/l,size:String(h.size||'custom').slice(0,10),wire:!!h.wire,...R}:{wire:!!h.wire,...R}};
 const dbPutP=n=>new Promise((res,rej)=>{
   if(!db)return rej(new Error('db'));
   try{const t=db.transaction('nb','readwrite');t.objectStore('nb').put(n);t.oncomplete=()=>res();t.onerror=t.onabort=()=>rej(t.error||new Error('tx'))}catch(e){rej(e)}
