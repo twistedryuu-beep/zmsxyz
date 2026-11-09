@@ -237,7 +237,7 @@ html.emb #vview{background:transparent}
 .vi.anim .cf:not(.bk)>.fx{animation:fxsw 4.5s ease-in-out infinite alternate;animation-delay:var(--dl,0s)}
 @media(prefers-reduced-motion:reduce){.vi.anim .cf>.fx{animation:none}}
 .vc,#vchev{transition:opacity .35s,transform .35s}.vc.gone,#vchev.gone{opacity:0;pointer-events:none}.vc.low{opacity:0;pointer-events:none}#vtools.low{transform:translateY(46px)}
-#vchev{position:absolute;left:12px;bottom:14px;z-index:7;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;box-shadow:0 2px 8px var(--shadow);display:grid;place-items:center}#vchev svg{transition:transform .3s}#vchev.on svg{transform:rotate(180deg)}
+#vchev{position:absolute;left:12px;bottom:14px;z-index:7;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;box-shadow:0 2px 8px var(--shadow);display:grid;place-items:center}#vchev svg{transition:transform .3s}
 .vempty{position:absolute;inset:0;display:grid;place-items:center;padding:0 24px;text-align:center;color:var(--fg2);font-size:14px}
 #vtools{position:absolute;left:0;right:0;bottom:14px;z-index:6;display:flex;gap:8px;justify-content:center}#vtools .tb{background:var(--panel)}#vtools .tb[hidden]{display:none}
 /* contorno dos espaços (sleeves): duplo (escuro + claro) para aparecer em qualquer fundo de página */
@@ -360,19 +360,80 @@ nav #add,nav #more{width:auto;padding:0 14px;border-radius:19px;font-size:13px;b
 .tab.on{background:var(--panel);color:var(--fg);box-shadow:0 1px 3px var(--shadow)}
 .tp{display:grid;grid-auto-rows:max-content;gap:12px}.tp[hidden],[data-only][hidden]{display:none}
 @media(pointer:coarse){.tab{min-height:42px}}
+#bar{display:flex}#bar[hidden]{display:none}#bar .old{display:none}#bar #tt{flex:1}
+#fchip{display:inline-flex;margin-top:2px;padding:1px 9px;border-radius:10px;background:var(--hover);color:var(--fg2);font-size:12px;cursor:pointer}
+#fchip[hidden],#mpanel[hidden],#mpanel [hidden]{display:none}
+#mpanel{position:fixed;left:12px;top:calc(60px + env(safe-area-inset-top,0px));width:min(310px,calc(100vw - 24px));max-height:calc(100svh - 84px);overflow:auto;overscroll-behavior:contain;display:grid;grid-auto-rows:max-content;gap:10px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;z-index:60;box-shadow:0 8px 24px var(--shadow)}
+#mhead{display:grid;gap:2px;font-size:15px}.msec{font-size:12px;font-weight:600;color:var(--fg2);margin:6px 0 -4px}
+.seg{display:flex;flex-wrap:wrap;gap:2px;padding:3px;background:var(--hover);border-radius:9px}.seg button{flex:1;border:0;background:none;color:var(--fg2);font:inherit;font-size:12.5px;font-weight:600;padding:7px 6px;border-radius:7px;cursor:pointer;min-height:32px;white-space:nowrap}.seg button.on{background:var(--panel);color:var(--fg);box-shadow:0 1px 3px var(--shadow)}
+#mpanel label{display:grid;grid-template-columns:1fr auto;gap:4px 8px;align-items:center}#mpanel input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--accent)}#mpanel .tb:disabled{opacity:.45;cursor:default}
+@media(max-width:600px){#mpanel{left:0;right:0;top:auto;bottom:0;width:auto;max-height:72svh;border-radius:14px 14px 0 0;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}}
+#bklist{max-height:44svh;overflow:auto;margin-bottom:8px}dialog label.bkr{display:flex;align-items:center;gap:8px;margin:0;padding:7px 0;border-top:1px solid var(--line);color:var(--fg);cursor:pointer}dialog label.bkr input{accent-color:var(--accent)}
+#fempty{width:100%;text-align:center;padding:30px 0;color:var(--fg2);display:grid;gap:10px;justify-items:center}
+/* menu principal: Exibição ao lado do ☰ e criar (+) no centro inferior */
+#bar .bsp{width:84px}.ib[aria-expanded=true]{background:var(--hover)}
+#shelf:not(.cm){padding-bottom:84px}
+#dpanel{position:fixed;left:56px;top:calc(60px + env(safe-area-inset-top,0px));width:min(280px,calc(100vw - 68px));display:grid;grid-auto-rows:max-content;gap:12px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;z-index:60;box-shadow:0 8px 24px var(--shadow)}
+#dpanel[hidden],#dpanel [hidden],#npanel[hidden],#nbtn[hidden]{display:none}
+#dpanel label{display:grid;grid-template-columns:1fr auto;gap:4px 8px;align-items:center}#dpanel input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--accent)}
+#nbtn{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:45;width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--accent);cursor:pointer;box-shadow:0 2px 8px var(--shadow)}
+#nbtn:hover{background:var(--hover)}#nbtn svg{transition:transform .2s}#nbtn[aria-expanded=true] svg{transform:rotate(45deg)}
+#npanel{position:fixed;left:50%;bottom:calc(60px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(190px,calc(100vw - 24px));display:grid;gap:2px;padding:6px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:13px;z-index:60;box-shadow:0 8px 24px var(--shadow)}
+#npanel .tb{border-color:transparent;text-align:left}
+@media(pointer:coarse){#bar .bsp{width:92px}#nbtn{width:44px;height:44px}#npanel{bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:600px){#dpanel{left:0;right:0;top:auto;bottom:0;width:auto;border-radius:14px 14px 0 0;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}}
+@media(prefers-reduced-motion:reduce){#nbtn svg{transition:none}}
+#bl{display:flex;align-items:center;gap:4px}#bl .ib{width:40px;height:40px;padding:0;display:grid;place-items:center;line-height:1}#bl svg{display:block}
+@media(pointer:coarse){#bl .ib{width:44px;height:44px}}
+#dvit{width:100%}
+#vodlg{width:min(400px,calc(100vw - 32px));max-height:88svh;overflow:auto}
+#volist{max-height:40svh;overflow:auto;display:grid;gap:0;margin-bottom:4px}#volist[hidden],#vowh[hidden],#vosaved[hidden],#vosave[hidden],#vosname[hidden],#vopick[hidden],#vochoose[hidden],#voall[hidden]{display:none}
+#vosn{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px}
+#volsts{display:grid;gap:0;max-height:30svh;overflow:auto}.vsrow{display:flex;gap:6px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}.vsrow .tb:first-child{flex:1;text-align:left}
+#vacts{display:flex;gap:6px;flex-wrap:wrap}#vacts[hidden]{display:none}
+#vedlg{width:min(400px,calc(100vw - 32px));max-height:88svh;overflow:auto}
+#velist{max-height:50svh;overflow:auto;display:grid;margin-bottom:4px}
+.verow{display:flex;gap:10px;align-items:center;padding:7px 2px;border-top:1px solid var(--line);color:var(--fg);cursor:pointer}
+.verow input{accent-color:var(--accent);flex:none}
+.vethumb{flex:none;background-color:var(--hover);border-radius:4px}.vethumb.no{background:repeating-conic-gradient(var(--hover) 0 25%,transparent 0 50%) 0 0/12px 12px}
+.vetx{display:grid;min-width:0;flex:1}.vetx b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vsvdlg{width:min(340px,calc(100vw - 32px))}
+#volist label.bkr small{margin-left:auto;white-space:nowrap}
+#vom{flex-wrap:wrap}#vom button{flex:1 1 40%}
+.vhold{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--fg2);white-space:nowrap;flex:none}.vhold input{accent-color:var(--accent)}
+
+.cv.vpile{background:none;box-shadow:none;overflow:visible;border-radius:0}.cv.vpile::before{display:none}
+.cv.vpile.vz{border:2px dashed var(--line);border-radius:min(var(--r),25%);display:grid;place-items:center;color:var(--fg2);font-size:12px}
+.vpc{position:absolute;width:min(calc(var(--w)*.54),calc(var(--w)/var(--ar)*.54*var(--sa)));filter:drop-shadow(0 3px 5px rgba(0,0,0,.35));pointer-events:none}
+.vpc .ctile{--w:100%;width:100%}
+.nb.vit{position:relative}.nb.vit:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.vdel{position:absolute;top:0;right:12px;z-index:3;min-width:26px;height:26px;padding:0 6px;border:1px solid var(--line);border-radius:13px;background:var(--panel);color:var(--fg2);font:inherit;font-size:12px;cursor:pointer;box-shadow:0 2px 6px var(--shadow);opacity:0;transition:opacity .15s}
+.nb.vit:hover .vdel,.nb.vit:focus-within .vdel,.vdel.arm{opacity:1}.vdel.arm{color:#eb5757}
+@media(hover:none){.vdel{opacity:1}}
+
+#bl .ib[hidden]{display:none}
+#mtabs{display:flex;gap:4px;padding:0 12px;border-bottom:1px solid var(--line);background:var(--bg)}#mtabs[hidden]{display:none}
+.mtab{flex:1;max-width:220px;border:0;border-bottom:2px solid transparent;background:none;color:var(--fg2);font:inherit;font-size:14px;font-weight:600;padding:10px 8px;cursor:pointer;margin-bottom:-1px}
+.mtab:hover{color:var(--fg)}.mtab.on{color:var(--fg);border-bottom-color:var(--accent)}
+@media(max-width:600px){.mtab{max-width:none}}
+html.emb #mtabs{background:transparent;border-color:transparent}
 </style>
 </head>
 <body>
 <div id="bar">
-<button class="ib inv" id="back" data-l="Estante" aria-label="Voltar para a estante">‹</button>
-<button class="ib inv" id="csb" data-l="Capas" aria-label="Tamanho das capas do carrossel">⇕</button>
+<div id="bl"><button class="ib" id="mbtn" aria-label="Menu da coleção" aria-expanded="false" title="Menu"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<button class="ib" id="dbtn" aria-label="Exibição" aria-expanded="false" aria-controls="dpanel" title="Exibição"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></button></div>
+<button class="ib inv old" id="back" data-l="Estante" aria-label="Voltar para a estante">‹</button>
+<button class="ib inv old" id="csb" data-l="Capas" aria-label="Tamanho das capas do carrossel">⇕</button>
 <span aria-hidden="true"></span>
-<div id="tt"><button id="ttl" class="static">Minha coleção</button></div>
+<div id="tt"><button id="ttl" class="static">Minha coleção</button><div id="fchip" hidden></div></div>
 
-<button class="ib" id="vbtn" data-l="Vitrine" aria-label="Vitrine de cartões" title="Vitrine"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="5" height="7" rx="1"/><rect x="9.5" y="4" width="5" height="7" rx="1"/><rect x="16.5" y="4" width="5" height="7" rx="1"/><rect x="5.5" y="13" width="5" height="7" rx="1"/><rect x="12.5" y="13" width="5" height="7" rx="1"/></svg></button>
-<button class="ib" id="vm" data-l="Carrossel" aria-label="Alternar entre estante e carrossel"></button>
-<button class="ib" id="theme" data-l="Tema" aria-label="Alternar tema claro ou escuro"></button>
+<button class="ib old" id="vbtn" data-l="Vitrine" aria-label="Vitrine de cartões" title="Vitrine"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="5" height="7" rx="1"/><rect x="9.5" y="4" width="5" height="7" rx="1"/><rect x="16.5" y="4" width="5" height="7" rx="1"/><rect x="5.5" y="13" width="5" height="7" rx="1"/><rect x="12.5" y="13" width="5" height="7" rx="1"/></svg></button>
+<button class="ib old" id="vm" data-l="Carrossel" aria-label="Alternar entre estante e carrossel"></button>
+<button class="ib old" id="theme" data-l="Tema" aria-label="Alternar tema claro ou escuro"></button>
+<span class="bsp" aria-hidden="true"></span>
 </div>
+<div id="mtabs" role="tablist" aria-label="Seções"><button class="mtab" id="tabC" role="tab">Minhas coleções</button><button class="mtab" id="tabV" role="tab">Vitrine</button></div>
 <main id="shelf"><div id="grid"></div><div id="car"></div>
 
 </main>
@@ -401,15 +462,16 @@ nav #add,nav #more{width:auto;padding:0 14px;border-radius:19px;font-size:13px;b
 <div id="vstage"></div>
 <button id="vback" class="vc" aria-label="Voltar" title="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
 <div id="vtt" class="vc"></div>
-<div id="vtools" class="vc"><button class="tb" id="vdrag" aria-pressed="true" title="Arrastar um cartão: girar ele ou navegar">↻ Girar</button><button class="tb" id="vsel" title="Escolher quais cartões ficam em exposição" hidden>☑ Escolher</button><button class="tb" id="vmore" aria-label="Opções da vitrine">⋯ Opções</button></div>
+<div id="vtools" class="vc"><button class="tb" id="vmore" aria-label="Opções da vitrine">⋯</button></div>
 <button id="vchev" class="on" aria-label="Esconder botões"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg></button>
 </section>
 <div id="vpanel" hidden>
+<div class="prow" id="vacts"><button class="tb" id="vedit">Editar vitrine</button><button class="tb" id="vsave">Salvar vitrine</button></div>
 <div class="tabs" role="tablist"><button class="tab on" role="tab" data-tab="l">Layout</button><button class="tab" role="tab" data-tab="m">Movimento</button><button class="tab" role="tab" data-tab="g">Giro</button></div>
 <div class="tp" data-pane="l">
 <label>Linhas<output></output><input type="range" data-v="r" min="1" max="4" step="1"></label>
 <label>Tamanho dos cartões<output></output><input type="range" data-v="z" min="20" max="400" step="5"></label>
-<div class="hint">Pinça muda o tamanho; dois toques voltam ao padrão. Segure um cartão para escondê-lo (ou use ☑ Escolher).</div>
+<div class="hint">Pinça muda o tamanho; dois toques voltam ao padrão. Arraste entre as fileiras para navegar; arraste sobre um cartão para girá-lo. Segure um cartão para escondê-lo.</div>
 </div>
 <div class="tp" data-pane="m" hidden>
 <button class="tb" id="vplay" aria-pressed="false" style="justify-self:start">▶ Mover</button>
@@ -419,11 +481,30 @@ nav #add,nav #more{width:auto;padding:0 14px;border-radius:19px;font-size:13px;b
 <div class="tp" data-pane="g" hidden>
 <label>Girar cartões automaticamente<input type="checkbox" data-v="g"></label>
 <label>Velocidade do giro (°/s)<output></output><input type="range" data-v="q" min="5" max="180" step="5"></label>
-<label>Arrastar um cartão gira ele (senão, navega)<input type="checkbox" data-v="d"></label>
 <button class="tb" id="vzero" style="justify-self:start">Zerar giro manual</button>
 </div>
 <button class="tb" id="vreset">Restaurar vitrine</button>
 </div>
+<div id="mpanel" hidden>
+<div id="mhead"><b>Minha coleção</b><span class="hint" id="mcount"></span></div>
+<div class="msec" id="qorg">Organizar</div>
+<div class="prow" id="qop" style="flex-wrap:nowrap"><div class="seg" id="qo" style="flex:1"><button data-v="date">Data</button><button data-v="name">Nome</button><button data-v="size">Tamanho</button></div></div>
+<button class="tb" id="qdir"></button>
+<div class="seg" id="qf"><button data-v="all">Tudo</button><button data-v="nb">Fichários</button><button data-v="card">Cartões</button></div>
+<div class="seg" id="qh" hidden><button data-v="all">Todos</button><button data-v="no">Sem holder</button><button data-v="yes">Com holder</button><button data-v="empty">Vazios</button></div>
+<button class="tb" id="qclr">Limpar filtros</button>
+<div class="msec">Aparência</div>
+<div class="seg" id="qt"><button data-v="auto">Auto</button><button data-v="light">Claro</button><button data-v="dark">Escuro</button></div>
+<div class="msec">Dados</div>
+<div class="prow"><button class="tb" id="bkex">⬇ Exportar backup</button><button class="tb" id="bimp">⬆ Importar backup</button></div>
+<div class="hint" id="bklast"></div>
+</div>
+<div id="dpanel" role="group" aria-label="Exibição" hidden>
+<div class="seg" id="qm"><button data-v="g">Estante</button><button data-v="c">Carrossel</button></div>
+<label id="qsz" hidden>Tamanho das capas<span id="cso"></span><input type="range" id="csz" min="40" max="100" step="5"></label>
+</div>
+<button id="nbtn" aria-label="Criar" aria-expanded="false" aria-controls="npanel" title="Criar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+<div id="npanel" role="group" aria-label="Criar" hidden><button class="tb" id="nnb">Novo fichário</button><button class="tb" id="ncd">Novo cartão</button><button class="tb" id="nhd">Novo holder</button></div>
 <div id="panel" hidden>
 <div id="count"></div>
 <div class="tabs" role="tablist"><button class="tab on" role="tab" data-tab="g">Geral</button><button class="tab" role="tab" data-tab="f">Forma</button><button class="tab" role="tab" data-tab="l">Folhas</button><button class="tab" role="tab" data-tab="s">Lombada</button></div>
@@ -458,7 +539,7 @@ nav #add,nav #more{width:auto;padding:0 14px;border-radius:19px;font-size:13px;b
 </div>
 <button class="tb" id="reset" data-only="f l s" hidden>Restaurar aparência</button>
 </div>
-<div id="cpanel" hidden><label>Tamanho das capas<span id="cso"></span><input type="range" id="csz" min="40" max="100" step="5"></label><div class="hint">100% = ajustado automaticamente à altura disponível.</div></div>
+<div id="cpanel" hidden></div>
 <div id="kpanel" hidden>
 <div class="tabs" role="tablist"><button class="tab on" role="tab" data-tab="v">Ver</button><button class="tab" role="tab" data-tab="m">Material</button><button class="tab" role="tab" data-tab="e">Efeito</button><button class="tab" role="tab" data-tab="a">Ações</button></div>
 <div class="tp" data-pane="v">
@@ -533,6 +614,26 @@ nav #add,nav #more{width:auto;padding:0 14px;border-radius:19px;font-size:13px;b
 <div class="hint" id="onote" hidden>Total ímpar: ao concluir, uma página em branco será adicionada no fim (o verso da última folha).</div>
 <div class="hint">Arraste os pontos para reordenar. “+” insere uma página depois, “✕” exclui. As páginas 1–2, 3–4… formam uma folha: o ícone de camadas deixa a folha transparente nos dois lados. As mudanças só valem ao tocar em Concluir.</div>
 <div class="end"><span style="flex:1"></span><button class="tb" id="ocan">Cancelar</button><button class="tb pri" id="ook">Concluir</button></div></dialog>
+<dialog id="vodlg"><h2>Nova vitrine</h2>
+<div id="vopick">
+<div class="seg" id="vom"><button data-v="all">Todos</button><button data-v="nb">Em fichários</button><button data-v="hd">Em holders</button><button data-v="av">Avulsos</button></div>
+<div class="hint" id="vohint" style="margin:10px 0 8px"></div>
+<div class="prow" id="voall" style="margin-bottom:6px"><button class="tb" id="voAll">Marcar todos</button><button class="tb" id="voNone">Limpar</button></div>
+<div id="volist" hidden></div>
+<div class="prow" style="justify-content:flex-end;margin-top:12px"><button class="tb" id="vocancel">Cancelar</button><button class="tb pri" id="vogo">Abrir vitrine</button></div>
+</div>
+</dialog>
+<dialog id="vedlg"><h2>Editar vitrine</h2>
+<div class="prow" style="margin-bottom:8px"><button class="tb" id="vedAll">Marcar todos</button><button class="tb" id="vedNone">Desmarcar todos</button></div>
+<div id="velist"></div>
+<div class="hint" style="margin:10px 0 4px">Desmarcados ficam fora da vitrine. Os cartões continuam guardados.</div>
+<div class="prow" style="justify-content:flex-end;margin-top:12px"><button class="tb" id="vecancel">Cancelar</button><button class="tb pri" id="veok">Aplicar</button></div></dialog>
+<dialog id="vsvdlg"><h2>Salvar vitrine</h2>
+<div id="vsvq"><p style="margin:4px 0 16px;color:var(--fg)">Deseja salvar esta vitrine?</p>
+<div class="prow" style="justify-content:flex-end"><button class="tb" id="vsvNo">Não</button><button class="tb pri" id="vsvYes">Sim</button></div></div>
+<div id="vsvn" hidden><label>Nomeie sua vitrine<input id="vsvName" maxlength="30"></label>
+<div class="prow" style="justify-content:flex-end"><button class="tb" id="vsvBack">Voltar</button><button class="tb pri" id="vsvOk">Salvar vitrine</button></div></div>
+</dialog>
 <dialog id="mdlg"><h2>Criar novo</h2><button class="tb pri" id="mnb">Criar novo fichário</button><button class="tb pri" id="mcd">Criar cartão</button><button class="tb pri" id="mhd">Criar holder</button><button class="tb" id="mcan">Cancelar</button></dialog>
 <dialog id="kdlg">
 <h2 id="kh">Criar cartão</h2>
@@ -578,6 +679,13 @@ nav #add,nav #more{width:auto;padding:0 14px;border-radius:19px;font-size:13px;b
 <div style="font-size:13px;color:var(--fg2);margin-bottom:6px">Ou escolha um cartão já feito (ele sai de onde está e vai para o holder)</div>
 <div id="adgrid"></div><div id="adnone" class="hint" hidden>Você ainda não tem cartões feitos.</div>
 <div class="end"><button class="tb danger" id="addel">Excluir holder</button><button class="tb" id="adedit">▣ Editar holder</button><span style="flex:1"></span><button class="tb" id="adcan">Fechar</button></div></dialog>
+<dialog id="bkdlg"><h2>Exportar backup</h2>
+<div class="arow"><button class="tb" id="bkall">Tudo</button><button class="tb" id="bknone">Nada</button><span class="hint" id="bksz" style="margin-left:auto"></span></div>
+<div id="bklist"></div>
+<div class="end"><span style="flex:1"></span><button class="tb" id="bkcan">Cancelar</button><button class="tb pri" id="bkok">Exportar</button></div></dialog>
+<dialog id="bidlg"><h2>Importar backup</h2><div class="hint" id="bisum" style="margin-bottom:14px"></div>
+<div class="end" style="flex-wrap:wrap"><button class="tb" id="bican">Cancelar</button><span style="flex:1"></span><button class="tb danger" id="bisub">Substituir tudo</button><button class="tb pri" id="bimer">Mesclar</button></div></dialog>
+<input type="file" id="bifile" accept=".json,application/json" hidden>
 <input type="file" id="hstf" accept="image/*" hidden>
 <input type="file" id="khfile" accept="image/*" hidden>
 <input type="file" id="kfile" accept="image/*" hidden>
@@ -614,7 +722,7 @@ const dbDel=id=>{if(db)try{db.transaction('nb','readwrite').objectStore('nb').de
 /* tema */
 const eff=()=>document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
 function icon(){const d=eff()==='dark';$('#theme').textContent=d?'☀':'☾';$('#theme2').textContent=d?'☀ Tema claro':'☾ Tema escuro'}
-try{const t=lsGet('tcTema');if(t)document.documentElement.dataset.theme=t}catch(e){}
+try{const t=lsGet('tcTema');if(t&&t!=='auto')document.documentElement.dataset.theme=t}catch(e){}
 $('#theme').onclick=$('#theme2').onclick=()=>{const t=eff()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;lsSet('tcTema',t);icon()};
 
 /* estante */
@@ -638,9 +746,21 @@ function coverEl(n){
   if(n.wire){d.style.setProperty('--n',S.wn||ringsOf(n));const h=document.createElement('i');h.className='hl';d.appendChild(h)}
   return d;
 }
-const items=()=>[...nbs,...cards].sort((a,b)=>(a.created||0)-(b.created||0));
+const rawItems=()=>[...nbs,...cards].sort((a,b)=>(a.created||0)-(b.created||0));
+const Q=Object.assign({o:'date',d:1,f:'all',h:'all'},(()=>{try{return JSON.parse(lsGet('tcQ')||'{}')}catch(e){return{}}})());
+const qDef=()=>Q.o==='date'&&Q.d===1&&Q.f==='all'&&Q.h==='all',isCd=i=>i.kind==='card';
+function items(){let l=rawItems();
+  if(Q.f==='nb')l=l.filter(i=>!isCd(i));
+  else if(Q.f==='card'){l=l.filter(isCd);if(Q.h==='no')l=l.filter(i=>!i.hold);else if(Q.h==='yes')l=l.filter(i=>i.hold&&kFront(i));else if(Q.h==='empty')l=l.filter(i=>i.hold&&!kFront(i))}
+  if(Q.o==='date'&&Q.d===1)return l;
+  const nm=i=>(i.title||'').trim(),d=Q.d;
+  return l.sort((a,b)=>{
+    if(Q.o==='name'){const x=nm(a),y=nm(b);if(!x!==!y)return x?-1:1;return d*x.localeCompare(y,'pt',{numeric:true,sensitivity:'base'})}
+    if(Q.o==='size'){if(isCd(a)!==isCd(b))return isCd(a)?1:-1;return d*((isCd(a)?0:nbCardList(a).length)-(isCd(b)?0:nbCardList(b).length))}
+    return d*((a.created||0)-(b.created||0))})}
 const cardSub=c=>kFront(c)?(c.hold?'Holder · ':'Cartão · ')+(SHL[c.shape]||'Retângulo'):'Holder vazio · adicionar cartão';
 function renderShelf(){
+  if(vmd){renderVit();qUI();return}
   const gr=$('#grid');gr.innerHTML='';
   const mk=(cv,title,sub,fn,cls)=>{const b=document.createElement('button');b.className='nb '+(cls||'');b.appendChild(wrapCv(cv));
     const l=document.createElement('div');l.className='ledge';
@@ -648,7 +768,33 @@ function renderShelf(){
   items().forEach(it=>{if(it.kind==='card')mk(tileEl(it),it.title,cardSub(it),t=>openCard(it,{t:'menu'},t));else mk(coverEl(it),it.title,pgTxt(it),c=>openNb(it,c))});
   const p=document.createElement('div');p.className='cv';p.textContent='+';
   mk(p,'','Criar novo',openMenu,'new');
-  renderCar();
+  qUI();renderCar();
+}
+/* ===== modo Vitrine da estante: mostra as vitrines salvas; a capa é uma pilha dos cartões que ela contém ===== */
+const VP_SIDE=[[3,26,-14],[41,18,12],[6,44,-6],[40,46,9]],VP_TOP=[22,28,2];
+function vitPile(p){
+  const cv=document.createElement('div');cv.className='cv vpile';
+  const es=vtEntries('home',null,scDe(p.sc)),pick=es.slice(0,5),spots=[...VP_SIDE.slice(0,Math.max(0,pick.length-1)),VP_TOP];
+  if(!pick.length){cv.classList.add('vz');cv.textContent='Sem cartões';return{cv,n:0}}
+  pick.forEach((e,i)=>{const c=e.c,h=hOf(c),sa=h?h.ar:(shd(c.shape,c).a||.7),sp=spots[i],w=document.createElement('div');
+    w.className='vpc';w.style.cssText='left:'+sp[0]+'%;top:'+sp[1]+'%;transform:rotate('+sp[2]+'deg);--sa:'+sa;
+    w.append(tileEl(c));cv.append(w)});
+  return{cv,n:es.length}}
+function renderVit(){
+  const gr=$('#grid');gr.innerHTML='';$('#car').innerHTML='';
+  vitList().forEach(p=>{
+    const{cv,n}=vitPile(p),b=document.createElement('div');b.className='nb vit';b.tabIndex=0;b.setAttribute('role','button');b.setAttribute('aria-label','Abrir '+p.name);
+    const l=document.createElement('div');l.className='ledge';b.append(wrapCv(cv),l,capEl(p.name,n+(n===1?' cartão':' cartões')));
+    const open=()=>openVitrine('home',null,null,scDe(p.sc));
+    b.onclick=open;b.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&e.target===b){e.preventDefault();open()}};
+    const d=document.createElement('button');d.className='vdel';d.textContent='✕';d.setAttribute('aria-label','Excluir '+p.name);
+    d.onclick=e=>{e.stopPropagation();
+      if(!d.classList.contains('arm')){d.classList.add('arm');d.textContent='Excluir?';clearTimeout(d._t);d._t=setTimeout(()=>{d.classList.remove('arm');d.textContent='✕'},3000);return}
+      vitPut(vitList().filter(x=>x.id!==p.id));renderShelf()};
+    b.append(d);gr.append(b)});
+  const nv=document.createElement('button');nv.className='nb new';
+  const pl=document.createElement('div');pl.className='cv';pl.textContent='+';
+  const lg=document.createElement('div');lg.className='ledge';nv.append(wrapCv(pl),lg,capEl('','Nova vitrine'));nv.onclick=openVodlg;gr.append(nv);
 }
 /* mover o zoom: arrastar fora do livro, 2 dedos, Shift+arrastar, roda do mouse; 2 toques centralizam */
 const pan={x:0,y:0},rd=$('#reader'),ptrs=new Map();
@@ -723,6 +869,7 @@ stage.addEventListener('wheel',e=>{
 /* carrossel de fichários */
 let ci=0,cpos=0,cdn=null,cmode=false,cf=1;
 cmode=lsGet('tcModo')==='car';
+let vmd=lsGet('tcVmd')==='1';
 const car=$('#car');
 function layoutCar(pos,anim){
   cpos=pos;
@@ -741,7 +888,7 @@ function renderCar(){
   ci=Math.min(ci,items().length);fitCar();
 }
 function moveCar(d){const n=car.children.length-1;ci=Math.max(0,Math.min(n,ci+d));layoutCar(ci,true)}
-function setMode(c){cmode=c;$('#shelf').classList.toggle('cm',c);$('#vm').textContent=c?'▦':'⇄';$('#vm').dataset.l=c?'Estante':'Carrossel';$('#csb').classList.toggle('inv',!c);if(!c)$('#cpanel').hidden=true;lsSet('tcModo',c?'car':'grid');}
+function setMode(c){cmode=c;const cc=c&&!vmd;$('#shelf').classList.toggle('cm',cc);$('#vm').textContent=c?'▦':'⇄';$('#vm').dataset.l=c?'Estante':'Carrossel';$('#csb').classList.toggle('inv',!cc);if(!cc)$('#cpanel').hidden=true;lsSet('tcModo',c?'car':'grid');}
 $('#vm').onclick=()=>setMode(!cmode);
 /* tamanho das capas do carrossel: 100% = ajuste automático à altura disponível (útil em embeds baixos) */
 function fitCar(){
@@ -817,15 +964,15 @@ $('#pauto').onclick=()=>{if(nb&&leaves.length)setAuto(!auto)};
 $('#rback').onclick=()=>showShelf();
 function view(m){
   $('#shelf').hidden=m!=='s';$('#reader').hidden=m!=='r';$('#cview').hidden=m!=='c';$('#vview').hidden=m!=='v';$('#vpanel').hidden=true;if(m!=='v')vtStop();$('#panel').hidden=true;$('#cpanel').hidden=true;$('#kpanel').hidden=true;
-  $('#bar').hidden=m!=='s';if(m==='r'){pokeBack();pokeCnt()}else{clearTimeout(bt);$('#rback').classList.add('gone')}$('#back').classList.add('inv');$('#ttl').classList.add('static');
+  $('#bar').hidden=m!=='s';$('#mtabs').hidden=m!=='s';$('#mpanel').hidden=$('#dpanel').hidden=$('#npanel').hidden=true;$('#nbtn').hidden=m!=='s'||vmd;['mbtn','dbtn','nbtn'].forEach(i=>$('#'+i).setAttribute('aria-expanded','false'));if(m==='r'){pokeBack();pokeCnt()}else{clearTimeout(bt);$('#rback').classList.add('gone')}$('#back').classList.add('inv');$('#ttl').classList.add('static');
 }
 function head(){$('#ttl').textContent=nb?(nb.title||'Sem título')+' ✎':'Minha coleção';$('#rtitle').textContent=nb?nb.title||'':''}
 /* guarda o fichário e a folha abertos; na estante, limpa */
 let lastSv='';
 function saveLast(){try{let o=null;
-  if(vt)o={t:'vt',src:vt.src,id:vt.nb&&vt.nb.id,cur:vt.cur,A:vt.A,G:vt.G,ux:vt.ux};
+  if(vt)o={t:'vt',src:vt.src,id:vt.nb&&vt.nb.id,sc:scSer(vt.sc),cur:vt.cur,A:vt.A,G:vt.G,ux:vt.ux};
   else if(fc){o={t:'card',id:fc.c.id,cur:fc.cur,rot:[+cs.ry.toFixed(1),+cs.rx.toFixed(1)]};
-    if(fc.vt){const k=fc.vt.src==='nb'?fc.vt.nb.id:'home';o.vt={src:fc.vt.src,id:fc.vt.nb&&fc.vt.nb.id,cur:fc.vt.cur,pos:vKeep[k]||null}}}
+    if(fc.vt){o.vt={src:fc.vt.src,id:fc.vt.nb&&fc.vt.nb.id,sc:scSer(fc.vt.sc),cur:fc.vt.cur,pos:vKeep[vkey(fc.vt.src,fc.vt.nb,fc.vt.sc)]||null}}}
   else if(nb)o={t:'nb',id:nb.id,cur};
   const v=o?JSON.stringify(o):'';if(v===lastSv)return;lastSv=v;
   if(v)localStorage.setItem(lsk('tcLast'),v);else localStorage.removeItem(lsk('tcLast'))}catch(e){}}
@@ -1399,7 +1546,7 @@ function openCard(c,loc,src,from){if(c.hold&&!kFront(c)){openAdd(c);return}
 }
 function closeCard(){
   const f=fc;if(!f)return;stopCard();fc=null;
-  if(f.vt){openVitrine(f.vt.src,f.vt.nb,f.vt.cur);return}
+  if(f.vt){openVitrine(f.vt.src,f.vt.nb,f.vt.cur,f.vt.sc);return}
   if(f.loc.t==='nb')openNb(f.loc.nb,null,f.cur!=null?f.cur:Math.ceil((f.loc.i+1)/2));else showShelf();
 }
 $('#kback').onclick=()=>{closeCard()};
@@ -1677,7 +1824,7 @@ $('#kfile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f
 $('#kcan').onclick=()=>$('#kdlg').close();
 function afterK(c,loc,deleted,oldLoc){
   if(fc&&(fc.c===c||deleted)){
-    if(deleted){const vx=fc&&fc.vt;stopCard();fc=null;if(vx){openVitrine(vx.src,vx.nb,vx.cur);return}if(oldLoc.t==='nb')openNb(oldLoc.nb,null,Math.ceil((oldLoc.i+1)/2));else showShelf();return}
+    if(deleted){const vx=fc&&fc.vt;stopCard();fc=null;if(vx){openVitrine(vx.src,vx.nb,vx.cur,vx.sc);return}if(oldLoc.t==='nb')openNb(oldLoc.nb,null,Math.ceil((oldLoc.i+1)/2));else showShelf();return}
     if(loc.t!==fc.loc.t||loc.nb!==fc.loc.nb)fc.cur=null;fc.loc=loc;cardEl(c);saveLast();return}
   if(nb){head();build(cur)}else renderShelf();
 }
@@ -1707,34 +1854,39 @@ document.querySelectorAll('.tabs').forEach(t=>{const box=t.parentNode;
 const V=Object.assign({r:1,z:100,s:40,k:12,a:1,m:0,g:0,q:36,d:1},(()=>{try{return JSON.parse(lsGet('tcV')||'{}')}catch(e){return{}}})());
 const vSave=()=>lsSet('tcV',JSON.stringify(V));
 const vStage=$('#vstage'),vKeep={};let vt=null;
-function vtEntries(src,n){
-  const out=[],hs=src==='nb'?(id=>n.vhide&&n.vhide.includes(id)):(id=>V.hh&&V.hh.includes(id)),
-    fromNb=b=>b.pages.forEach((p,i)=>{for(let k=0;k<p.n;k++)if(p.cards[k]&&!hs(p.cards[k].id))out.push({c:p.cards[k],loc:{t:'nb',nb:b,i,k}})});
-  if(src==='nb')fromNb(n);else items().forEach(it=>{if(it.kind==='card'){if(kFront(it)&&!hs(it.id))out.push({c:it,loc:{t:'menu'}})}else fromNb(it)});
+/* escopo da vitrine: null = tudo; { cardsOn, cardIds, nbIds } restringe cartões avulsos e fichários */
+const vkey=(src,n,sc)=>sc?'sc:'+JSON.stringify(scSer(sc)):src==='nb'?n.id:'home';
+const scSer=sc=>sc?{c:sc.cardsOn,ci:sc.cardIds?[...sc.cardIds].sort():null,ni:sc.nbIds===false?false:sc.nbIds?[...sc.nbIds].sort():null,nc:sc.nbCardIds?[...sc.nbCardIds].sort():null,hw:sc.hw?[...sc.hw].sort():null}:null;
+const scDe=o=>o?{cardsOn:o.c,cardIds:o.ci?new Set(o.ci):null,nbIds:o.ni===false?false:o.ni?new Set(o.ni):null,nbCardIds:o.nc?new Set(o.nc):null,hw:o.hw?new Set(o.hw):(o.wh?new Set(cards.filter(c=>hOf(c)).map(c=>c.id)):null)}:null;
+function vtEntries(src,n,sc){
+  const o=sc||{cardsOn:true,cardIds:null,nbIds:null},out=[],hs=src==='nb'?(id=>n.vhide&&n.vhide.includes(id)):(id=>V.hh&&V.hh.includes(id)),
+    fromNb=b=>b.pages.forEach((p,i)=>{for(let k=0;k<p.n;k++)if(p.cards[k]&&!hs(p.cards[k].id)&&(!o.nbCardIds||o.nbCardIds.has(p.cards[k].id)))out.push({c:p.cards[k],loc:{t:'nb',nb:b,i,k}})});
+  if(src==='nb')fromNb(n);
+  else rawItems().forEach(it=>{
+    if(it.kind==='card'){if(o.cardsOn&&kFront(it)&&!hs(it.id)&&(!o.cardIds||o.cardIds.has(it.id)))out.push({c:it,loc:{t:'menu'}})}
+    else if(o.nbIds!==false&&(!o.nbIds||o.nbIds.has(it.id)))fromNb(it)});
   return out}
-function openVitrine(src,n,c0){
+function openVitrine(src,n,c0,sc){
   if(nb)leaveNb();
   stopCard();fc=null;
-  const key=src==='nb'?n.id:'home',k=vKeep[key]||{};
-  vt={src,nb:n,cur:c0,key,items:vtEntries(src,n),A:k.A||0,G:k.G||0,ux:k.ux||0,vx:0,drag:null,dirty:true,loop:false,spin:new Set(),rows:[],t:0,W:0,L:1,pad:0};
+  const key=vkey(src,n,sc),k=vKeep[key]||{};
+  vt={src,nb:n,cur:c0,sc:sc||null,key,items:vtEntries(src,n,sc),A:k.A||0,G:k.G||0,ux:k.ux||0,vx:0,drag:null,dirty:true,loop:false,spin:new Set(),rows:[],t:0,W:0,L:1,pad:0};
   view('v');$('#vtt').textContent=src==='nb'?(n.title||'Sem título'):'Minha coleção';saveLast();
   vtSync();vtBuild();vLowUI();vpoke();vt.raf=requestAnimationFrame(vtFrame);
 }
 function vtSync(){
-  const e=!vt||!vt.items.length,b=$('#vplay');
+  const e=!vt||!vt.items.length,b=$('#vplay');$('#vedit').hidden=!vt;$('#vsave').hidden=!(vt&&vt.src==='home'&&vt.sc);
   b.hidden=e;b.textContent=V.m?'⏸ Mover':'▶ Mover';b.setAttribute('aria-pressed',!!V.m);b.classList.toggle('on',!!V.m);
-  $('#vsel').hidden=!(vt&&vsTotal());
-  const d=$('#vdrag');d.hidden=e;d.textContent=V.d?'↻ Girar':'↔ Navegar';d.setAttribute('aria-pressed',!!V.d);
   $('#vpanel').querySelectorAll('[data-v]').forEach(r=>{if(r.type==='checkbox')r.checked=!!V[r.dataset.v];else{r.value=V[r.dataset.v];nvSync(r)}});
 }
 function vtBuild(){
   if(!vt)return;const W=vStage.clientWidth,Hs=vStage.clientHeight;if(W<20||Hs<20)return;
   const rm={};vt.rows.forEach(r=>r.els.forEach(o=>{if(o.ry)rm[o.idx]=o.ry}));vStage.innerHTML='';vt.rows=[];vt.spin.clear();const its=vt.items,m=its.length;
-  if(!m){const d=document.createElement('div');d.className='vempty';d.textContent=vsTotal()?'Nenhum cartão em exposição. Toque em ☑ Escolher para escolher quais aparecem.':(vt.src==='nb'?'Este fichário não tem cartões':'Nenhum cartão para exibir');vStage.append(d);return}
+  if(!m){const d=document.createElement('div');d.className='vempty';d.textContent=vsTotal()?'Nenhum cartão em exposição. Use ⋯ Opções e Restaurar vitrine.':(vt.src==='nb'?'Este fichário não tem cartões':'Nenhum cartão para exibir');vStage.append(d);return}
   const rows=Math.max(1,Math.min(4,V.r|0||1)),top=62,bot=78,avail=Math.max(80,Hs-top-bot),RG=.22;
   const base=Math.max(100,Math.min(240,Hs*.18))*V.z/100,H=Math.max(24,Math.min(Hs*1.2,V.z<=100?Math.min(avail/(rows+(rows-1)*RG),base):base)),gap=H*.2,rg=H*RG;
   const y0=top+(avail-(rows*H+(rows-1)*rg))/2;
-  const w=its.map(it=>H*shd(it.c.shape,it.c).a),P=w.reduce((a,b)=>a+b+gap,0),pad=Math.max(...w)+gap;
+  const w=its.map(it=>H*(vtHold(it.c)?it.c.hold.ar:shd(it.c.shape,it.c).a)),P=w.reduce((a,b)=>a+b+gap,0),pad=Math.max(...w)+gap;
   const loop=!!V.m||P-gap>W-24,reps=loop?Math.max(1,Math.ceil((W+pad)/P)):1;
   vt.loop=loop;vt.W=W;vt.L=P*reps;vt.pad=pad;
   for(let r=0;r<rows;r++){
@@ -1749,7 +1901,10 @@ function vtBuild(){
   vtDraw();
 }
 /* cartão 3D da vitrine: mesma estrutura do visualizador (frente, verso, espessura, efeito), em escala menor */
+/* holder na vitrine: só no modo Em holders com "Mostrar com o holder" marcado */
+const vtHold=c=>!!(vt&&vt.sc&&vt.sc.hw&&vt.sc.hw.has(c.id)&&hOf(c)&&kFront(c));
 function vtCard(el,c,ww,H,sc){
+  if(vtHold(c)){el.style.perspective=(H*5)+'px';el.classList.toggle('anim',!V.g);el.style.setProperty('--dl',-(Math.random()*4).toFixed(2)+'s');const hd=holdTile(c);hd.style.width='100%';el.append(hd);return hd}
   const f=fxOf(c),T=(c.t!=null?c.t:4)*sc,col=c.ec||'#e2dccb',alt='color-mix(in srgb,'+col+' 78%,#000)';
   el.style.perspective=(H*5)+'px';el.style.setProperty('--cw',ww+'px');fxVars(el.style,f);el.style.setProperty('--dl',-(Math.random()*4).toFixed(2)+'s');
   el.classList.toggle('anim',!V.g);
@@ -1793,7 +1948,7 @@ function vtStop(){if(!vt)return;clearTimeout(vt.lp);{const t=$('#vtoast');if(t)t
 function vtClose(){const v=vt;if(!v)return;vtStop();if(v.src==='nb')openNb(v.nb,null,v.cur);else showShelf()}
 function vtNudge(d){if(vt&&vt.loop)vt.vx=-d*1.1}
 function vtOpen(el){
-  const e=el._e,ctx={src:vt.src,nb:vt.nb,cur:vt.cur};
+  const e=el._e,ctx={src:vt.src,nb:vt.nb,cur:vt.cur,sc:vt.sc};
   openCard(e.c,e.loc,el,null);fc.vt=ctx;saveLast();
 }
 const vPtr=new Map();let vTapT=0,vTapId=0;
@@ -1802,7 +1957,7 @@ vStage.addEventListener('pointerdown',e=>{if(!vt)return;vPtr.set(e.pointerId,{x:
   if(vPtr.size>2)return;
   clearTimeout(vt.lp);
   vt.drag={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,mv:false,t:performance.now(),el:e.target.closest('.vi')};vt.vx=0;
-  {const o=vt.drag.el&&vt.drag.el._o;if(V.d&&o){vt.drag.rot=o;o.rv=0;vt.spin.delete(o)}}
+  {const o=vt.drag.el&&vt.drag.el._o;if(o){vt.drag.rot=o;o.rv=0;vt.spin.delete(o)}}
   {const el=vt.drag.el;if(el&&el._e)vt.lp=setTimeout(()=>{const dd=vt&&vt.drag;if(!dd||dd.mv||dd.el!==el)return;dd.lp=true;if(navigator.vibrate)navigator.vibrate(15);const id=el._e.c.id;vsApply([...vsGet(),id]);vToast('Cartão escondido da vitrine',()=>vsApply(vsGet().filter(x=>x!==id)))},600)}vStage.setPointerCapture(e.pointerId)});
 vStage.addEventListener('pointermove',e=>{
   if(vPtr.has(e.pointerId))vPtr.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -1825,14 +1980,15 @@ const vUp=e=>{vPtr.delete(e.pointerId);
 vStage.addEventListener('pointerup',vUp);vStage.addEventListener('pointercancel',vUp);
 vStage.addEventListener('wheel',e=>{if(!vt||!vt.loop)return;e.preventDefault();vt.ux-=(e.deltaX||e.deltaY);vt.dirty=true},{passive:false});
 function nbCardList(b){const r=[];b.pages.forEach(p=>{for(let k=0;k<p.n;k++)if(p.cards[k])r.push(p.cards[k])});return r}
-function vsGroups(){
-  if(!vt)return[];if(vt.src==='nb')return[{t:null,cards:nbCardList(vt.nb)}];
-  const g=[{t:'Cartões avulsos',cards:cards.filter(kFront)}];nbs.forEach(b=>g.push({t:b.title||'Sem título',cards:nbCardList(b)}));return g.filter(x=>x.cards.length)}
+function vsGroups(){const sc=vt&&vt.sc,inC=c=>!sc||!sc.cardIds||sc.cardIds.has(c.id),g=[];
+  if(!sc||sc.cardsOn)g.push({t:'Cartões avulsos',cards:cards.filter(kFront).filter(inC)});
+  nbs.forEach(b=>{if(sc&&(sc.nbIds===false||(sc.nbIds&&!sc.nbIds.has(b.id))))return;g.push({t:b.title||'Sem título',cards:nbCardList(b)})});
+  return g.filter(x=>x.cards.length)}
 const vsTotal=()=>vsGroups().reduce((a,g)=>a+g.cards.length,0);
 const vsGet=()=>vt.src==='nb'?(vt.nb.vhide||[]):(V.hh||[]);
 function vsApply(ids){
   if(vt.src==='nb'){vt.nb.vhide=ids.length?ids:null;dbPut(vt.nb)}else{V.hh=ids.length?ids:null;vSave()}
-  vt.rows.forEach(r=>r.els.forEach(o=>{o.ry=0;o.rv=0}));vt.items=vtEntries(vt.src,vt.nb);vtBuild();vtSync()}
+  vt.rows.forEach(r=>r.els.forEach(o=>{o.ry=0;o.rv=0}));vt.items=vtEntries(vt.src,vt.nb,vt.sc);vtBuild();vtSync()}
 let vsSet=null;
 function vsRender(){
   const g=$('#vsgrid');g.innerHTML='';const gs=vsGroups(),all=gs.flatMap(x=>x.cards);
@@ -1842,7 +1998,6 @@ function vsRender(){
       const t=document.createElement('div');t.className='vst';t.style.aspectRatio=shd(c.shape,c).a;t.style.backgroundImage='url("'+kFront(c)+'")';x.append(t);
       x.onclick=()=>{vsSet.has(c.id)?vsSet.delete(c.id):vsSet.add(c.id);vsRender()};g.append(x)})});
   $('#vscnt').textContent='('+all.filter(c=>!vsSet.has(c.id)).length+' de '+all.length+')'}
-$('#vsel').onclick=()=>{if(!vt)return;vsSet=new Set(vsGet());$('#vpanel').hidden=true;vsRender();$('#vsdlg').showModal()};
 $('#vsall').onclick=()=>{vsSet.clear();vsRender()};
 $('#vsnone').onclick=()=>{vsGroups().forEach(g=>g.cards.forEach(c=>vsSet.add(c.id)));vsRender()};
 $('#vsok').onclick=()=>$('#vsdlg').close();
@@ -1855,12 +2010,66 @@ function vToast(msg,undo){let t=$('#vtoast');if(!t){t=document.createElement('di
   if(undo){const b=document.createElement('button');b.textContent='Desfazer';b.onclick=()=>{undo();t.hidden=true};t.append(b)}
   t.hidden=false;clearTimeout(vToastT);vToastT=setTimeout(()=>{t.hidden=true},5000)}
 const VDEF={r:1,z:100,s:40,k:12,a:1,m:0,g:0,q:36,d:1};
-$('#vreset').onclick=()=>{const hh=V.hh;Object.assign(V,VDEF);V.hh=hh;vSave();vtSync();if(vt){vt.rows.forEach(r=>r.els.forEach(vtAnim));vtBuild()}};
+$('#vreset').onclick=()=>{const hh=V.hh;Object.assign(V,VDEF);V.hh=hh;vSave();if(vt&&vt.src==='nb'&&vt.nb.vhide){vt.nb.vhide=null;dbPut(vt.nb)}vtSync();if(vt){vt.rows.forEach(r=>r.els.forEach(vtAnim));vtBuild()}};
 $('#vbtn').onclick=()=>openVitrine('home',null,null);
+/* abrir modo vitrine: escolhe o que entra na exposição */
+let vo={m:'all',ids:new Set(),noh:new Set()};
+const VOHINT={all:'Marque os cartões que quer na vitrine. Os que têm holder trazem uma segunda caixa para incluir o holder.',nb:'Cartões dentro de fichários. Marque os que quiser.',hd:'Cartões com holder. Marque os que quiser e confirme, ao lado, se o holder acompanha.',av:'Cartões avulsos, sem holder e fora de fichários. Marque os que quiser.'};
+const VOEMPTY={all:'Nenhum cartão para mostrar.',nb:'Nenhum cartão dentro de fichários.',hd:'Nenhum cartão com holder.',av:'Nenhum cartão avulso.'};
+/* cartões de cada categoria; "Todos" junta as três (avulsos, com holder, dentro de fichários) */
+function voCats(){
+  const av=cards.filter(c=>kFront(c)&&!c.hold).map(c=>({id:c.id,c,k:'av',s:''})),
+        hd=cards.filter(c=>kFront(c)&&c.hold).map(c=>({id:c.id,c,k:'hd',s:'Com holder'})),
+        nb=nbs.flatMap(b=>nbCardList(b).map(c=>({id:c.id,c,k:'nb',s:b.title||'Sem título'})));
+  return{all:[...av,...hd,...nb],nb,hd,av}
+}
+/* escopo a partir da seleção: avulsos (cardIds), dentro de fichários (nbCardIds) e holders que acompanham (hw) */
+function voScope(){
+  const pick=voCats().all.filter(x=>vo.ids.has(x.id));
+  return{cardsOn:true,nbIds:null,
+    cardIds:new Set(pick.filter(x=>x.k!=='nb').map(x=>x.id)),
+    nbCardIds:new Set(pick.filter(x=>x.k==='nb').map(x=>x.id)),
+    hw:new Set(pick.filter(x=>x.k==='hd'&&!vo.noh.has(x.id)).map(x=>x.id))};
+}
+function voRender(){
+  $('#vom').querySelectorAll('button').forEach(b=>{const on=b.dataset.v===vo.m;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  $('#vohint').textContent=VOHINT[vo.m];
+  const l=$('#volist'),its=voCats()[vo.m];l.innerHTML='';l.hidden=false;
+  $('#voall').hidden=!its.length;
+  if(!its.length){l.innerHTML='<div class="hint">'+VOEMPTY[vo.m]+'</div>'}
+  its.forEach(({id,c,k,s})=>{
+    const row=document.createElement('div');row.className='verow';
+    const cb=document.createElement('input');cb.type='checkbox';cb.checked=vo.ids.has(id);
+    let hb=null;
+    cb.onchange=()=>{cb.checked?vo.ids.add(id):vo.ids.delete(id);if(hb)hb.disabled=!cb.checked;voGo()};
+    const im=vThumb(c);
+    const tx=document.createElement('span');tx.className='vetx';const b=document.createElement('b');b.textContent=c.title||'Sem título';tx.append(b);
+    if(s){const sm=document.createElement('small');sm.className='hint';sm.textContent=s;tx.append(sm)}
+    row.append(cb,im,tx);
+    if(k==='hd'){
+      const hl=document.createElement('label');hl.className='vhold';
+      hb=document.createElement('input');hb.type='checkbox';hb.checked=!vo.noh.has(id);hb.disabled=!cb.checked;
+      hb.onchange=()=>{hb.checked?vo.noh.delete(id):vo.noh.add(id)};
+      hl.append(hb,'com holder');row.append(hl);
+    }
+    l.append(row)});
+  voGo()}
+function voGo(){$('#vogo').disabled=!vo.ids.size}
+$('#vom').querySelectorAll('button').forEach(b=>b.onclick=()=>{vo.m=b.dataset.v;voRender()});
+$('#voAll').onclick=()=>{voCats()[vo.m].forEach(x=>vo.ids.add(x.id));voRender()};
+$('#voNone').onclick=()=>{voCats()[vo.m].forEach(x=>vo.ids.delete(x.id));voRender()};
+/* vitrines salvas: escopos guardados no navegador (só cartões específicos) */
+const vitList=()=>{try{const a=JSON.parse(lsGet('tcVitSalvas')||'[]');return Array.isArray(a)?a:[]}catch(x){return[]}};
+const vitPut=a=>lsSet('tcVitSalvas',JSON.stringify(a));
+function vitNext(){const a=vitList().map(p=>p.name);for(let i=0;i<26;i++){const n='Vitrine '+String.fromCharCode(65+i);if(!a.includes(n))return n}return 'Vitrine nova'}
+function openVodlg(){vo={m:'all',ids:new Set(),noh:new Set()};voRender();$('#vodlg').showModal()}
+$('#vogo').onclick=()=>{const sc=voScope();$('#vodlg').close();openVitrine('home',null,null,sc)};
+
+$('#vocancel').onclick=()=>$('#vodlg').close();
+
 $('#pvt').onclick=()=>{$('#panel').hidden=true;if(nb)openVitrine('nb',nb,cur)};
 $('#vback').onclick=vtClose;
 $('#vplay').onclick=()=>{V.m=V.m?0:1;vSave();vtSync();vtBuild()};
-$('#vdrag').onclick=()=>{V.d=V.d?0:1;vSave();vtSync()};
 $('#vzero').onclick=()=>{if(!vt)return;vt.spin.clear();vt.rows.forEach(r=>r.els.forEach(o=>{o.ry=0;o.rv=0;vtAnim(o);o.el.style.removeProperty('--sn')}));vt.dirty=true};
 $('#vmore').onclick=()=>{const p=$('#vpanel');p.hidden=!p.hidden;if(!p.hidden)vtSync()};
 document.addEventListener('pointerdown',e=>{const p=$('#vpanel');if(!p.hidden&&!e.target.closest('#vpanel,#vmore'))p.hidden=true});
@@ -1871,21 +2080,148 @@ $('#vpanel').querySelectorAll('[data-v]').forEach(r=>r.addEventListener('input',
   if(k==='r'||k==='z')vtBuild();
   else if(k==='g'&&vt){vt.rows.forEach(r=>r.els.forEach(vtAnim));vt.dirty=true}
   else if(vt)vt.dirty=true}));
-/* botões da vitrine somem após 2 s sem toque; a setinha (canto inferior esquerdo) esconde/mostra os botões */
-let vLow=false,vtm=0;
-function vpoke(){
-  if(!vt)return;$('#vchev').classList.remove('gone');document.querySelectorAll('.vc').forEach(e=>e.classList.remove('gone'));
-  clearTimeout(vtm);vtm=setTimeout(vfade,2000)}
-function vfade(){
-  if(!vt)return;if(!$('#vpanel').hidden){vtm=setTimeout(vfade,2000);return}
-  $('#vchev').classList.add('gone');document.querySelectorAll('.vc').forEach(e=>e.classList.add('gone'))}
+/* editar vitrine: marcar os cartões visíveis (vale para esta vitrine; num fichário, esconde cartões dele) */
+/* miniatura com o formato real do cartão (ou do holder) */
+function vThumb(c){
+  const h=hOf(c),H=52,a=h?h.ar:(shd(c.shape,c).a||.7),src=kFront(c),d=document.createElement('div');
+  d.className='vethumb';d.setAttribute('aria-hidden','true');
+  d.style.width=Math.round(H*a)+'px';d.style.height=H+'px';
+  if(src)d.style.background='center/cover no-repeat url("'+src+'")';else d.classList.add('no');
+  shapeCss(d,c.shape,c);
+  return d}
+function veList(){
+  if(vt.src==='nb')return nbCardList(vt.nb).map(c=>({c,s:''}));
+  return[...cards.filter(kFront).map(c=>({c,s:c.hold?'Com holder':'Avulso'})),
+    ...nbs.flatMap(b=>nbCardList(b).map(c=>({c,s:b.title||'Sem título'})))]
+}
+function vtEdit(){
+  if(!vt)return;$('#vpanel').hidden=true;
+  const on=new Set(vt.items.map(i=>i.c.id)),L=$('#velist');L.innerHTML='';
+  const list=veList();
+  if(!list.length){const e=document.createElement('div');e.className='hint';e.textContent='Nenhum cartão para editar.';L.append(e)}
+  list.forEach(({c,s})=>{const lb=document.createElement('label');lb.className='verow';
+    const cb=document.createElement('input');cb.type='checkbox';cb.checked=on.has(c.id);cb.dataset.id=c.id;
+    const im=vThumb(c);
+    const tx=document.createElement('span');tx.className='vetx';const b=document.createElement('b');b.textContent=c.title||'Sem título';tx.append(b);
+    if(s){const sm=document.createElement('small');sm.className='hint';sm.textContent=s;tx.append(sm)}
+    lb.append(cb,im,tx);L.append(lb)});
+  $('#vedlg').showModal();
+}
+$('#vedit').onclick=vtEdit;
+$('#vedAll').onclick=()=>document.querySelectorAll('#velist input').forEach(i=>i.checked=true);
+$('#vedNone').onclick=()=>document.querySelectorAll('#velist input').forEach(i=>i.checked=false);
+$('#vecancel').onclick=()=>$('#vedlg').close();
+$('#veok').onclick=()=>{
+  if(!vt)return;const on=new Set([...document.querySelectorAll('#velist input:checked')].map(i=>i.dataset.id));
+  const all=veList().map(x=>x.c.id);$('#vedlg').close();
+  if(vt.src==='nb'){const hide=all.filter(id=>!on.has(id));vt.nb.vhide=hide.length?hide:null;dbPut(vt.nb)}
+  else{
+    const sc={cardsOn:true,cardIds:new Set(all.filter(id=>cards.some(c=>c.id===id)&&on.has(id))),nbIds:null,
+      nbCardIds:new Set(all.filter(id=>!cards.some(c=>c.id===id)&&on.has(id))),hw:new Set(all.filter(id=>on.has(id)&&cards.some(c=>c.id===id&&hOf(c))&&(!vt.sc||!vt.sc.hw||vt.sc.hw.has(id))))};
+    vt.sc=sc;vt.key=vkey('home',null,sc);
+    const k=vKeep[vt.key]||{};vt.A=k.A||0;vt.G=k.G||0;vt.ux=k.ux||0;
+  }
+  vt.items=vtEntries(vt.src,vt.nb,vt.sc);vtSync();vtBuild();
+};
+/* salvar vitrine (só com filtro): pergunta, depois nomeia */
+$('#vsave').onclick=()=>{$('#vpanel').hidden=true;$('#vsvq').hidden=false;$('#vsvn').hidden=true;$('#vsvdlg').showModal()};
+$('#vsvNo').onclick=()=>$('#vsvdlg').close();
+$('#vsvYes').onclick=()=>{$('#vsvq').hidden=true;$('#vsvn').hidden=false;const i=$('#vsvName');i.value=vitNext();setTimeout(()=>i.select(),0)};
+$('#vsvBack').onclick=()=>{$('#vsvn').hidden=true;$('#vsvq').hidden=false};
+$('#vsvOk').onclick=()=>{
+  if(!vt||!vt.sc)return;const name=($('#vsvName').value.trim()||vitNext()).slice(0,30),a=vitList();
+  a.push({id:uid(),name,sc:scSer(vt.sc)});vitPut(a);$('#vsvdlg').close();vToast(name+' salva');
+};
+let vLow=false,vtm=0,vcm=0;
+/* com os botões escondidos, o olho some sozinho após 2 s e volta com um toque no canto inferior esquerdo; com os botões visíveis, fica sempre */
+function vchevShow(){const c=$('#vchev');c.classList.remove('gone');clearTimeout(vcm);if(vLow)vcm=setTimeout(()=>c.classList.add('gone'),2000)}
+function vpoke(){if(vt)vchevShow()}
+const EYE_ON='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 6.1A9.8 9.8 0 0 1 12 6c6.5 0 10 6 10 6a17 17 0 0 1-3.2 3.9M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/></svg>';
+/* olho: esconde (olho riscado) ou mostra (olho) os botões da vitrine; só a vitrine e gestos quando escondidos */
 function vLowUI(){
   document.querySelectorAll('.vc').forEach(e=>e.classList.toggle('low',vLow));
-  const c=$('#vchev');c.classList.toggle('on',!vLow);c.setAttribute('aria-label',vLow?'Mostrar botões':'Esconder botões');if(vLow)$('#vpanel').hidden=true}
-$('#vchev').onclick=()=>{vLow=!vLow;vLowUI();vpoke()};
-['pointerdown','pointermove','wheel','keydown'].forEach(t=>document.addEventListener(t,()=>{if(vt)vpoke()},{capture:true,passive:true}));
+  const c=$('#vchev');c.innerHTML=vLow?EYE_ON:EYE_OFF;c.setAttribute('aria-label',vLow?'Mostrar botões':'Esconder botões');c.title=c.getAttribute('aria-label');
+  if(vLow)$('#vpanel').hidden=true;else{clearTimeout(vcm);c.classList.remove('gone')}}
+$('#vchev').onclick=()=>{vLow=!vLow;vLowUI();vchevShow()};
+document.addEventListener('pointerdown',e=>{if(vt&&e.clientX<160&&e.clientY>innerHeight-160)vchevShow()},{capture:true,passive:true});
 new ResizeObserver(()=>{if(vt)vtBuild()}).observe(vStage);
 
+/* ===== menu da coleção: ordenar, filtrar, exibição, tema e backup ===== */
+$('#tabC').onclick=()=>{popSet(null,false);if(vmd)vmSet(false)};$('#tabV').onclick=()=>{popSet(null,false);if(!vmd)vmSet(true)};
+function vmSet(v,c){vmd=!!v;lsSet('tcVmd',vmd?'1':'0');setMode(c==null?cmode:c);$('#nbtn').hidden=vmd;renderShelf()}
+const QL={date:['Antigos primeiro','Recentes primeiro'],name:['A–Z','Z–A'],size:['Menores primeiro','Maiores primeiro']},
+  qNm=()=>QL[Q.o][Q.d===1?0:1],mp=$('#mpanel'),mb=$('#mbtn'),pDisp=$('#dpanel'),bDisp=$('#dbtn'),pNew=$('#npanel'),bNew=$('#nbtn');
+function qUI(){
+  const on=(id,v)=>document.querySelectorAll(id+' button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(v)));
+  on('#qo',Q.o);on('#qf',Q.f);on('#qh',Q.h);on('#qm',cmode?'c':'g');on('#qt',lsGet('tcTema')||'auto');
+  $('#qdir').textContent=(Q.d===1?'↑ ':'↓ ')+qNm();$('#qh').hidden=Q.f!=='card'||vmd;$('#qclr').disabled=qDef();$('#qsz').hidden=!cmode||vmd;['#qorg','#qop','#qdir','#qf','#qclr'].forEach(x=>$(x).hidden=vmd);$('#dbtn').hidden=vmd;
+  [['#tabC',!vmd],['#tabV',vmd]].forEach(([i,o])=>{$(i).classList.toggle('on',o);$(i).setAttribute('aria-selected',o)});
+  const nc=cards.filter(kFront).length+nbs.reduce((a,n)=>a+nbCardList(n).length,0);
+  $('#mcount').textContent=nbs.length+(nbs.length===1?' fichário · ':' fichários · ')+nc+(nc===1?' cartão':' cartões');
+  const ft=Q.f==='nb'?'Só fichários':Q.f==='card'?'Só cartões'+(Q.h!=='all'?' ('+{no:'sem holder',yes:'com holder',empty:'holders vazios'}[Q.h]+')':''):'',
+    ot=Q.o==='date'&&Q.d===1?'':{date:'Data',name:'Nome',size:'Tamanho'}[Q.o]+' '+qNm(),ch=$('#fchip');
+  ch.hidden=qDef()||vmd;ch.textContent=[ft,ot].filter(Boolean).join(' · ')+' ✕';
+  const o=$('#fempty');if(o)o.remove();
+  if(!vmd&&!items().length&&rawItems().length){const d=document.createElement('div');d.id='fempty';d.innerHTML='<div>Nenhum item com esses filtros</div>';const b=document.createElement('button');b.className='tb';b.textContent='Limpar filtros';b.onclick=qClr;d.append(b);$('#grid').prepend(d)}
+}
+const qSave=()=>{lsSet('tcQ',JSON.stringify(Q));renderShelf()},qClr=()=>{Object.assign(Q,{o:'date',d:1,f:'all',h:'all'});qSave()};
+const seg=(id,fn)=>document.querySelectorAll(id+' button').forEach(b=>b.onclick=()=>fn(b.dataset.v));
+seg('#qo',v=>{if(Q.o!==v){Q.o=v;Q.d=1}qSave()});seg('#qf',v=>{Q.f=v;if(v!=='card')Q.h='all';qSave()});seg('#qh',v=>{Q.h=v;qSave()});
+$('#qdir').onclick=()=>{Q.d=-Q.d;qSave()};$('#qclr').onclick=qClr;$('#fchip').onclick=qClr;
+seg('#qm',v=>{setMode(v==='c');qUI()});
+function themeSet(t){if(!t||t==='auto'){delete document.documentElement.dataset.theme;t='auto'}else document.documentElement.dataset.theme=t;lsSet('tcTema',t);icon();qUI()}
+seg('#qt',themeSet);
+/* só um painel flutuante aberto por vez: menu ☰, exibição e criar (+) */
+const pops=[[mp,mb],[pDisp,bDisp],[pNew,bNew]],popOpen=()=>pops.find(([el])=>!el.hidden),
+  popSet=(p,v)=>{pops.forEach(([el,b])=>{const o=!!v&&el===p;el.hidden=!o;b.setAttribute('aria-expanded',o)});if(v&&p!==pNew)qUI();if(v&&p===mp)bkLast()},
+  mpSet=v=>popSet(mp,v),act=f=>()=>{popSet(null,false);f()};
+mb.onclick=()=>popSet(mp,mp.hidden);bDisp.onclick=()=>popSet(pDisp,pDisp.hidden);bNew.onclick=()=>popSet(pNew,pNew.hidden);
+$('#nnb').onclick=act(()=>openDlg(null));$('#ncd').onclick=act(()=>openK(null,null,null));$('#nhd').onclick=act(()=>openHE(null));
+document.addEventListener('pointerdown',e=>{if(popOpen()&&!e.target.closest('#mpanel,#mbtn,#dpanel,#dbtn,#npanel,#nbtn,dialog'))popSet(null,false)});
+addEventListener('keydown',e=>{const o=popOpen();if(e.key==='Escape'&&o&&!document.querySelector('dialog[open]')){popSet(null,false);o[1].focus()}});
+nvInit(mp);nvInit(pDisp);
+/* backup: exportar (com seleção) e importar (mesclar ou substituir) */
+const fmtB=n=>n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';
+function bkLast(){let t=0;try{t=+localStorage.getItem('tcBk')||0}catch(e){}const d=t?Math.floor((Date.now()-t)/864e5):-1;
+  $('#bklast').textContent=d<0?'Nenhum backup completo feito ainda':d===0?'Último backup completo: hoje':'Último backup completo: há '+d+(d===1?' dia':' dias')}
+let bkR=[];
+function bkSum(){const s=bkR.filter(r=>r.on);$('#bksz').textContent=s.length+' de '+bkR.length+' · '+fmtB(s.reduce((a,r)=>a+r.z,0));$('#bkok').disabled=!s.length}
+function bkOpen(){
+  bkR=[];nbs.forEach(n=>bkR.push({g:'Fichários',k:'n',o:n,t:n.title||'Sem título',s:pgTxt(n)}));
+  cards.forEach(c=>bkR.push({g:'Cartões avulsos',k:'c',o:c,t:c.title||(kFront(c)?'Cartão sem título':'Holder vazio'),s:cardSub(c)}));
+  if(holds.length)bkR.push({g:'Biblioteca',k:'h',o:holds,t:'Holders salvos ('+holds.length+')',s:''});
+  if(fxs.length)bkR.push({g:'Biblioteca',k:'f',o:fxs,t:'Efeitos salvos ('+fxs.length+')',s:''});
+  bkR.push({g:'Preferências',k:'p',o:{S,V,T:lsGet('tcTema')},t:'Ajustes e visual (tema, vitrine, tamanhos)',s:''});
+  const L=$('#bklist');L.innerHTML='';let g='';
+  bkR.forEach(r=>{r.z=JSON.stringify(r.o).length;r.on=true;if(r.g!==g){g=r.g;const h=document.createElement('div');h.className='dsec';h.textContent=g;L.append(h)}
+    const l=document.createElement('label'),c=document.createElement('input'),t=document.createElement('span'),z=document.createElement('span');l.className='bkr';c.type='checkbox';c.checked=true;r._c=c;
+    c.onchange=()=>{r.on=c.checked;bkSum()};t.style.flex='1';t.textContent=r.t;z.className='hint';z.textContent=(r.s?r.s+' · ':'')+fmtB(r.z);l.append(c,t,z);L.append(l)});
+  bkSum();$('#bkdlg').showModal()}
+$('#bkex').onclick=act(bkOpen);
+const bkAll=v=>{bkR.forEach(r=>{r.on=v;r._c.checked=v});bkSum()};$('#bkall').onclick=()=>bkAll(true);$('#bknone').onclick=()=>bkAll(false);$('#bkcan').onclick=()=>$('#bkdlg').close();
+$('#bkok').onclick=()=>{const s=bkR.filter(r=>r.on);if(!s.length)return;
+  const o={app:'tcards',v:1,date:new Date().toISOString(),nbs:[],cards:[],holds:[],fxs:[]};
+  s.forEach(r=>{if(r.k==='n')o.nbs.push(r.o);else if(r.k==='c')o.cards.push(r.o);else if(r.k==='h')o.holds=r.o;else if(r.k==='f')o.fxs=r.o;else o.prefs=r.o});
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'}));a.download='tcards-backup-'+o.date.slice(0,10)+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  if(s.length===bkR.length)try{localStorage.setItem('tcBk',Date.now())}catch(e){}
+  $('#bkdlg').close();status('Backup exportado ('+s.length+(s.length===1?' item':' itens')+')',3000)};
+let bi=null,biA=0;
+$('#bimp').onclick=act(()=>$('#bifile').click());
+$('#bifile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+  try{const o=JSON.parse(await f.text());if(o.app!=='tcards')throw 0;bi=o;biA=0;const n=k=>(o[k]||[]).length;
+    $('#bisum').textContent='O arquivo tem '+n('nbs')+' fichário(s), '+n('cards')+' cartão(ões) avulso(s), '+n('holds')+' holder(s) salvo(s) e '+n('fxs')+' efeito(s)'+(o.prefs?', além dos ajustes':'')+'. Mesclar adiciona só o que ainda não existe. Substituir apaga a coleção atual antes de importar.';
+    $('#bisub').textContent='Substituir tudo';$('#bidlg').showModal()}
+  catch(x){status('Arquivo inválido: use um backup .json do tcards.',4000)}};
+function biRun(rep){const o=bi;if(!o)return;let add=0,skip=0;
+  if(rep){[...nbs,...cards,...holds,...fxs].forEach(q=>dbDel(q.id));nbs=[];cards=[];holds=[];fxs=[]}
+  const put=(arr,l)=>(l||[]).forEach(q=>{if(!q||!q.id)return;if([...nbs,...cards,...holds,...fxs].some(z=>z.id===q.id)){skip++;return}arr.push(q);dbPut(q);add++});
+  put(nbs,o.nbs);put(cards,o.cards);put(holds,o.holds);put(fxs,o.fxs);
+  if(rep&&o.prefs){Object.assign(S,o.prefs.S);Object.assign(V,o.prefs.V);lsSet('tcS',JSON.stringify(S));vSave();applyCfg();if(o.prefs.T)themeSet(o.prefs.T)}
+  nbs.sort((a,b)=>a.created-b.created);holds.sort((a,b)=>a.created-b.created);fxs.sort((a,b)=>a.created-b.created);norm();bi=null;$('#bidlg').close();renderShelf();
+  status(add+(add===1?' item importado':' itens importados')+(skip?' · '+skip+' já existia'+(skip===1?'':'m'):''),4000)}
+$('#bimer').onclick=()=>biRun(false);$('#bican').onclick=()=>{bi=null;$('#bidlg').close()};
+$('#bisub').onclick=()=>{if(!biA){biA=1;$('#bisub').textContent='Confirmar substituição';return}biRun(true)};
 /* ===== armazenamento persistente + importação de fichários do tjoucreator ===== */
 async function askPersist(){try{if(navigator.storage&&navigator.storage.persist&&!(await navigator.storage.persisted()))await navigator.storage.persist()}catch(e){}}
 addEventListener('pointerdown',()=>{askPersist()},{once:true});
@@ -1903,12 +2239,12 @@ addEventListener('pointerdown',()=>{askPersist()},{once:true});
   const ln=last&&nbs.find(n=>n.id===last.id);
   const byId=id=>nbs.find(n=>n.id===id);
   if(last&&last.t==='vt'){const n=last.src==='nb'?byId(last.id):null;
-    if(last.src==='home'||n){vKeep[n?n.id:'home']={A:last.A||0,G:last.G||0,ux:last.ux||0};openVitrine(last.src,n,last.cur)}}
+    if(last.src==='home'||n){const sc=scDe(last.sc);vKeep[vkey(last.src,n,sc)]={A:last.A||0,G:last.G||0,ux:last.ux||0};openVitrine(last.src,n,last.cur,sc)}}
   else if(last&&last.t==='card'){const f=findCard(last.id);
     if(f){openCard(f.c,f.loc,null,last.cur);
       if(last.rot){cs.ry=+last.rot[0]||0;cs.rx=+last.rot[1]||0;applyRot()}
       const v=last.vt,n=v&&(v.src==='nb'?byId(v.id):null);
-      if(v&&(v.src==='home'||n)){fc.vt={src:v.src,nb:n,cur:v.cur};if(v.pos)vKeep[n?n.id:'home']=v.pos}}}
+      if(v&&(v.src==='home'||n)){const sc=scDe(v.sc);fc.vt={src:v.src,nb:n,cur:v.cur,sc};if(v.pos)vKeep[vkey(v.src,n,sc)]=v.pos}}}
   else if(ln)openNb(ln,null,Math.max(0,Math.min(+last.cur||0,ln.pages.length/2+2)));
 })();
 </script>
